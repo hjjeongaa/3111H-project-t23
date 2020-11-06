@@ -6,11 +6,14 @@ import edu.duke.*;
 public class AnalyzeNames {
 
 	public static CSVParser getFileParser(int year) {
-     FileResource fr = new FileResource(String.format("dataset/yob%s.csv", year));
+     FileResource fr = new FileResource(String.format("dataset/human/usa/yob%s.csv", year));
      return fr.getCSVParser(false);
 	}
  
-	
+	public static CSVParser getFileParser(int year, String type, String country) {
+	     FileResource fr = new FileResource(String.format("dataset/%s/%s/yob%s.csv", type, country, year));
+	     return fr.getCSVParser(false);
+		}
 	public static String getSummary(int year) {
 		String oReport = "";	
 		int totalBirths = 0;
