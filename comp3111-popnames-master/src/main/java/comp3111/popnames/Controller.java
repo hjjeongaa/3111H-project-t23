@@ -55,6 +55,12 @@ public class Controller {
     private Tab tabReport3;
 
     @FXML
+    private TextField t3EndYear;
+
+    @FXML
+    private TextField t3StartYear;
+    
+    @FXML
     private ToggleGroup T111;
 
     @FXML
@@ -88,6 +94,7 @@ public class Controller {
      *  To be triggered by the "Rank (female)" button on the Task Zero Tab
      *  
      */
+    
     @FXML
     void doRankF() {
     	String oReport = "";
@@ -101,7 +108,6 @@ public class Controller {
     	textAreaConsole.setText(oReport);
     }
 
-  
     /**
      *  Task Zero
      *  To be triggered by the "Rank (male)" button on the Task Zero Tab
@@ -154,6 +160,32 @@ public class Controller {
     	textAreaConsole.setText(oReport);
     }
     
+    /**
+    Task 3
+    To be Triggered by the Generate report button on Task 3 Tab
+    **/
+    
+    @FXML
+    void trendInPopularity() {
+    	String oReport = "";
+    	// error handling/ boundary checking
+        int iStartYear = Integer.parseInt(t3StartYear.getText());
+        int iEndYear = Integer.parseInt(t3EndYear.getText());
+    	if(task3val()) {
+//        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
+//        	String gender = T111.getText();
+
+        	oReport = String.format("Start: %d End: %d:\n", iStartYear, iEndYear);
+    	}else {
+    		oReport+=("Error in")
+    	}
+
+    	textAreaConsole.setText(oReport);
+//		oReport += gender + "\n";
+
+
+
+    }
 
 }
 

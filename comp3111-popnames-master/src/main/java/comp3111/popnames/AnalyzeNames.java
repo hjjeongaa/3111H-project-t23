@@ -5,8 +5,8 @@ import edu.duke.*;
 
 public class AnalyzeNames {
 
-	public static CSVParser getFileParser(int year) {
-     FileResource fr = new FileResource(String.format("dataset/yob%s.csv", year));
+	public static CSVParser getFileParser(int year, String type = "human", String country = "usa") {
+     FileResource fr = new FileResource(String.format("dataset/%s/%s/yob%s.csv", type, country, year));
      return fr.getCSVParser(false);
 	}
  
