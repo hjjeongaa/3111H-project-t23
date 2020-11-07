@@ -20,14 +20,22 @@ public class Reports{
 	private String type;    //human or pet dataset
 	private String oReport; //output of report, output should be set in subclass
 	//accessors
+	public LocalDateTime getTime(){return time;};
+	public String getoReport(){return oReport;};
+	public String getname(){return name;};
+	public String getgender(){return gender;};
+	public String getcountry(){return country;};
+	public String gettype(){return type;};
+	
+
+	//mutators
 	public void modify(String gender, String country, String type){
 		this.time = LocalDateTime.now();
 		this.country = country;
 		this.type = type;
 		this.gender = gender;
 	}
-	public LocalDateTime getTime(){return time;};
-	public String getoReport(){return oReport;};
+
 
 	//Constructor
 	//Note: data should be validated before being passed to a constructor/ mutator
