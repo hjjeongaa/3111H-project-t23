@@ -175,8 +175,7 @@ public class Controller {
     
     @FXML
     void trendInPopularity() {
-   	    String oReport = "";
-   	    // error handling/ boundary checking
+   	    // String oReport = "";
         int iStartYear = Integer.parseInt(t3StartYear.getText());
         int iEndYear = Integer.parseInt(t3EndYear.getText());
         boolean male = T3Male.isSelected();
@@ -188,6 +187,7 @@ public class Controller {
         else if (male) gender = "M";
         else gender = "F";
 
+   	    // error handling/ boundary checking
 //    	if(task3val()) {
 ////        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
 ////        	String gender = T111.getText();
@@ -197,10 +197,17 @@ public class Controller {
 //    		oReport+=("Error in")
 //    	}
 //
-       	textAreaConsole.setText("Generating Report");
+        String status = "Generating Report\n";
+       	textAreaConsole.setText(status);
         TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
 //		oReport += gender + "\n";
-//
+        status += "Preparing data\n";
+       	textAreaConsole.setText(status);
+        rep.prepare();
+        status += "Processing data\n";
+        textAreaConsole.setText(status);
+        rep.preprocess();
+        rep.generate();
         textAreaConsole.setText(rep.getoReport());
 
     }
