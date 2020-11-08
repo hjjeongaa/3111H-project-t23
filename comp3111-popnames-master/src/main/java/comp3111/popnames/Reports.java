@@ -26,7 +26,7 @@ public class Reports{
 	public String getgender(){return gender;};
 	public String getcountry(){return country;};
 	public String gettype(){return type;};
-	
+
 
 	//mutators
 	public void modify(String gender, String country, String type){
@@ -35,12 +35,14 @@ public class Reports{
 		this.type = type;
 		this.gender = gender;
 	}
-
+	public void setoReport(String report){
+		this.oReport = report;
+	}
 
 	//Constructor
 	//Note: data should be validated before being passed to a constructor/ mutator
 	public Reports(String name, String gender, String country, String type){
-		LocalDateTime time = LocalDateTime.now();
+		this.time = LocalDateTime.now();
 		this.name = name;
 		this.gender = gender;
 		this.country = country;

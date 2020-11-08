@@ -8,7 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+
 
 public class Controller {
 
@@ -59,7 +61,13 @@ public class Controller {
 
     @FXML
     private TextField t3StartYear;
-    
+
+    @FXML 
+    private RadioButton T3Male;
+
+    @FXML 
+    private RadioButton T3Female;
+
     @FXML
     private ToggleGroup T111;
 
@@ -167,10 +175,19 @@ public class Controller {
     
     @FXML
     void trendInPopularity() {
-//    	String oReport = "";
-//    	// error handling/ boundary checking
-//        int iStartYear = Integer.parseInt(t3StartYear.getText());
-//        int iEndYear = Integer.parseInt(t3EndYear.getText());
+   	    String oReport = "";
+   	    // error handling/ boundary checking
+        int iStartYear = Integer.parseInt(t3StartYear.getText());
+        int iEndYear = Integer.parseInt(t3EndYear.getText());
+        boolean male = T3Male.isSelected();
+        boolean female = T3Female.isSelected();
+        String gender;
+        if (male && female){
+            gender = "B";
+        }
+        else if (male) gender = "M";
+        else gender = "F";
+
 //    	if(task3val()) {
 ////        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
 ////        	String gender = T111.getText();
@@ -180,10 +197,11 @@ public class Controller {
 //    		oReport+=("Error in")
 //    	}
 //
-//    	textAreaConsole.setText(oReport);
-////		oReport += gender + "\n";
+       	textAreaConsole.setText("Generating Report");
+        TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
+//		oReport += gender + "\n";
 //
-
+        textAreaConsole.setText(rep.getoReport());
 
     }
 

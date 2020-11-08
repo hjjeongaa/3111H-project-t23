@@ -50,7 +50,7 @@ public class AnalyzeNames {
 	}
 	
 	
-	 public static int getRank(int year, String name, String gender) {
+	public static int getRank(int year, String name, String gender) {
 	    boolean found = false;
 	    int oRank = 0;
 	 	int rank = 1;
