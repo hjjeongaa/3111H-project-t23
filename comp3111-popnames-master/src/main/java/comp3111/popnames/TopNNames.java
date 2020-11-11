@@ -2,6 +2,7 @@
 * TopNNames.java
 * 
 * Basis of Task 1.
+* This class is used to do any form of reporting on a collection of years. This is done by collecting all the CSVs and mapping each name to a value. If a name is seen more than once, then the value in the map is updated. The keys of the map are stored in a separate List object and then sorted.
 * 
 * @author Ryder Khoi Daniel
 * @version 1.0
@@ -16,16 +17,15 @@ import org.apache.commons.csv.CSVRecord;
 public class TopNNames extends Reports {
 	
 	/* Private Variables */
-	private int numOfNames;
 	private HashMap<String, Integer> collectionOfYears;
-	private List<String> topNName;
+	private List<String> sortedNames;
+	private int collectionSize;
 	
 	
 	/* Constructor */
-	public TopNNames(int startYear, int endYear, int N, String gender, String country, String type){
+	public TopNNames(int startYear, int endYear, String gender, String country, String type){
 		//	Call Report constructor.
 		super(null, gender, country, type);
-		this.numOfNames = N;
 		collectionOfYears = new HashMap<String,Integer>();
 		
 		/*
@@ -59,24 +59,56 @@ public class TopNNames extends Reports {
 		 */
 		
 		// Convert the collection of names into a list.
-		topNName = new ArrayList<String>(collectionOfYears.keySet());
+		sortedNames = new ArrayList<String>(collectionOfYears.keySet());
 		// Sort those names.
-		topNName.sort(new Comparator<String>() {
+		sortedNames.sort(new Comparator<String>() {
 			@Override
 			public int compare(String s1, String s2) {
 			     return Integer.compare(collectionOfYears.get(s2), collectionOfYears.get(s1));
 			 }
 		});
-		// Make topNName a subset of that sorted list.
-		topNName = topNName.subList(0,numOfNames);
+		
+		collectionSize = sortedNames.size();
 	}
 	
 	/* Interface Function */
+	
+	/**
+	 * Given the list of all names and frequencies in a year span, this function takes an index of that list and returns
+	 * the name at that index.
+	 * @param index	The index of the name which will be retrieved.
+	 * @return	The name at that index.
+	 */
 	public String getNameFromIndex(int index) {
-		return topNName.get(index);
+		if(index < collectionSize){
+			return sortedNames.get(index);
+		} else {
+			return "-1";
+		}
+				
 	}
 	
-	public int getFrequenctFromIndex(int index) {
-		return collectionOfYears.get(topNName.get(index));
+	/**
+	 * Given the list of all names and frequencies in a year span, this function takes an index of that list and returns the frequency at that index.
+	 * @param index	The index of the frequency which will be retrieved.
+	 * @return	The frequency at that index.
+	 */
+	public int getFrequencyFromIndex(int index) {
+		if(index < collectionSize){
+			return collectionOfYears.get(sortedNames.get(index));
+		} else {
+			return -1;
+		}
+		
+	}
+	
+	
+	/**
+	 * Given the list of all names and frequencies in a year span, this function takes a name and returns the index of that name. If it does not exist, it returns -1.
+	 * @param name	The index of this name will be retrieved.
+	 * @return	The index of the given name. If the name does not exist in the list, -1 will be returned.
+	 */
+	public int getNameIndex(String name) {
+		return sortedNames.indexOf(name);
 	}
 }
