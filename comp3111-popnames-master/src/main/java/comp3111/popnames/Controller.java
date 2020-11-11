@@ -41,12 +41,31 @@ public class Controller {
     @FXML
     private Button buttonSummary;
     
+    /*   TASK 1 ELEMENTS   */
+    
     @FXML
-    private Tab tabReport1;
+    private TextField T1_N_TextField;
+
+    @FXML
+    private RadioButton T1_male_RadioButton;
 
     @FXML
     private ToggleGroup T1;
 
+    @FXML
+    private RadioButton T1_female_RadioButton;
+
+    @FXML
+    private TextField T1_endYear_TextField;
+
+    @FXML
+    private TextField T1_startYear_TextField;
+
+    @FXML
+    private Button T1_generateReport_Button;
+    
+    /*   TASK 2 ELEMENTS   */
+    
     @FXML
     private Tab tabReport2;
 
@@ -166,6 +185,89 @@ public class Controller {
     	for (int i=1; i<=topN; i++)
     		oReport += String.format("#%d: %s\n", i, AnalyzeNames.getName(iYear, i, "M"));
     	textAreaConsole.setText(oReport);
+    }
+    
+    /**
+     *  Task One
+     *  To be triggered by the "Generate Report" button on the Task One Tab
+     *  
+     */
+    @FXML
+    void generateTopNNames() {
+    	/* Variables */
+    	int numOfNames = -1;
+    	int startYear = -1;
+    	int endYear = -1;
+    	String gender;
+    	boolean anyErrors = false;
+    	String output = "";
+    	
+    	/*
+    	 * 		Input Validation:
+    	 * 	T1_N_TextField 			-> 	An integer that is greater than 0.
+    	 * 	T1_startYear_TextField 	-> 	An integer that is between 1880 and 2019.
+    	 * 	T1_endYear_TextField	->	An integer that is between T1_startYear_TextField 
+    	 * 								and 2019 inclusively. ( T1_startYear_TextField has
+    	 * 								to be valid first )
+    	 * 	T1_male_RadioButton		->	No need to check.
+    	 * 	T1_female_RadioButton	->	No need to check.
+    	 */
+    	// Try block: https://stackoverflow.com/questions/6893958/check-if-a-jtextfield-is-a-number
+    	// Handle N
+    	try {
+    		numOfNames = Integer.parseInt(T1_N_TextField.getText());
+    		if(numOfNames < 1) {
+    			anyErrors = true;
+        		output += "N is less than 1\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "N is not an integer.\n";
+    	}
+    	// Handle start year
+    	try {
+    		startYear = Integer.parseInt(T1_startYear_TextField.getText());
+    		if(startYear > 2019 || startYear < 1880) {
+    			anyErrors = true;
+        		output += "The start year is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The start year is not an integer.\n";
+    	}
+    	// Handle End Year
+    	if(startYear != -1) {
+    		// Only check the end year if the start year is valid
+    		try {
+        		endYear = Integer.parseInt(T1_endYear_TextField.getText());
+        		if(endYear > 2019 || endYear < startYear) {
+        			anyErrors = true;
+            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear);
+        		}
+        	} catch(NumberFormatException e) {
+        		anyErrors = true;
+        		output += "The end year is not an integer.\n";
+        	}
+    	}
+    	
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		gender = (T1_male_RadioButton.isSelected())?"M":"F";
+    		TopNNames results = new TopNNames(startYear, endYear, numOfNames, gender,"usa", "human");
+    		
+    		output += String.format("Top %d Names From %d to %d:\n",numOfNames, startYear, endYear);
+    		output += "Rank\tName\t\tFrequency\n";
+    		for(int rank = 0; rank < numOfNames; ++rank) {
+    			String name = results.getNameFromIndex(rank);
+    			if(name.length() < 6) name+="";
+    			output += String.format("%5d\t%s\t\t%d\n",
+    					(rank+1), 
+    					name, 
+    					results.getFrequenctFromIndex(rank)
+    				);
+    		}
+    	}
+		textAreaConsole.setText(output);
     }
     
     /**
