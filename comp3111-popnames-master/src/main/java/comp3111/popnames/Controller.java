@@ -93,16 +93,19 @@ public class Controller {
     private Tab tabReport3;
 
     @FXML
-    private TextField t3EndYear;
+    private RadioButton T3_female_RadioButton;
 
     @FXML
-    private TextField t3StartYear;
+    private TextField T3_endYear_TextField;
+
+    @FXML
+    private TextField T3_startYear_TextField;
+
+    @FXML
+    private Button T3_generateReport_Button;
 
     @FXML 
-    private RadioButton T3Male;
-
-    @FXML 
-    private RadioButton T3Female;
+    private RadioButton T3_male_RadioButton;
 
     @FXML
     private ToggleGroup T111;
@@ -350,41 +353,72 @@ public class Controller {
     
     @FXML
     void trendInPopularity() {
-   	    // String oReport = "";
-        int iStartYear = Integer.parseInt(t3StartYear.getText());
-        int iEndYear = Integer.parseInt(t3EndYear.getText());
-        boolean male = T3Male.isSelected();
-        boolean female = T3Female.isSelected();
-        String gender;
-        if (male && female){
-            gender = "B";
-        }
-        else if (male) gender = "M";
-        else gender = "F";
-
-   	    // error handling/ boundary checking
-//    	if(task3val()) {
-////        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
-////        	String gender = T111.getText();
-//
-//        	oReport = String.format("Start: %d End: %d:\n", iStartYear, iEndYear);
-//    	}else {
-//    		oReport+=("Error in")
-//    	}
-//
-        String status = "Generating Report\n";
-       	textAreaConsole.setText(status);
-        TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
-//		oReport += gender + "\n";
-        status += "Preparing data\n";
-       	textAreaConsole.setText(status);
-        rep.prepare();
-        status += "Processing data\n";
-        textAreaConsole.setText(status);
-        rep.preprocess();
-        rep.generate();
-        textAreaConsole.setText(rep.getoReport());
-
+    	/* Variables */
+    	int startYear = -1;
+    	int endYear = -1;
+    	String gender;
+    	boolean anyErrors = false;
+    	String output = "";
+    	
+    	try {
+    		startYear = Integer.parseInt(T2_startYear_textField.getText());
+    		if(startYear > 2019 || startYear < 1880) {
+    			anyErrors = true;
+        		output += "The start year is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The start year is not an integer.\n";
+    	}
+    	// Handle End Year
+    	if(startYear != -1) {
+    		// Only check the end year if the start year is valid
+    		try {
+        		endYear = Integer.parseInt(T2_endYear_TextField.getText());
+        		if(endYear > 2019 || endYear < startYear) {
+        			anyErrors = true;
+            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear);
+        		}
+        	} catch(NumberFormatException e) {
+        		anyErrors = true;
+        		output += "The end year is not an integer.\n";
+        	}
+    	}
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		gender = (T2_male_RadioButton.isSelected())?"M":"F";
+    		TrendInPopularity2 results = new TrendInPopularity2(startYear, endYear, gender,"usa", "human");
+    		
+    		output += String.format("Top 10 Trending Names From %d to %d:\n", startYear, endYear);
+    		output += "Lowest Year : Rank\t\tHighest Year : Rank\t\tName\n";
+    		for(int rank = 1; rank <= 10; ++rank) {
+    			String name = results.getNthHighestDecrease(rank);
+    			int lowYear = results.getWorstGainStartYear(name);
+    			int lowRank = results.getRankInYear(name, lowYear);
+    			int highYear = results.getWorstGainEndYear(name);
+    			int highRank = results.getRankInYear(name, highYear);
+    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
+    					lowYear, lowRank,
+    					highYear, highRank,
+    					name);
+    		}
+    		
+    		output += String.format("\n\nTop 10 Out of Fashion Names From %d to %d:\n", startYear, endYear);
+    		output += "Highest Year : Rank\t\tLowest Year : Rank\t\tName\n";
+    		
+    		for(int rank = 1; rank <= 10; ++rank) {
+    			String name = results.getNthHighestIncrease(rank);
+    			int lowYear = results.getBestGainStartYear(name);
+    			int lowRank = results.getRankInYear(name, lowYear);
+    			int highYear = results.getBestGainEndYear(name);
+    			int highRank = results.getRankInYear(name, highYear);
+    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
+    					lowYear, lowRank,
+    					highYear, highRank,
+    					name);
+    		}
+    	}
+		textAreaConsole.setText(output);
     }
 
 }

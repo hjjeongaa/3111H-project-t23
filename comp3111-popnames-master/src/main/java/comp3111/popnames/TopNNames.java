@@ -71,7 +71,7 @@ public class TopNNames extends Reports {
 		collectionSize = sortedNames.size();
 	}
 	
-	/* Interface Function */
+	/* Interface Functions */
 	
 	/**
 	 * Given the list of all names and frequencies in a year span, this function takes an index of that list and returns
