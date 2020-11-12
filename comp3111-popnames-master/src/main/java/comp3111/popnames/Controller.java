@@ -386,7 +386,7 @@ public class Controller {
     	}
     	if(!anyErrors) {
     		// All inputs are valid, now to display the desired output.
-    		gender = (T2_male_RadioButton.isSelected())?"M":"F";
+    		gender = (T3_male_RadioButton.isSelected())?"M":"F";
     		TrendInPopularity2 results = new TrendInPopularity2(startYear, endYear, gender,"usa", "human");
     		
     		output += String.format("Top 10 Trending Names From %d to %d:\n", startYear, endYear);
