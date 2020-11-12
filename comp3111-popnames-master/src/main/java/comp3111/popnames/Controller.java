@@ -361,7 +361,7 @@ public class Controller {
     	String output = "";
     	
     	try {
-    		startYear = Integer.parseInt(T2_startYear_textField.getText());
+    		startYear = Integer.parseInt(T3_startYear_TextField.getText());
     		if(startYear > 2019 || startYear < 1880) {
     			anyErrors = true;
         		output += "The start year is out of bounds (1880-2019).\n";
@@ -374,7 +374,7 @@ public class Controller {
     	if(startYear != -1) {
     		// Only check the end year if the start year is valid
     		try {
-        		endYear = Integer.parseInt(T2_endYear_TextField.getText());
+        		endYear = Integer.parseInt(T3_endYear_TextField.getText());
         		if(endYear > 2019 || endYear < startYear) {
         			anyErrors = true;
             		output += String.format("The end year is out of bounds (%d-2019).\n",startYear);
