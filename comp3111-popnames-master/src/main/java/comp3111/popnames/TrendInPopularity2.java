@@ -30,7 +30,8 @@ public class TrendInPopularity2 extends Reports{
 		
 		public Person(int entry, int rank) {
 			entryYear = entry;
-			rankStartingFromEntry = new ArrayList<Integer>(rank);
+			rankStartingFromEntry = new ArrayList<Integer>();
+			rankStartingFromEntry.add(rank);
 			
 			bestGainStart = -1;
 			bestGainEnd = -1;
@@ -44,6 +45,8 @@ public class TrendInPopularity2 extends Reports{
 		
 		/* For these functions to return the an accurate answer, rankStartingFromEntry should be complete */
 		public int getLargestDecrease() {
+			// make sure that this persons rank increase is actually solvable.
+			if(rankStartingFromEntry.size() < 2) return -1;
 			int mui = 0; // Maximum gain under inspection.
 			int msf = 0; // Maximum gain encountered so far.
 			int sy = 0;	// Temporary start year.
@@ -67,11 +70,13 @@ public class TrendInPopularity2 extends Reports{
 				bestGain = msf;
 				return msf;
 			}
-			// bestGain* stay as -1 if there is purely a decrease in popularity.
+			// bestGain* stay as -1 if there is purely a decrease in rank.
 			return -1;
 		}
 		
 		public int getLargestIncrease() {
+			// make sure that this persons rank increase is actually solvable.
+			if(rankStartingFromEntry.size() < 2) return -1;
 			int mui = 0; // Maximum loss under inspection.
 			int msf = 0; // Maximum loss encountered so far.
 			int sy = 0;	// Temporary start year.
@@ -95,7 +100,7 @@ public class TrendInPopularity2 extends Reports{
 				worstGain = -1*msf;
 				return msf;
 			}
-			// bestGain* stay as -1 if there is purely a decrease in popularity.
+			// worstGain* stay as -1 if there is purely an increase in rank.
 			return -1;
 		}
 		
