@@ -133,11 +133,14 @@ public class TrendInPopularity2 extends Reports{
 		// Populate HashMap
 		for(int year = startYear; year <= endYear; ++year) {
 			int rnk = 0;
+			int prevFreq = 0;
 			for(CSVRecord rec : AnalyzeNames.getFileParser(year)) {
 				// We are only interested in Names who belong to the gender of interest.
 				if(rec.get(1).equals(gender)) {
 					String name = rec.get(0);
-					rnk++; // increase the rank
+					if(Integer.parseInt(rec.get(2)) != prevFreq ) rnk++; // increase the rank only if
+																		 // the frequency is different.
+					prevFreq = Integer.parseInt(rec.get(2)); // update the previous frequency
 					if(peopleEncountered.containsKey(name)) {
 						// The name exists in the map, then we just need to update the Person
 						peopleEncountered.get(name).addRanking(rnk);
