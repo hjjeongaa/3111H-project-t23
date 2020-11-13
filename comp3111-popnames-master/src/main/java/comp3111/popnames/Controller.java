@@ -8,7 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+
 
 public class Controller {
 
@@ -39,27 +41,72 @@ public class Controller {
     @FXML
     private Button buttonSummary;
     
+    /*   TASK 1 ELEMENTS   */
+    
     @FXML
-    private Tab tabReport1;
+    private TextField T1_N_TextField;
+
+    @FXML
+    private RadioButton T1_male_RadioButton;
 
     @FXML
     private ToggleGroup T1;
 
     @FXML
+    private RadioButton T1_female_RadioButton;
+
+    @FXML
+    private TextField T1_endYear_TextField;
+
+    @FXML
+    private TextField T1_startYear_TextField;
+
+    @FXML
+    private Button T1_generateReport_Button;
+    
+    /*   TASK 2 ELEMENTS   */
+    
+    @FXML
     private Tab tabReport2;
 
     @FXML
     private ToggleGroup T11;
+    
+    @FXML
+    private TextField T2_endYear_TextField;
 
+    @FXML
+    private TextField T2_startYear_textField;
+
+    @FXML
+    private Button T2_generateReport_Button;
+    
+    @FXML
+    private TextField T2_name_TextField;
+    
+    @FXML
+    private RadioButton T2_male_RadioButton;
+
+    /* TASK 3 ELEMENTS */
+    
     @FXML
     private Tab tabReport3;
 
     @FXML
-    private TextField t3EndYear;
+    private RadioButton T3_female_RadioButton;
 
     @FXML
-    private TextField t3StartYear;
-    
+    private TextField T3_endYear_TextField;
+
+    @FXML
+    private TextField T3_startYear_TextField;
+
+    @FXML
+    private Button T3_generateReport_Button;
+
+    @FXML 
+    private RadioButton T3_male_RadioButton;
+
     @FXML
     private ToggleGroup T111;
 
@@ -161,30 +208,217 @@ public class Controller {
     }
     
     /**
+     *  Task One
+     *  To be triggered by the "Generate Report" button on the Task One Tab
+     *  
+     */
+    @FXML
+    void generateTopNNames() {
+    	/* Variables */
+    	int numOfNames = -1;
+    	int startYear = -1;
+    	int endYear = -1;
+    	String gender;
+    	boolean anyErrors = false;
+    	String output = "";
+    	
+    	/*
+    	 * 		Input Validation:
+    	 * 	T1_N_TextField 			-> 	An integer that is greater than 0.
+    	 * 	T1_startYear_TextField 	-> 	An integer that is between 1880 and 2019.
+    	 * 	T1_endYear_TextField	->	An integer that is between T1_startYear_TextField 
+    	 * 								and 2019 inclusively. ( T1_startYear_TextField has
+    	 * 								to be valid first )
+    	 * 	T1_male_RadioButton		->	No need to check.
+    	 * 	T1_female_RadioButton	->	No need to check.
+    	 */
+    	// Try block: https://stackoverflow.com/questions/6893958/check-if-a-jtextfield-is-a-number
+    	// Handle N
+    	try {
+    		numOfNames = Integer.parseInt(T1_N_TextField.getText());
+    		if(numOfNames < 1) {
+    			anyErrors = true;
+        		output += "N is less than 1\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "N is not an integer.\n";
+    	}
+    	// Handle start year
+    	try {
+    		startYear = Integer.parseInt(T1_startYear_TextField.getText());
+    		if(startYear > 2019 || startYear < 1880) {
+    			anyErrors = true;
+        		output += "The start year is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The start year is not an integer.\n";
+    	}
+    	// Handle End Year
+    	if(startYear != -1) {
+    		// Only check the end year if the start year is valid
+    		try {
+        		endYear = Integer.parseInt(T1_endYear_TextField.getText());
+        		if(endYear > 2019 || endYear < startYear) {
+        			anyErrors = true;
+            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear);
+        		}
+        	} catch(NumberFormatException e) {
+        		anyErrors = true;
+        		output += "The end year is not an integer.\n";
+        	}
+    	}
+    	
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		gender = (T1_male_RadioButton.isSelected())?"M":"F";
+    		TopNNames results = new TopNNames(startYear, endYear, gender,"usa", "human");
+    		
+    		output += String.format("Top %d Names From %d to %d:\n",numOfNames, startYear, endYear);
+    		output += "Rank  Frequency\tName\n";
+    		for(int rank = 0; rank < numOfNames; ++rank) {
+    			String name = results.getNameFromIndex(rank);
+    			if( name.equals("-1")) break;
+    			if(name.length() < 6) name+="";
+    			output += String.format("%-6d%10d\t\t%s\n",
+    					(rank+1),
+    					results.getFrequencyFromIndex(rank),
+    					name
+    				);
+    		}
+    	}
+		textAreaConsole.setText(output);
+    }
+    
+    
+    /* TASK 2 */
+    @FXML
+    void T2_func() {
+    	/* Variables */
+    	String name = T2_name_TextField.getText();
+    	int startYear = -1;
+    	int endYear = -1;
+    	String gender;
+    	boolean anyErrors = false;
+    	String output = "";
+    	
+    	try {
+    		startYear = Integer.parseInt(T2_startYear_textField.getText());
+    		if(startYear > 2019 || startYear < 1880) {
+    			anyErrors = true;
+        		output += "The start year is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The start year is not an integer.\n";
+    	}
+    	// Handle End Year
+    	if(startYear != -1) {
+    		// Only check the end year if the start year is valid
+    		try {
+        		endYear = Integer.parseInt(T2_endYear_TextField.getText());
+        		if(endYear > 2019 || endYear < startYear) {
+        			anyErrors = true;
+            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear);
+        		}
+        	} catch(NumberFormatException e) {
+        		anyErrors = true;
+        		output += "The end year is not an integer.\n";
+        	}
+    	}
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		gender = (T2_male_RadioButton.isSelected())?"M":"F";
+    		TopNNames results = new TopNNames(startYear, endYear, gender,"usa", "human");
+    		int rank = results.getNameIndex(name);
+    		if( rank == -1 ) {
+    			output += String.format("Sorry, %s wasnt found between %d and %d\n",name, startYear, endYear);
+    		} else {
+	    		output += String.format("Rank of %s between %d and %d is %d\n", 
+	    				name, 
+	    				startYear, 
+	    				endYear,
+	    				rank+1);
+    		}
+    	}
+		textAreaConsole.setText(output);
+    }
+    
+    
+    /**
     Task 3
     To be Triggered by the Generate report button on Task 3 Tab
     **/
     
     @FXML
     void trendInPopularity() {
-//    	String oReport = "";
-//    	// error handling/ boundary checking
-//        int iStartYear = Integer.parseInt(t3StartYear.getText());
-//        int iEndYear = Integer.parseInt(t3EndYear.getText());
-//    	if(task3val()) {
-////        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
-////        	String gender = T111.getText();
-//
-//        	oReport = String.format("Start: %d End: %d:\n", iStartYear, iEndYear);
-//    	}else {
-//    		oReport+=("Error in")
-//    	}
-//
-//    	textAreaConsole.setText(oReport);
-////		oReport += gender + "\n";
-//
-
-
+    	/* Variables */
+    	int startYear = -1;
+    	int endYear = -1;
+    	String gender;
+    	boolean anyErrors = false;
+    	String output = "";
+    	
+    	try {
+    		startYear = Integer.parseInt(T3_startYear_TextField.getText());
+    		if(startYear > 2019 || startYear < 1880) {
+    			anyErrors = true;
+        		output += "The start year is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The start year is not an integer.\n";
+    	}
+    	// Handle End Year
+    	if(startYear != -1) {
+    		// Only check the end year if the start year is valid
+    		try {
+        		endYear = Integer.parseInt(T3_endYear_TextField.getText());
+        		if(endYear > 2019 || endYear <= startYear) {
+        			anyErrors = true;
+            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear+1);
+        		}
+        	} catch(NumberFormatException e) {
+        		anyErrors = true;
+        		output += "The end year is not an integer.\n";
+        	}
+    	}
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		gender = (T3_male_RadioButton.isSelected())?"M":"F";
+    		TrendInPopularity2 results = new TrendInPopularity2(startYear, endYear, gender,"usa", "human");
+    		
+    		output += String.format("Top 10 Trending Names From %d to %d:\n", startYear, endYear);
+    		output += "Lowest Year : Rank\t\tHighest Year : Rank\t\tName\n";
+    		for(int rank = 1; rank <= 10; ++rank) {
+    			String name = results.getNthHighestDecrease(rank);
+    			int lowYear = results.getWorstGainStartYear(name);
+    			int lowRank = results.getRankInYear(name, lowYear);
+    			int highYear = results.getWorstGainEndYear(name);
+    			int highRank = results.getRankInYear(name, highYear);
+    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
+    					lowYear, lowRank,
+    					highYear, highRank,
+    					name);
+    		}
+    		
+    		output += String.format("\n\nTop 10 Out of Fashion Names From %d to %d:\n", startYear, endYear);
+    		output += "Highest Year : Rank\t\tLowest Year : Rank\t\tName\n";
+    		
+    		for(int rank = 1; rank <= 10; ++rank) {
+    			String name = results.getNthHighestIncrease(rank);
+    			int lowYear = results.getBestGainStartYear(name);
+    			int lowRank = results.getRankInYear(name, lowYear);
+    			int highYear = results.getBestGainEndYear(name);
+    			int highRank = results.getRankInYear(name, highYear);
+    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
+    					lowYear, lowRank,
+    					highYear, highRank,
+    					name);
+    		}
+    	}
+		textAreaConsole.setText(output);
     }
 
 }
