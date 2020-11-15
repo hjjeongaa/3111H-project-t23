@@ -175,40 +175,37 @@ public class Controller {
     
     @FXML
     void trendInPopularity() {
-   	    // String oReport = "";
+   	     String oReport = "";
         int iStartYear = Integer.parseInt(t3StartYear.getText());
         int iEndYear = Integer.parseInt(t3EndYear.getText());
-        boolean male = T3Male.isSelected();
-        boolean female = T3Female.isSelected();
         String gender;
-        if (male && female){
-            gender = "B";
-        }
-        else if (male) gender = "M";
-        else gender = "F";
+        gender = (T3Male.isSelected())?"M":"F";
 
    	    // error handling/ boundary checking
-//    	if(task3val()) {
-////        	RedioButton selectedGender = (RadioButton) T111.getSelectedToggle();
-////        	String gender = T111.getText();
-//
-//        	oReport = String.format("Start: %d End: %d:\n", iStartYear, iEndYear);
-//    	}else {
-//    		oReport+=("Error in")
-//    	}
-//
-        String status = "Generating Report\n";
-       	textAreaConsole.setText(status);
+        // checking for year out of bound
+        boolean rangeError = false;
+        if (iStartYear>iEndYear) {
+        	oReport += "Start Year should be Smaller or Equal to End Year\n";
+        	rangeError = true;
+        }
+        if (iStartYear<1880) {
+        	oReport += "Start Year should be within the valid range of 1880 - 2019\n";
+        	rangeError = true;
+        }
+        if (iEndYear>2019) {
+        	oReport += "End Year should be within the valid range of 1880 - 2019\n";
+        	rangeError = true;
+        }
+
+        if (rangeError) {
+            textAreaConsole.setText(oReport);
+        	return;
+        }
+       	textAreaConsole.setText("Generating Report\n");
         TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
-//		oReport += gender + "\n";
-        status += "Preparing data\n";
-       	textAreaConsole.setText(status);
-        rep.prepare();
-        status += "Processing data\n";
-        textAreaConsole.setText(status);
-        rep.preprocess();
+		oReport += "Generating Popularity Trends of "+((gender=="M")?"Males":"Females")+" From "+iStartYear+"-"+iEndYear + "\n";
         rep.generate();
-        textAreaConsole.setText(rep.getoReport());
+        textAreaConsole.setText(oReport+rep.getoReport());
 
     }
 
