@@ -33,7 +33,7 @@ public class PredictCompatibilityScore{
 		public String getType()		{return type;};
 		public int    getRank()		{return rank;};
 		public int    getSize()		{return size;};
-		
+
 		//mutators
 		private void intialize() {
 			int rank = 1;
@@ -107,7 +107,7 @@ public class PredictCompatibilityScore{
 		// update algo name
 		this.algo = "ntk6";
 		// the closer the rank the better your score 
-		this.oScore = (1-(float)Math.abs(user.rank-mate.rank)/user.rank);
+		this.oScore = (1-(float)Math.abs(user.getRank()-mate.getRank())/user.getRank());
 		return oScore;
 	}
 	/**
@@ -119,8 +119,8 @@ public class PredictCompatibilityScore{
 		 */
 		this.algo = "pntk6";
 		//normalizing ranks of each user
-		float nUser = (float)user.rank/user.size;
-		float nMate = (float)mate.rank/mate.size;
+		float nUser = (float)user.getRank()/user.getSize();
+		float nMate = (float)mate.getRank()/mate.getSize();
 		this.oScore = (1-Math.abs(nUser-nMate)/nUser);
 		return oScore;
 	}
