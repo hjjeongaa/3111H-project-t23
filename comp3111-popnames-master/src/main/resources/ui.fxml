@@ -83,9 +83,9 @@
                                     </RadioButton>
                                     <Label layoutX="109.0" layoutY="129.0" text="Period (1880 - 2019): " />
                                     <TextField fx:id="T2_endYear_TextField" layoutX="289.0" layoutY="123.0" prefHeight="26.0" prefWidth="43.0" text="1945" />
-                                    <TextField fx:id="T2_startYear_textField" layoutX="223.0" layoutY="123.0" prefHeight="26.0" prefWidth="43.0" text="1941" />
+                                    <TextField fx:id="T2_startYear_TextField" layoutX="223.0" layoutY="123.0" prefHeight="26.0" prefWidth="43.0" text="1941" />
                                     <Label layoutX="271.0" layoutY="127.0" text="to" />
-                                    <Button fx:id="T2_generateReport_Button" layoutX="108.0" layoutY="169.0" mnemonicParsing="false" onAction="#T2_func" text="Generate Report" />
+                                    <Button fx:id="T2_generateReport_Button" layoutX="108.0" layoutY="169.0" mnemonicParsing="false" onAction="#generatePopularityOfName" text="Generate Report" />
                                  </children>
                               </AnchorPane>
                            </children>
