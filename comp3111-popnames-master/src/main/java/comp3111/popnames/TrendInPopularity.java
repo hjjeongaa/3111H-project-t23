@@ -13,7 +13,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class TrendInPopularity extends Reports{
-	public class Entry{
+	/**
+	 * Code for Task 3, finding the (names) with largest increase in trend 
+	 * @author Yuxi Sun
+	 *
+	 */
+	private class Entry{
 		/**
 		 * Consists of a year and it's corresponding rank
 		 */
@@ -34,7 +39,7 @@ public class TrendInPopularity extends Reports{
 		}
 	}
 
-	public class Trend{
+	private class Trend{
 		/**
 		 * Consists of 2 Entrys.
 		 */
@@ -61,7 +66,7 @@ public class TrendInPopularity extends Reports{
 		}
 	}
 
-	public class Name{
+	private class Name{
 		/**
 		 * Consist of a name and its risingTrend and fallingTrend
 		 * Sorting and management of Trends should be performed here.
@@ -182,9 +187,10 @@ public class TrendInPopularity extends Reports{
 		/**
 		 * Fetch all relevant data from database and process them to get a list of largest rise and fall for each name
 		 */
+		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
-		Vector<Name> setOfLargestRise = new Vector<Name>();
-		Vector<Name> setOfLargestFall = new Vector<Name>();
+		Vector<Name> setOfLargestRise  = new Vector<Name>();
+		Vector<Name> setOfLargestFall  = new Vector<Name>();
 		//collecting data from datasets and doing simple preprocessing to get the maxes rise/ fall of each Name
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
@@ -209,11 +215,11 @@ public class TrendInPopularity extends Reports{
 						++sameRankCount;
 					else{
 						//since we assume the file is grouped by gender and 
-						//order in decending order on frequency, no extra check is required 
+						//order in descending order on frequency, no extra check is required 
 						rank = rank + sameRankCount + 1;
 						sameRankCount = 0;//reset sameRankCount
 					}
-					//update lastFreq (interation variable)
+					//update lastFreq (interaction variable)
 					lastFreq = Integer.parseInt(rec.get(2));
 				}
 				//Getting names with specified gender
