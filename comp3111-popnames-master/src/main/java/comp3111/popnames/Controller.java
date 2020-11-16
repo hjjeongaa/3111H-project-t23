@@ -76,7 +76,7 @@ public class Controller {
     private TextField T2_endYear_TextField;
 
     @FXML
-    private TextField T2_startYear_textField;
+    private TextField T2_startYear_TextField;
 
     @FXML
     private Button T2_generateReport_Button;
@@ -294,7 +294,7 @@ public class Controller {
     
     /* TASK 2 */
     @FXML
-    void T2_func() {
+    void generatePopularityOfName() {
     	/* Variables */
     	String name = T2_name_TextField.getText();
     	int startYear = -1;
@@ -304,7 +304,7 @@ public class Controller {
     	String output = "";
     	
     	try {
-    		startYear = Integer.parseInt(T2_startYear_textField.getText());
+    		startYear = Integer.parseInt(T2_startYear_TextField.getText());
     		if(startYear > 2019 || startYear < 1880) {
     			anyErrors = true;
         		output += "The start year is out of bounds (1880-2019).\n";
@@ -335,11 +335,14 @@ public class Controller {
     		if( rank == -1 ) {
     			output += String.format("Sorry, %s wasnt found between %d and %d\n",name, startYear, endYear);
     		} else {
-	    		output += String.format("Rank of %s between %d and %d is %d\n", 
+	    		/*output += String.format("Rank of %s between %d and %d is %d\n", 
 	    				name, 
 	    				startYear, 
 	    				endYear,
 	    				rank+1);
+	    		*/
+    			PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender, "usa", "human");
+	    		output += namePopularity.getReport();
     		}
     	}
 		textAreaConsole.setText(output);
