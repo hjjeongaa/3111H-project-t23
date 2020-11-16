@@ -2,6 +2,7 @@
 .gradle
 .metadata
 .settings
-.vscode
+.ipynb
+master.csv
 # Ignore Gradle build output directory
 build

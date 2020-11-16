@@ -356,73 +356,37 @@ public class Controller {
     
     @FXML
     void trendInPopularity() {
-    	/* Variables */
-    	int startYear = -1;
-    	int endYear = -1;
-    	String gender;
-    	boolean anyErrors = false;
-    	String output = "";
-    	
-    	try {
-    		startYear = Integer.parseInt(T3_startYear_TextField.getText());
-    		if(startYear > 2019 || startYear < 1880) {
-    			anyErrors = true;
-        		output += "The start year is out of bounds (1880-2019).\n";
-    		}
-    	} catch(NumberFormatException e) {
-    		anyErrors = true;
-    		output += "The start year is not an integer.\n";
-    	}
-    	// Handle End Year
-    	if(startYear != -1) {
-    		// Only check the end year if the start year is valid
-    		try {
-        		endYear = Integer.parseInt(T3_endYear_TextField.getText());
-        		if(endYear > 2019 || endYear <= startYear) {
-        			anyErrors = true;
-            		output += String.format("The end year is out of bounds (%d-2019).\n",startYear+1);
-        		}
-        	} catch(NumberFormatException e) {
-        		anyErrors = true;
-        		output += "The end year is not an integer.\n";
-        	}
-    	}
-    	if(!anyErrors) {
-    		// All inputs are valid, now to display the desired output.
-    		gender = (T3_male_RadioButton.isSelected())?"M":"F";
-    		TrendInPopularity2 results = new TrendInPopularity2(startYear, endYear, gender,"usa", "human");
-    		
-    		output += String.format("Top 10 Trending Names From %d to %d:\n", startYear, endYear);
-    		output += "Lowest Year : Rank\t\tHighest Year : Rank\t\tName\n";
-    		for(int rank = 1; rank <= 10; ++rank) {
-    			String name = results.getNthHighestDecrease(rank);
-    			int lowYear = results.getWorstGainStartYear(name);
-    			int lowRank = results.getRankInYear(name, lowYear);
-    			int highYear = results.getWorstGainEndYear(name);
-    			int highRank = results.getRankInYear(name, highYear);
-    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
-    					lowYear, lowRank,
-    					highYear, highRank,
-    					name);
-    		}
-    		
-    		output += String.format("\n\nTop 10 Out of Fashion Names From %d to %d:\n", startYear, endYear);
-    		output += "Highest Year : Rank\t\tLowest Year : Rank\t\tName\n";
-    		
-    		for(int rank = 1; rank <= 10; ++rank) {
-    			String name = results.getNthHighestIncrease(rank);
-    			int lowYear = results.getBestGainStartYear(name);
-    			int lowRank = results.getRankInYear(name, lowYear);
-    			int highYear = results.getBestGainEndYear(name);
-    			int highRank = results.getRankInYear(name, highYear);
-    			output += String.format("%-4d\t%-6d : %-5d\t\t\t%-6d : %-5d\t\t\t%s\n", rank,
-    					lowYear, lowRank,
-    					highYear, highRank,
-    					name);
-    		}
-    	}
-		textAreaConsole.setText(output);
-    }
+   	     String oReport = "";
+        int iStartYear = Integer.parseInt(t3StartYear.getText());
+        int iEndYear = Integer.parseInt(t3EndYear.getText());
+        String gender;
+        gender = (T3Male.isSelected())?"M":"F";
 
+   	    // error handling/ boundary checking
+        // checking for year out of bound
+        boolean rangeError = false;
+        if (iStartYear>iEndYear) {
+        	oReport += "Start Year should be Smaller or Equal to End Year\n";
+        	rangeError = true;
+        }
+        if (iStartYear<1880) {
+        	oReport += "Start Year should be within the valid range of 1880 - 2019\n";
+        	rangeError = true;
+        }
+        if (iEndYear>2019) {
+        	oReport += "End Year should be within the valid range of 1880 - 2019\n";
+        	rangeError = true;
+        }
+
+        if (rangeError) {
+            textAreaConsole.setText(oReport);
+        	return;
+        }
+       	textAreaConsole.setText("Generating Report\n");
+        TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
+		oReport += "Generating Popularity Trends of "+((gender=="M")?"Males":"Females")+" From "+iStartYear+"-"+iEndYear + "\n";
+        rep.generate();
+        textAreaConsole.setText(oReport+rep.getoReport());
+    }
 }
 

@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
 
 public class Reports{
-	//class formatter for formattig time, subclasses should use superclass variable to format to save space.
+	//class formatter for formatting time, subclasses should use superclass variable to format to save space.
 	public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 	//records the time of creation or last modification
 	private LocalDateTime time;  
