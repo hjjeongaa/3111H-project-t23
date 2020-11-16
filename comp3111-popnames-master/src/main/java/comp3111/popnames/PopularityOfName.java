@@ -40,7 +40,7 @@ public class PopularityOfName extends Reports {
 					++currentRank;
 					if (!nameFound) {
 						String thisRecName = rec.get(0);
-						int thisRecFrequency = Integer.parseInt(rec.get(2));
+						//int thisRecFrequency = Integer.parseInt(rec.get(2));
 						
 						if (name.equals(thisRecName)) {
 							nameFound = true;
