@@ -357,10 +357,10 @@ public class Controller {
     @FXML
     void trendInPopularity() {
    	     String oReport = "";
-        int iStartYear = Integer.parseInt(t3StartYear.getText());
-        int iEndYear = Integer.parseInt(t3EndYear.getText());
+        int iStartYear = Integer.parseInt(T3_startYear_TextField.getText());
+        int iEndYear = Integer.parseInt(T3_endYear_TextField.getText());
         String gender;
-        gender = (T3Male.isSelected())?"M":"F";
+        gender = (T3_male_RadioButton.isSelected())?"M":"F";
 
    	    // error handling/ boundary checking
         // checking for year out of bound
