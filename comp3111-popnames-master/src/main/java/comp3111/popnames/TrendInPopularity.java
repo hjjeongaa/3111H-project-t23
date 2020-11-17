@@ -9,7 +9,6 @@ package comp3111.popnames;
 
 import org.apache.commons.csv.*;
 import edu.duke.*;
-import java.time.LocalDateTime;  
 import java.util.*;
 
 public class TrendInPopularity extends Reports{
@@ -94,18 +93,18 @@ public class TrendInPopularity extends Reports{
 			if (hasRise())
 				return rise.get(0).getChange();
 			else
-				return 0;//if returned value is negative, means no valid input found
+				return 0;//if returned value is negative or 0, means no valid input found
 		}
 		public int getFall(){
 			if (hasFall())
 				return fall.get(0).getChange();
-			else return 0;//if returned value is positive, means no valid input found
+			else return 0;//if returned value is positive or 0, means no valid input found
 		}
 		public String getName(){return this.name;}
 		//mutators
 		public void addYear(int year,int rank){
 			/**
-			*updates Trends of said person
+			*updates Trends of said name
 			*/
 			updateRise(year, rank);
 			updateFall(year, rank);
