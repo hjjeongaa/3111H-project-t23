@@ -365,8 +365,9 @@ public class Controller {
    	    // error handling/ boundary checking
         // checking for year out of bound
         boolean rangeError = false;
-        if (iStartYear>iEndYear) {
-        	oReport += "Start Year should be Smaller or Equal to End Year\n";
+
+        if (iStartYear>=iEndYear) {
+        	oReport += "Start Year should be Smaller to End Year\n";
         	rangeError = true;
         }
         if (iStartYear<1880) {
@@ -382,7 +383,6 @@ public class Controller {
             textAreaConsole.setText(oReport);
         	return;
         }
-       	textAreaConsole.setText("Generating Report\n");
         TrendInPopularity rep = new TrendInPopularity(iStartYear,iEndYear,gender,"usa","human");
 		oReport += "Generating Popularity Trends of "+((gender=="M")?"Males":"Females")+" From "+iStartYear+"-"+iEndYear + "\n";
         rep.generate();

@@ -33,6 +33,7 @@ public class OR extends RankingAlgorithm {
 			//now rank of curr name has been computed, check if the iName is found
 			if(rec.get(0).equals(name)){
 				this.rank = rank;
+				found = true;
 			}
 			++rank;
 		}
