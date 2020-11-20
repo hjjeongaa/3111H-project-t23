@@ -10,17 +10,20 @@ package comp3111.popnames;
 import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.util.*;
-
+/**
+ * Code for Task 3, 
+ * Finding the (names) with largest increase in popularity and 
+ *  the (names) with largest decrease in popularity over a 
+ *  specified period of time for the USA dataset.
+ * @author Yuxi Sun
+ *
+ */
 public class TrendInPopularity extends Reports{
 	/**
-	 * Code for Task 3, finding the (names) with largest increase in trend 
-	 * @author Yuxi Sun
-	 *
+	 * Entry is a private data structure used to make the year rank paired code more intuitive. 
 	 */
 	private class Entry{
-		/**
-		 * Consists of a year and it's corresponding rank
-		 */
+
 		private int year;
 		private int rank;
 		//accessors
@@ -37,21 +40,23 @@ public class TrendInPopularity extends Reports{
 			this.rank = rank;
 		}
 	}
-
+	/**
+	 * Trend is a private data structure that consists of 2 Entrys and is used in the TrendInPopularity class as a
+	 * running record of the largest increase/ decrease in popularity of a name (such that each name has two Trends).
+	 */
 	private class Trend{
-		/**
-		 * Consists of 2 Entrys.
-		 */
+
 		private Entry start;
 		private Entry end;
 		//accessors
 		public Entry getStart(){return this.start;}
 		public Entry getEnd(){return this.end;}
+		/**
+		 * return the difference of the start Rank with the end Rank so that the return value is how much the rank increased
+		 * if positive, and vice versa since a larger rank value means a lower rank.
+		 */
 		public int getChange(){
-			/**
-			 * return the difference of the start Rank with the end Rank so that the return value is how much the rank increased
-			 * if negative, it mease the rank decreased
-			 */
+
 			return this.start.getRank() - this.end.getRank();
 		}
 
@@ -64,57 +69,72 @@ public class TrendInPopularity extends Reports{
 			this.end = end;
 		}
 	}
-
+	/**
+	 * Name is a data structure that uses Trend to keep track of the running largest increase and largest decrease in popularity of a specific name.
+	 * Consist of a name and its risingTrend and fallingTrend
+	 * Sorting and management of Trends (including updating and verification) should be performed here.
+	 */
 	private class Name{
-		/**
-		 * Consist of a name and its risingTrend and fallingTrend
-		 * Sorting and management of Trends should be performed here.
-		 */
-			
 		private String name;
-		private Vector<Trend> rise;			
 		/**
-		 * rise contains a list of all Entries (year,rank) that has the same increase in ranks as the largest
+		 * rise contains a non-trivial list of all Entries (year,rank) that has the same increase in ranks as the largest
 		 * rise in ranks (assumed positive).
 		 */
+		private Vector<Trend> rise;			
 		private Entry lowest;				//stores the Entry of the lowest rank seen so far (highest value)
-
-		private Vector<Trend> fall;	
+		
 		/**
-		* fall contains a list of all Entries (year,rank) that has the same decrease in ranks as the largest
+		* fall contains a non-trivial list of all Entries (year,rank) that has the same decrease in ranks as the largest
 		* fall in ranks (assumed negative).
 		*/
+		private Vector<Trend> fall;	
 		private Entry highest;				//stores the Entry of the highest rank seen so far (lowest value)
 
 		//accessors
-		public boolean hasRise(){return rise.size()>0;};
-		public boolean hasFall(){return fall.size()>0;};
+		public boolean hasRise(){return rise.size()>0;};	//checks if Rise is not empty
+		public boolean hasFall(){return fall.size()>0;};	//checks if Fall is not empty
+		/**
+		 * @return if there is a rising trend found, gets the value of the current largest rise in popularity
+		 * @return if a rising trend hasn't been so far, 0 is returned.
+		 */
 		public int getRise(){
 			if (hasRise())
 				return rise.get(0).getChange();
 			else
 				return 0;//if returned value is negative or 0, means no valid input found
 		}
+		/**
+		 * @return if there is a falling trend found, gets the value of the current largest fall in popularity
+		 * @return if a fall trend hasn't been so far, 0 is returned.
+		 */
 		public int getFall(){
 			if (hasFall())
 				return fall.get(0).getChange();
 			else return 0;//if returned value is positive or 0, means no valid input found
 		}
+		/**
+		 * @return name of current data instance
+		 */
 		public String getName(){return this.name;}
 		//mutators
+		/**
+		 * Calls the updateRise and updateFall functions to update the relevant variable.
+		 * @param year the year the name was found in and should be strictly higher then the years seen previously.
+		 * @param rank the rank of name in the corresponding year.
+		 * 
+		 */
 		public void addYear(int year,int rank){
-			/**
-			*updates Trends of said name
-			*/
 			updateRise(year, rank);
 			updateFall(year, rank);
 		}
+		/**
+		 *  Updates the Rising variables
+		 * @param year the year the name was found in and should be strictly higher then the years seen previously.
+		 * @param rank the rank of name in the corresponding year.
+		 */
 		private void updateRise(int year,int rank){
-			/**
-			*update rising
-			*/
 			if(rank >= lowest.getRank()){
-				//a lower rank has been found (since a higher neumeric value of rank means a lower actual rank)
+				//a lower rank has been found (since a higher numeric value of rank means a lower actual rank)
 				lowest.update(year,rank);
 			}else if(rise.size() == 0){
 				//case of no found valid rising trend yet
@@ -132,6 +152,11 @@ public class TrendInPopularity extends Reports{
 			}
 			//otherwise don't do anything
 		}
+		/**
+		 *  Updates the Falling variables
+		 * @param year the year the name was found in and should be strictly higher then the years seen previously.
+		 * @param rank the rank of name in the corresponding year.
+		 */
 		private void updateFall(int year,int rank){
 			/**
 			*update falling
@@ -160,8 +185,8 @@ public class TrendInPopularity extends Reports{
 		//constructor
 		public Name(String name, int year, int rank){
 			this.name = name;
+			//initializing empty Vectors
 			rise = new Vector<Trend>();
-			//Fall contains a list of all Entries (year,rank) that has the same decrease in ranks as the largest fall in ranks.
 			fall = new Vector<Trend>();
 			highest = new Entry(year,rank);
 			lowest = new Entry(year,rank);
@@ -182,11 +207,11 @@ public class TrendInPopularity extends Reports{
 		this.startYear = startYear;
 		this.endYear = endYear;
 	}
-	public void generate(){
-		/**
-		 * Fetch all relevant data from database and process them to get a list of largest rise and fall for each name
-		 */
-		
+	/**
+	 * Fetch all relevant data from database and process them to get a list of largest rise and fall for each name.
+	 * The output is stored in the parent Superclass variable oReport for the controller to fetch and output. 
+	 */
+	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
 		Vector<Name> setOfLargestRise  = new Vector<Name>();
 		Vector<Name> setOfLargestFall  = new Vector<Name>();
@@ -270,10 +295,7 @@ public class TrendInPopularity extends Reports{
 				}
 			}
 		}
-		/**
-		 * Generates string from the values generated from preprocess.
-		 */
-
+		//writing rising values to Super class oReport variable.
 		String oReport = "";
 		Iterator rise = setOfLargestRise.iterator();
 		while (rise.hasNext()){
@@ -287,7 +309,7 @@ public class TrendInPopularity extends Reports{
 			temp += " | Trend : " + mostRecent.getChange() +"\n";
 			oReport += temp;
 		}
-
+		//writing falling values to Super class oReport variable.
 		Iterator fall = setOfLargestFall.iterator();
 		while (fall.hasNext()){
 			Name nextFall = (Name)fall.next();

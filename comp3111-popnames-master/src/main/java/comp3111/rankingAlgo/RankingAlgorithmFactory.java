@@ -4,7 +4,7 @@ package comp3111.rankingAlgo;
 /**
  * Factory class used for different rank generation methods
  * @author Yuxi Sun
- *
+ * v1.0
  */
 
 public class RankingAlgorithmFactory{
