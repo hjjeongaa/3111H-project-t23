@@ -9,7 +9,7 @@ public class DLD {
 	 * Code is written based off the Algorithm defined here https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
 	 * @param a string or name
 	 * @param b string or name
-	 * @return float giving the similarity between the two strings/ names
+	 * @return float giving the number of changes needed to change string a to string b
 	 */
 	public static int calculate(String a, String b) {
 		int[][] dp = new int[a.length()+1][b.length()+1];

@@ -17,7 +17,7 @@ public class RankingAlgorithmFactory{
 	 * @param country country of search
 	 * @param type type of dataset being searched
 	 * @param resolution method of resolving unfound names ["standard": return #unique names in specified dataset + 1]
-	 * @return
+	 * @return RankingAlgorithm object
 	 */
 	public static RankingAlgorithm getRankAlgorithm(String rankingMethod, String name, String gender, int yob, String country, String type, String resolution) {
 		if("scr".equals(rankingMethod))//standard competition ranking

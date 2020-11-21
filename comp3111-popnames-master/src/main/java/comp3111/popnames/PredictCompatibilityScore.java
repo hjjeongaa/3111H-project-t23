@@ -31,7 +31,6 @@ public class PredictCompatibilityScore{
 	//records the time of creation or last modification
 	private LocalDateTime time;  
 
-	//
 	//variables
 	private Person user;
 	private Person mate;
@@ -46,7 +45,10 @@ public class PredictCompatibilityScore{
 	public String getSetting(){return setting;};
 	public Person getUser(){return user;};
 	public Person getMate(){return mate;};
-
+	public String generateHTML(){
+		//TODO::complete
+		return null;
+	};
 	/**
 	 * Evaluation functions
 	 * these functions should be called in the controller based on user selections to return scalar oScore.
@@ -65,7 +67,7 @@ public class PredictCompatibilityScore{
 	/**
 	 * parm: Population Adjusted Rank Matching
 	 * Self made function 1 (WOW FACTOR), takes take population size of each year into account so that the most compatible pair of names
-	 * are the names that have the same population ajusted rank in their respective years.
+	 * are the names that have the same population adjusted rank in their respective years.
 	 * @return oScore from parm algorithm
 	 */
 	public double parm() {
