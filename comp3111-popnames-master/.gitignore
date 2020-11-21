@@ -3,5 +3,6 @@
 .metadata
 .settings
 .vscode
+.classpath
 # Ignore Gradle build output directory
 build
