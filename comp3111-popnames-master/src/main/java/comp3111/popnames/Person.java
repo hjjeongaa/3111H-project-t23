@@ -82,7 +82,7 @@ public class Person {
 	 */
 	private int rankResolver(int size){
 		return size + 1;//basic one returns the size of the last position of the 
-	}
+	}//potential update here
 	
 	//constructor
 	/**
