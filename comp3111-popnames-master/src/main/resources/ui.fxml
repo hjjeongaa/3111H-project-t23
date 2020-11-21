@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -145,6 +146,19 @@
                            </children>
                         </AnchorPane>
                     </content>
+                  </Tab>
+                  <Tab fx:id="tabShare" text="Export">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="share_exportButton" onAction="#share_exportButtonPressed" layoutX="587.0" layoutY="266.0" mnemonicParsing="false" text="Export Selected..." AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0" />
+                              <ListView fx:id="share_selectionList" layoutX="166.0" layoutY="30.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
+                              <Button fx:id="share_selAllButton" onAction="#share_selAllButtonPressed" layoutX="459.0" layoutY="30.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Select All" AnchorPane.leftAnchor="459.0" AnchorPane.topAnchor="30.0" />
+                              <Button fx:id="share_selNoneButton" onAction="#share_selNoneButtonPressed" layoutX="459.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Select None" />
+                              <Button fx:id="share_invertSelButton" onAction="#share_invertSelButtonPressed" layoutX="459.0" layoutY="136.0" mnemonicParsing="false" text="Invert Selection" />
+                           </children>
+                        </AnchorPane>
+                     </content>
                   </Tab>
               </tabs>
             </TabPane>

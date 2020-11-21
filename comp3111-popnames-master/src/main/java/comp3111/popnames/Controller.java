@@ -10,6 +10,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ListView;
+
+/*TO BE SEPARATED */
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+
 
 
 public class Controller {
@@ -122,7 +129,26 @@ public class Controller {
     @FXML
     private TextArea textAreaConsole;
     
-
+    /* Share Tab */
+    
+    @FXML
+    private Tab tabShare;
+    
+    @FXML
+    private ListView<String> share_selectionList;
+    
+    @FXML
+    private Button share_exportButton;
+    
+    @FXML
+    private Button share_selAllButton;
+    
+    @FXML
+    private Button share_selNoneButton;
+    
+    @FXML
+    private Button share_invSelButton;
+    
     /**
      *  Task Zero
      *  To be triggered by the "Summary" button on the Task Zero Tab 
@@ -423,6 +449,42 @@ public class Controller {
     	}
 		textAreaConsole.setText(output);
     }
-
+    
+    /* Sharing/Exporting */
+    
+    class ReportSharing {
+    	private ObservableList<String> reports;
+    	public ReportSharing() {
+    		this.reports = FXCollections.<String>observableArrayList("Test1", "Test2", "Test3");
+    		share_selectionList.getItems().addAll(reports);
+    	}
+    };
+    
+    private ReportSharing reportSharer;
+    
+    @FXML
+    void share_exportButtonPressed() {
+    	this.reportSharer = new ReportSharing();
+    	textAreaConsole.setText("pressed export");
+    }
+    
+    @FXML
+    void share_selAllButtonPressed() {
+    	
+    	textAreaConsole.setText("pressed select all");
+    }
+    
+    @FXML
+    void share_selNoneButtonPressed() {
+    	
+    	textAreaConsole.setText("pressed select none");
+    }
+    
+    @FXML
+    void share_invertSelButtonPressed() {
+    	
+    	textAreaConsole.setText("pressed invert selection");
+    }
+    
 }
 
