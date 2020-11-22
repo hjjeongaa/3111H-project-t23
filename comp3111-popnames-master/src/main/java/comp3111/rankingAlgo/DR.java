@@ -7,7 +7,7 @@ import edu.duke.*;
 /**
  * This class calculates the rank using Dense Ranking system
  * @author Yuxi Sun
- *
+* v 1.0
  */
 public class DR extends RankingAlgorithm {
 	private int size;
@@ -60,6 +60,6 @@ public class DR extends RankingAlgorithm {
 		this.size = unique;
 		// if code gets to this point, then no name has been found
 		if (!found)
-			this.rank = new rankResolver(resolution, this.size).getRank();
+			this.rank = new rankResolver("dr", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
 }

@@ -6,7 +6,7 @@ import edu.duke.*;
 /**
  * This class calculates the rank using Modified Competition Ranking system
  * @author Yuxi Sun 
- *
+ * v 1.0
  */
 public class MCR extends RankingAlgorithm {
 	private int size;
@@ -67,9 +67,9 @@ public class MCR extends RankingAlgorithm {
 			assigned = true;
 		}
 		//setting size (number of names in yob)
-		this.size = rank+sameRankCount;
+		this.size = rank+sameRankCount - 1;
 		// if code gets to this point, then no name has been found
 		if (!found)
-			this.rank = new rankResolver(resolution, this.size).getRank();
+			this.rank = new rankResolver("mcr", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
 }

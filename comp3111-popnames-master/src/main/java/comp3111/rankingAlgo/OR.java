@@ -6,7 +6,7 @@ import edu.duke.*;
 /**
  * This class calculates the rank using ordinal ranking system
  * @author Yuxi Sun
- *
+ * v 1.0
  */
 public class OR extends RankingAlgorithm {
 	private int size;
@@ -38,9 +38,9 @@ public class OR extends RankingAlgorithm {
 			++rank;
 		}
 		//setting size (number of names in yob)
-		this.size = rank -1;
+		this.size = rank - 1;
 		// if code gets to this point, then no name has been found
 		if (!found)
-			this.rank = new rankResolver(resolution, this.size).getRank();
+			this.rank = new rankResolver("or", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
 }
