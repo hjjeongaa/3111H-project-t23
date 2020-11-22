@@ -113,8 +113,8 @@
       </Label>
       <TableView fx:id="DataReporting_top5Table_TableView" layoutX="22.0" layoutY="152.0" prefHeight="390.0" prefWidth="882.0" visible="false">
         <columns>
-          <TableColumn fx:id="DataReporting_rankColumn_TableColumn" prefWidth="75.0" text="Rank" />
-          <TableColumn fx:id="DaraReporting_nameColumn_TableColumn" prefWidth="362.4" text="Name" />
+          <TableColumn fx:id="DataReporting_rankColumn_TableColumn" editable="false" prefWidth="75.0" text="Rank" />
+          <TableColumn fx:id="DaraReporting_nameColumn_TableColumn" editable="false" prefWidth="362.4" text="Name" />
         </columns>
       </TableView>
    </children>

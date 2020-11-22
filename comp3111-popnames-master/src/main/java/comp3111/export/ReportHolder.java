@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import comp3111.popnames.PopularityOfName;
 import comp3111.popnames.Reports;
 import comp3111.popnames.TopNNames;
-import comp3111.popnames.TrendInPopularity2;
+import comp3111.popnames.TrendInPopularity;
 import comp3111.popnames.RecommendBabyName;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -37,7 +37,7 @@ public class ReportHolder {
 		}
 		else if (reportToAdd instanceof TopNNames){
 			this.reportType = new SimpleStringProperty("TopNames");
-		} else if (reportToAdd instanceof TrendInPopularity2) {
+		} else if (reportToAdd instanceof TrendInPopularity) {
 			this.reportType = new SimpleStringProperty("Trend");
 		} else if (reportToAdd instanceof RecommendBabyName) {
 			this.reportType = new SimpleStringProperty("BabyNames");
