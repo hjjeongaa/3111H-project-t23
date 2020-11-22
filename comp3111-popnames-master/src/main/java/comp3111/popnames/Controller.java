@@ -10,13 +10,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ListView;
-
+import comp3111.export.ReportHolder;
 /*TO BE SEPARATED */
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
 public class Controller {
@@ -117,8 +118,30 @@ public class Controller {
     @FXML
     private ToggleGroup T111;
 
+    /* Task 4 */
+    
     @FXML
     private Tab tabApp1;
+    
+    @FXML
+    private TextField T4_fatherName_textField;
+    
+    @FXML
+    private TextField T4_fatherYOB_textField;
+    
+    @FXML
+    private TextField T4_motherName_textField;
+    
+    @FXML
+    private TextField T4_motherYOB_textField;
+    
+    @FXML
+    private TextField T4_vintageYear_textField;
+    
+    /* End Task 4 */
+    
+    @FXML
+    private Button T4_generateReport_button;
 
     @FXML
     private Tab tabApp2;
@@ -135,7 +158,31 @@ public class Controller {
     private Tab tabShare;
     
     @FXML
-    private ListView<String> share_selectionList;
+    private TableView<ReportHolder> share_tableView;
+    
+    @FXML
+    private TableColumn<ReportHolder,Boolean> share_tableView_selectedCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_dateCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_reportTypeCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_inputsCol_nameCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_inputsCol_genderCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_inputsCol_yearsCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_inputsCol_dataTypeCol;
+    
+    @FXML
+    private TableColumn<ReportHolder,String> share_tableView_inputsCol_countryCol;
     
     @FXML
     private Button share_exportButton;
@@ -147,7 +194,9 @@ public class Controller {
     private Button share_selNoneButton;
     
     @FXML
-    private Button share_invSelButton;
+    private Button share_invertSelButton;
+    
+    /* End Share */
     
     /**
      *  Task Zero
@@ -300,7 +349,7 @@ public class Controller {
     		// All inputs are valid, now to display the desired output.
     		gender = (T1_male_RadioButton.isSelected())?"M":"F";
     		TopNNames results = new TopNNames(startYear, endYear, gender,"usa", "human");
-    		
+    		this.reportSharer.addReport(results);
     		output += String.format("Top %d Names From %d to %d:\n",numOfNames, startYear, endYear);
     		output += "Rank  Frequency\tName\n";
     		for(int rank = 0; rank < numOfNames; ++rank) {
@@ -369,6 +418,7 @@ public class Controller {
 	    		*/
     			PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender, "usa", "human");
 	    		output += namePopularity.getReport();
+	    		this.reportSharer.addReport(namePopularity);
     		}
     	}
 		textAreaConsole.setText(output);
@@ -417,7 +467,7 @@ public class Controller {
     		// All inputs are valid, now to display the desired output.
     		gender = (T3_male_RadioButton.isSelected())?"M":"F";
     		TrendInPopularity2 results = new TrendInPopularity2(startYear, endYear, gender,"usa", "human");
-    		
+    		this.reportSharer.addReport(results);
     		output += String.format("Top 10 Trending Names From %d to %d:\n", startYear, endYear);
     		output += "Lowest Year : Rank\t\tHighest Year : Rank\t\tName\n";
     		for(int rank = 1; rank <= 10; ++rank) {
@@ -450,39 +500,149 @@ public class Controller {
 		textAreaConsole.setText(output);
     }
     
-    /* Sharing/Exporting */
+    /* Task 4 */
+    @FXML
+    void generateBabyName() {
+    	/* Variables */
+    	String output = "";
+    	
+    	String fatherName = T4_fatherName_textField.getText();
+    	String motherName = T4_motherName_textField.getText();
+    	int fatherYOB = -1;
+    	int motherYOB = -1;
+    	int vintageYear = -1;
+    	
+    	boolean anyErrors = false;
+    	//Handle father's YOB
+    	try {
+    		fatherYOB = Integer.parseInt(T4_fatherYOB_textField.getText());
+    		if(fatherYOB > 2019 || fatherYOB < 1880) {
+    			anyErrors = true;
+        		output += "The father's YOB is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The father's YOB is not an integer.\n";
+    	}
+    	//Handle mother's YOB
+    	try {
+    		motherYOB = Integer.parseInt(T4_motherYOB_textField.getText());
+    		if(motherYOB > 2019 || motherYOB < 1880) {
+    			anyErrors = true;
+        		output += "The mother's YOB is out of bounds (1880-2019).\n";
+    		}
+    	} catch(NumberFormatException e) {
+    		anyErrors = true;
+    		output += "The mother's YOB is not an integer.\n";
+    	}
+    	//Handle vintageYear
+    	if (T4_vintageYear_textField.getText().isBlank()) {
+    		vintageYear = 2019;
+    	}
+    	else {
+    		try {
+	    		vintageYear = Integer.parseInt(T4_vintageYear_textField.getText());
+	    		if(vintageYear > 2019 || vintageYear < 1880) {
+	    			anyErrors = true;
+	        		output += "The vintage year is out of bounds (1880-2019).\n";
+	    		}
+	    	} catch(NumberFormatException e) {
+	    		anyErrors = true;
+	    		output += "The vintage year is not an integer.\n";
+	    	}
+    	}
+	    	
+    	
+    	if(!anyErrors) {
+    		// All inputs are valid, now to display the desired output.
+    		RecommendBabyName recommendBabyName = new RecommendBabyName(fatherName, motherName, fatherYOB, motherYOB, vintageYear,"usa", "human");
+    		output = recommendBabyName.generateReport();
+    		this.reportSharer.addReport(recommendBabyName);
+    	}
+		textAreaConsole.setText(output);
+    }
     
+    /*Sharing*/
+    
+    /*Should be a Singleton class for managing the export of reports*/
     class ReportSharing {
-    	private ObservableList<String> reports;
-    	public ReportSharing() {
-    		this.reports = FXCollections.<String>observableArrayList("Test1", "Test2", "Test3");
-    		share_selectionList.getItems().addAll(reports);
+    	private ObservableList<ReportHolder> reports;
+    	
+    	private ReportSharing() {
+    		share_tableView_selectedCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
+    		share_tableView_selectedCol.setCellFactory(CheckBoxTableCell.forTableColumn(share_tableView_selectedCol));
+    		
+    		share_tableView_dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+    		share_tableView_reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
+    		share_tableView_inputsCol_nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+    		share_tableView_inputsCol_genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+    		//share_tableView_inputsCol_yearsCol.setCellValueFactory(new PropertyValueFactory<>("years"));
+    		share_tableView_inputsCol_dataTypeCol.setCellValueFactory(new PropertyValueFactory<>("dataType"));
+    		share_tableView_inputsCol_countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+    		
+    		this.reports = FXCollections.<ReportHolder>observableArrayList();
+    		share_tableView.setItems(reports);
+    	}
+    	public Boolean asdf() {
+    		return this.reports.get(0).getSelected();
+    	}
+    	public void addReport(Reports reportToAdd) {
+    		ReportHolder reportHolderToAdd = new ReportHolder(reportToAdd);
+    		this.reports.add(0,reportHolderToAdd);
+    	}
+    	public void selectAll() {
+    		for (int i = 0; i < this.reports.size(); ++i)
+    			reports.get(i).setSelected(true);
+    	}
+    	public void selectNone() {
+    		for (int i = 0; i < this.reports.size(); ++i)
+    			reports.get(i).setSelected(false);
+    	}
+    	public void invertSelection() {
+    		for (int i = 0; i < this.reports.size(); ++i) {
+    			Boolean isSelected = reports.get(i).getSelected();
+    			reports.get(i).setSelected(!isSelected);
+    		}
     	}
     };
     
     private ReportSharing reportSharer;
     
     @FXML
-    void share_exportButtonPressed() {
+    void debug_pregenerate() {
     	this.reportSharer = new ReportSharing();
+    	Reports a = new PopularityOfName(1941, 1945, "Tyrone", "M", "usa", "human");
+		Reports b = new PopularityOfName(1920, 1945, "Joe", "M", "usa", "human");
+		Reports c = new TopNNames(2000, 2015, "F","usa", "human");
+		Reports d = new TrendInPopularity2(2001, 2011, "M","usa", "human");
+		Reports e = new TopNNames(1945, 1950, "M","usa", "human");
+		this.reportSharer.addReport(a);
+		this.reportSharer.addReport(b);
+		this.reportSharer.addReport(c);
+		this.reportSharer.addReport(d);
+		this.reportSharer.addReport(e);
+    }
+    @FXML
+    void share_exportButtonPressed() {
+    	this.reportSharer=new ReportSharing();
     	textAreaConsole.setText("pressed export");
     }
     
     @FXML
     void share_selAllButtonPressed() {
-    	
-    	textAreaConsole.setText("pressed select all");
+    	this.reportSharer.selectAll();
+    	textAreaConsole.setText(this.reportSharer.asdf()? "TICKED": "UNTICKED");
     }
     
     @FXML
     void share_selNoneButtonPressed() {
-    	
+    	this.reportSharer.selectNone();
     	textAreaConsole.setText("pressed select none");
     }
     
     @FXML
     void share_invertSelButtonPressed() {
-    	
+    	this.reportSharer.invertSelection();
     	textAreaConsole.setText("pressed invert selection");
     }
     

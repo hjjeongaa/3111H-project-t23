@@ -32,7 +32,7 @@ public class PopularityOfName extends Reports {
 	 */
 	public PopularityOfName(int startYear, int endYear, String name, String gender, String country, String type) {
 		//Call Report constructor
-		super(null, gender, country, type);
+		super(name, gender, country, type);
 		
 		this.name = name;
 		this.startYear = startYear;
@@ -103,5 +103,12 @@ public class PopularityOfName extends Reports {
 			outputReport += df.format(thisRankPercentage) + "\t\t\t";
 		}
 		return outputReport;
+	}
+	
+	public int getRankAt(int year) {
+		if (year >= this.startYear && year <= this.endYear) {
+			return this.ranksInEachYear.get(year-this.startYear).getLeft();
+		}
+		else return 0;
 	}
 }
