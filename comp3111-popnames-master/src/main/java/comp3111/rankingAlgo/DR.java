@@ -43,13 +43,13 @@ public class DR extends RankingAlgorithm {
 				//not the first entry
 				if (lastFreq != Integer.parseInt(rec.get(2)))
 					//since we assume the file is grouped by gender and 
-					//order in decending order on frequency, no extra check is required 
+					//order in descending order on frequency, no extra check is required 
 					rank +=1;
 				
-				//update lastFreq (interation variable)
+				//update lastFreq (iteration variable)
 				lastFreq = Integer.parseInt(rec.get(2));
 			}
-			//now rank of curr name has been computed, check if the iName is found
+			//now rank of current name has been computed, check if the iName is found
 			if(rec.get(0).equals(name)){
 				this.rank = rank;
 				found = true;

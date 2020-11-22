@@ -16,16 +16,6 @@ import java.lang.Math;
  * Code for predicting the compatibility of two names
  */
 public class PredictCompatibilityScore{
-	public class algoScore{
-		private String algo;
-		private double score;
-		public algoScore(String algo, double score){
-			this.algo = algo;
-			this.score = score;
-		}
-		public String getAlgo(){return this.algo;};
-		public double getScore(){return this.score;};
-	}
 	//class formatter for formatting time, subclasses should use superclass variable to format to save space.
 	public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 	//records the time of creation or last modification
@@ -35,13 +25,12 @@ public class PredictCompatibilityScore{
 	private Person user;
 	private Person mate;
 
-	private Vector<algoScore> oScore;
+	private HashMap<String, Double> oScore;
 	private String setting;
-	private int size; //stores data from the Mate's year's table
 
 	//accessors
 	public LocalDateTime getTime(){return time;};
-	public Vector<algoScore> getoScore(){return oScore;};
+	public HashMap<String, Double>  getoScore(){return oScore;};
 	public String getSetting(){return setting;};
 	public Person getUser(){return user;};
 	public Person getMate(){return mate;};
@@ -53,7 +42,6 @@ public class PredictCompatibilityScore{
 	 * Evaluation functions
 	 * these functions should be called in the controller based on user selections to return scalar oScore.
 	 */
-
 
 	/**
 	 * NTK 6
@@ -107,39 +95,24 @@ public class PredictCompatibilityScore{
 	 * @param type particulars of the person seeking advice
 	 * @param iNameMate the name of the person to be matched
 	 * @param iGenderMate the gender of the person to be matched
-	 * @param iPreference Specify the preference on having a younger (negative number) or older (positive number) soulmate
+	 * @param iPreference Specify the preference on having a younger (negative number) or older (positive number) soul mate
 	 * @param countryMate particulars of the person to be matched
 	 * @param typeMate particulars of the person to be matched
 	 * @param setting specifies the algorithm(s) that should be shown through the console
 	 */
-	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String setting, String rankingAlgo, String resolver) {
+	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String rankingAlgo, String resolver) {
 		this.time = LocalDateTime.now();
-		// both names could not exist in the data set
+		// both names could not exist in the data set hence a special rankingAlgo and resolver has been used.
 		this.user = new Person(iName, iGender, iYOB, country, type, rankingAlgo, resolver);
 		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate, rankingAlgo, resolver);
-		this.setting = setting;
-		this.oScore = new Vector<algoScore>();
+		this.oScore = new HashMap<String, Double>();
 		//consider converting oScore to vector
-		if (setting.equals("nkt6")||setting.equals("all")){
-			this.setting = "nkt6";
-			this.oScore.add(new algoScore("nkt6", nkt6()));
-		}
-		if (setting.equals("parm")||setting.equals("all")){
-			//Population Adjusted Rank Matching
-			this.setting = "parm";
-			this.oScore.add(new algoScore("parm", parm()));
-		}
-		if (setting.equals("pasrm")||setting.equals("all")){
-			this.setting = "pasrm";
-			this.oScore.add(new algoScore("pasrm", pasrm()));
-		}
-		if (setting.equals("dld")||setting.equals("all")){
-			//Damerau-Levenshtein distance
-			this.setting = "dld";
-			this.oScore.add(new algoScore("dld", dld()));
-		}
-		if (setting.equals("all")) {
-			this.setting = "all";
-		}
+		this.oScore.put("nkt6", nkt6());
+		//Population Adjusted Rank Matching
+		this.oScore.put("parm", parm());
+		//Population Adjusted Symmetric Rank Matching
+		this.oScore.put("pasrm", pasrm());
+		//Damerau-Levenshtein distance
+		this.oScore.put("dld", dld());
 	}
 }
