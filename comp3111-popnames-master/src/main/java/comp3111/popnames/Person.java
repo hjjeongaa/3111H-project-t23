@@ -42,7 +42,7 @@ public class Person {
 	 *  v2.0
 	 */
 	private void intializeRank(String rankingAlgo, String resolver) {
-		RankingAlgorithm algo = RankingAlgorithmFactory.getRankAlgorithm(rankingAlgo,"Jabez","M",2000,"usa","human",resolver);
+		RankingAlgorithm algo = RankingAlgorithmFactory.getRankAlgorithm(rankingAlgo,this.name,this.gender,this.yob,this.country,this.type,resolver);
 		this.size = algo.getSize();
 		this.rank = algo.getRank();
 	}
