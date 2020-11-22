@@ -2,7 +2,7 @@
 * TrendInPopularity.java - A subclass of Reports, backbone of task 3
 * from. algorithm is execution optimized.
 * @author Yuxi Sun
-* @version 2.1
+* @version 2.2
 */
 
 package comp3111.popnames;
@@ -162,7 +162,7 @@ public class TrendInPopularity extends Reports{
 			*update falling
 			*/
 			if(rank <= highest.getRank()){
-				//a higher rank has been found (since a lower neumeric value of rank means a higher actual rank)
+				//a higher rank has been found (since a lower numeric value of rank means a higher actual rank)
 				highest.update(year,rank);
 			}else if(fall.size() == 0){
 				//case of no found valid falling trend yet
@@ -194,18 +194,30 @@ public class TrendInPopularity extends Reports{
 	}
 	private int startYear;
 	private int endYear;
-	//mutators
+	
 	//Note: data should be validated before being passed to a constructor/ mutator
+	
+	//mutators
 	public void modify(int startYear, int endYear, String gender, String country, String type){
 		super.modify(country, type, gender);
 		this.startYear = startYear;
 		this.endYear = endYear;
+		generate();
 	}
+	/**
+	 *  Constructor
+	 * @param startYear start year of period (inclusive)
+	 * @param endYear end year of period (inclusive)
+	 * @param gender gender of question
+	 * @param country country of data set
+	 * @param type type of data set (human/pet)
+	 */
 	public TrendInPopularity(int startYear, int endYear, String gender, String country, String type){
 		//Call parent constructor
 		super(null, gender, country, type);
 		this.startYear = startYear;
 		this.endYear = endYear;
+		generate();
 	}
 	/**
 	 * Fetch all relevant data from database and process them to get a list of largest rise and fall for each name.
@@ -213,9 +225,7 @@ public class TrendInPopularity extends Reports{
 	 */
 	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
-		Vector<Name> setOfLargestRise  = new Vector<Name>();
-		Vector<Name> setOfLargestFall  = new Vector<Name>();
-		//collecting data from datasets and doing simple preprocessing to get the maxes rise/ fall of each Name
+		//collecting data from datasets and doing simple preprocessing to get the max rise/ fall of each Name
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
 			int rank = 1;
@@ -259,11 +269,15 @@ public class TrendInPopularity extends Reports{
 				}
 			}
 		}
-
+		filter(seenNames);
+	}
+	private void filter(HashMap<String,Name> seenNames) {
 		/**
 		 * filter the data generate from prepare to keep only the names with the largest rise or largest fall
 		 */
-		//intialize the sets for the iterations
+		Vector<Name> setOfLargestRise  = new Vector<Name>();
+		Vector<Name> setOfLargestFall  = new Vector<Name>();
+		//initialize the sets for the iterations
 		Iterator nameiter = seenNames.entrySet().iterator();
 		if(nameiter.hasNext()){
 			Map.Entry namePair = (Map.Entry)nameiter.next();
@@ -295,7 +309,16 @@ public class TrendInPopularity extends Reports{
 				}
 			}
 		}
+		write(setOfLargestRise,setOfLargestFall);
+	}
+	/**
+	 * This function parses through the filtered content and writes it to the super classes output format . 
+	 * @param setOfLargestRise Contains a vector of Names that has trends equal to the largest increase in trends
+	 * @param setOfLargestFall Contains a vector of Names that has trends equal to the largest decrease in trends
+	 */
+	private void write(Vector<Name> setOfLargestRise, Vector<Name> setOfLargestFall) {
 		//writing rising values to Super class oReport variable.
+		
 		String oReport = "";
 		Iterator rise = setOfLargestRise.iterator();
 		while (rise.hasNext()){
