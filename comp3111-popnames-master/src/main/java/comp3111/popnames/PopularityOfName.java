@@ -13,67 +13,95 @@ import org.apache.commons.csv.*;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class PopularityOfName extends Reports {
+	//The inputs provided to generate the report.
+	private String name;
+	private int startYear;
+	private int endYear;
+	private String gender;
 	
-	String name;
-	int startYear;
-	int endYear;
-	String gender;
-	
-	private List<Pair<Integer,Integer>> mylist;
-	
+	private List<Pair<Integer,Integer>> ranksInEachYear;
+	/**
+	 * Constructor for PopularityOfName
+	 * Computes all the ranks of the given name for each year between startYear and endYear, as well as the total number of names in each year, and puts it into an array.
+	 * @param startYear
+	 * @param endYear
+	 * @param name
+	 * @param gender
+	 * @param country
+	 * @param type dataset type
+	 */
 	public PopularityOfName(int startYear, int endYear, String name, String gender, String country, String type) {
+		//Call Report constructor
 		super(null, gender, country, type);
 		
 		this.name = name;
 		this.startYear = startYear;
 		this.endYear = endYear;
 		this.gender = gender;
-		this.mylist = new ArrayList<Pair<Integer,Integer>>();
+		//Create array object - this will hold the rank of the name every year.
+		this.ranksInEachYear = new ArrayList<Pair<Integer,Integer>>();
+		//Iterate through all years within the start & end year.
 		for (int thisYear = startYear; thisYear <= endYear; ++thisYear) {
+			//To save computational power, we use this to stop comparing names once the name we are looking for is found.
 			boolean nameFound = false;
-			int rank = 0;
+			//This will store the rank at which the name was found for this year.
+			int thisYearRank = 0;
+			//Stores the total length of the year, used to calculate a percentage statistic.
 			int thisYearRecordsLength = 0;
-			int currentRank = 0;
+			//Counter for the current rank.
+			int rankCounter = 0;
 			for (CSVRecord rec : AnalyzeNames.getFileParser(thisYear, type, country)) {
+				//Check gender matches.
 				if (gender.equals(rec.get(1))) {
 					++thisYearRecordsLength;
-					++currentRank;
+					++rankCounter;
 					if (!nameFound) {
 						String thisRecName = rec.get(0);
-						//int thisRecFrequency = Integer.parseInt(rec.get(2));
-						
+						//Check name matches.
 						if (name.equals(thisRecName)) {
 							nameFound = true;
-							rank = currentRank;//thisRecFrequency;
+							thisYearRank = rankCounter;
 						}
 					}
 				}
 			}
-			Pair<Integer,Integer> rankAndYearSize = Pair.of(rank,thisYearRecordsLength);
-			mylist.add(rankAndYearSize);
+			Pair<Integer,Integer> rankAndYearSize = Pair.of(thisYearRank,thisYearRecordsLength);
+			this.ranksInEachYear.add(rankAndYearSize);
 		}
 	}
-	
+	/**
+	 * Using the array computed when the constructor was called, a report is generated with each rank in each year.
+	 * It creates a table with the year, the rank of the name in that year, and a percentile statistic of how popular that name was in that year, compared to the other names in the year.
+	 * @return string containing the report table.
+	 */
 	public String getReport() { 
-		String thisReport = String.format("Popularity report for: %s (%s), from %d to %d.\n", this.name, this.gender, this.startYear, this.endYear);
-		thisReport += "Year:\t\t";
+		//Basic information
+		String outputReport = String.format("Popularity report for: %s (%s), from %d to %d.\n", this.name, this.gender, this.startYear, this.endYear);
+		//Line 1: Print out each year
+		outputReport += "Year:\t\t";
 		for (int thisYear = this.startYear; thisYear <= this.endYear; ++thisYear) {
-			thisReport += thisYear + "\t\t\t";
+			outputReport += thisYear + "\t\t\t";
 		}
-		thisReport += "\nRank:\t";
-		
+		//Line 2: Print out the rank of the name at each year
+		outputReport += "\nRank:\t";
+		//Iterate through ranksInEachYear
 		for (int i = 0; i <= this.endYear-this.startYear; ++i) {
-			thisReport += this.mylist.get(i).getLeft() + "\t\t\t";
+			//left element is the rank of the name at this year.
+			outputReport += this.ranksInEachYear.get(i).getLeft() + "\t\t\t";
 		}
-		thisReport += "\n%-ile:\t";
+		//Line 3: Print out the percentile of the name's rank in the year
+		outputReport += "\n%-ile:\t";
 		for (int i = 0; i <= this.endYear-this.startYear; ++i) {
-			
+			//format to 1 decimal place
 			DecimalFormat df = new DecimalFormat("#.#");
-			Double rank = (double)this.mylist.get(i).getLeft();
-			int total = this.mylist.get(i).getRight();
+			//Get the rank of the name
+			Double rank = (double)this.ranksInEachYear.get(i).getLeft();
+			//Get the total number of names in that year
+			int total = this.ranksInEachYear.get(i).getRight();
+			//calculate percentage value
 			Double thisRankPercentage = 100*(1-(rank/total));
-			thisReport += df.format(thisRankPercentage) + "\t\t\t";
+			outputReport += df.format(thisRankPercentage) + "\t\t\t";
 		}
-		return thisReport;
+		return outputReport;
 	}
 }
