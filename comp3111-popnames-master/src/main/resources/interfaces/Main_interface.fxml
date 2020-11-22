@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.Main_controller">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="256.0" style="-fx-background-color: #343855;">
+         <children>
+            <Button fx:id="Main_home_Button" alignment="CENTER" mnemonicParsing="false" onAction="#Main_showHomePage" prefHeight="130.0" prefWidth="256.0" style="-fx-background-radius: 0; -fx-background-color: #343855;" text="Name Oracle" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Segoe UI Light" size="30.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="Main_dataReporting_Button" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Main_showDataReportPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Data Reporting" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_topNames_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showTopNamesPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Top Names" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_namePopularity_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showNamesPopularityPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Name Popularity" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_trendingNames_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showTrendingNamesPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Trending Names" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_babyNames_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showBabyNamesPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Baby Name Generator" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_soulmate_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showSoulmateNamesPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Soulmate Name" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_compatibility_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showNamesCompatibilityPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Compatibility Score" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_export_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showExportPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Export" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="Main_settings_Button" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#Main_showSettingsPage" prefHeight="30.0" prefWidth="256.0" style="-fx-background-radius: 0;" stylesheets="@Main_sidepanel.css" text="Settings" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Button>
+         </children></VBox>
+      <TabPane fx:id="Main_pageOutput_TabPane" focusTraversable="false" layoutX="306.0" layoutY="100.0" prefHeight="570.0" prefWidth="924.0" stylesheets="@Main_controller_cuztomization.css" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Welcome">
+              <fx:include source="./Main_welcome_interface.fxml" />
+            </Tab>
+            <Tab text="Data Reporting">
+            	<fx:include source="./DataReporting_interface.fxml" />
+          	</Tab>
+          <Tab text="Top Names">
+            <fx:include source="./TopNNames_interface.fxml" />
+          </Tab>
+            <Tab text="Name Popularity">
+              <fx:include source="./NamePopularity_interface.fxml" />
+            </Tab>
+            <Tab text="Trending Names">
+              <fx:include source="./TrendingNames_interface.fxml" />
+            </Tab>
+            <Tab text="Baby Name Generator">
+              <fx:include source="./BabyNames_interface.fxml" />
+            </Tab>
+            <Tab text="Soulmate Name">
+              <fx:include source="./SoulmateName_interface.fxml" />
+            </Tab>
+            <Tab text="Compatibility Score">
+              <fx:include source="./Compatibility_interface.fxml" />
+            </Tab>
+            <Tab text="Export">
+              <fx:include source="./Export_interface.fxml" />
+            </Tab>
+            <Tab text="Settings">
+              <fx:include source="./Settings_interface.fxml" />
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Pane layoutX="256.0" prefHeight="100.0" prefWidth="1024.0">
+         <children>
+            <Label fx:id="Main_pageName_Label" layoutX="50.0" layoutY="18.0" text="Welcome!">
+               <font>
+                  <Font name="Segoe UI Light" size="45.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
