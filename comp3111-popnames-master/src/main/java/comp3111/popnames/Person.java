@@ -41,7 +41,7 @@ public class Person {
 	 * @author Yuxi Sun 
 	 *  v2.0
 	 */
-	private void intializeRank(String rankingAlgo, String resolver) {
+	private void initializeRank(String rankingAlgo, String resolver) {
 		RankingAlgorithm algo = RankingAlgorithmFactory.getRankAlgorithm(rankingAlgo,this.name,this.gender,this.yob,this.country,this.type,resolver);
 		this.size = algo.getSize();
 		this.rank = algo.getRank();
@@ -62,7 +62,7 @@ public class Person {
 		this.yob = yob;
 		this.country = country;
 		this.type = type;
-		intializeRank("scr","standard");
+		initializeRank("scr","standard");
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Person {
 		this.yob = yob;
 		this.country = country;
 		this.type = type;
-		intializeRank(rankingAlgo, resolver);
+		initializeRank(rankingAlgo, resolver);
 	}
 	/**
 	 * Overloaded constructor such that person acts only as a data structure.
