@@ -4,7 +4,7 @@ package comp3111.rankingAlgo;
 /**
  * Factory class used for different rank generation methods
  * @author Yuxi Sun
- * v1.0
+ * v 2.0
  */
 
 public class RankingAlgorithmFactory{
@@ -15,8 +15,8 @@ public class RankingAlgorithmFactory{
 	 * @param gender gender of search
 	 * @param yob year of search
 	 * @param country country of search
-	 * @param type type of dataset being searched
-	 * @param resolution method of resolving unfound names ["standard": return #unique names in specified dataset + 1]
+	 * @param type type of data set being searched
+	 * @param resolution method of resolving not found names ["standard": return #unique names in specified data set + 1]
 	 * @return RankingAlgorithm object
 	 */
 	public static RankingAlgorithm getRankAlgorithm(String rankingMethod, String name, String gender, int yob, String country, String type, String resolution) {
@@ -30,5 +30,22 @@ public class RankingAlgorithmFactory{
 			return new OR(name, gender, yob, country, type, resolution);
 		else return null;
 	}
-
+	/**
+	 * Used for data set iterators, the RankingAlgorithm function is fed a sequential set frequencies in 
+	 * descending order and returns the current rank using the getRank() function. Note that this function 
+	 * doesn't perform data set accessing itself.
+	 * NOTE THAT THESE ITERACTORS CANNOT PERFORM LOOK AHEAD AND HENCE DOES NOT SUPPORT MCR
+	 * @param rankingMethod the method of ranking
+	 * @param freq the frequency of the first name of the data set of specified gender
+	 * @return RankingAlgorithm object
+	 */
+	public static RankingAlgorithm getRankAlgorithm(String rankingMethod, int freq) {
+		if("scr".equals(rankingMethod))//standard competition ranking
+			return new SCR(freq);
+		else if("dr".equals(rankingMethod))//dense ranking
+			return new DR(freq);
+		else if("or".equals(rankingMethod))//ordinal ranking
+			return new OR(freq);
+		else return null;
+	}
 }

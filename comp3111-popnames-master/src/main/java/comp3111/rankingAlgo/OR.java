@@ -6,7 +6,7 @@ import edu.duke.*;
 /**
  * This class calculates the rank using ordinal ranking system
  * @author Yuxi Sun
- * v 1.0
+ * v 2.0
  */
 public class OR extends RankingAlgorithm {
 	private int size;
@@ -22,6 +22,9 @@ public class OR extends RankingAlgorithm {
 	public int getSize(){
 		return size;
 	}
+	public void addEntry(int freq) {
+		++this.rank;
+	}
 	public OR(String name, String gender, int yob, String country, String type, String resolution){
 		int rank = 1;
 		//iterates through iYOB's data
@@ -30,7 +33,7 @@ public class OR extends RankingAlgorithm {
 			if (!rec.get(1).equals(gender)){
 				continue; //if the name is not of specified gender then skip
 			}
-			//now rank of curr name has been computed, check if the iName is found
+			//now rank of current name has been computed, check if the iName is found
 			if(rec.get(0).equals(name)){
 				this.rank = rank;
 				found = true;
@@ -42,5 +45,8 @@ public class OR extends RankingAlgorithm {
 		// if code gets to this point, then no name has been found
 		if (!found)
 			this.rank = new rankResolver("or", name, gender, yob, country, type, this.size, resolution).getRank();
+	}
+	public OR(int freq) {
+		this.rank = 1;
 	}
 }

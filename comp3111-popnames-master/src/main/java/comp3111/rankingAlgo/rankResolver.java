@@ -23,7 +23,7 @@ public class rankResolver {
 	 * @param country country of name
 	 * @param type type of name (human or pet)
 	 * @param size number of unique names in current data set.
-	 * @param resolution means of resolution ["standard" giving the name size of dataset + 1, "dld": uses class DLD to find a ranked name with the least difference with current name and adopts said names rank]
+	 * @param resolution means of resolution ["standard" giving the name size of data set + 1, "dld": uses class DLD to find a ranked name with the least difference with current name and adopts said names rank]
 	 */
 	public rankResolver(String rankingMethod, String name, String gender, int yob, String country, String type, int size, String resolution) {
 		if(resolution.equals("standard")) { // using standard rank resolution
@@ -37,7 +37,7 @@ public class rankResolver {
 			 * exist within their names.
 			 */
 			//iterates through iYOB's data
-			int threshold = Integer.MAX_VALUE;// threshold is currently not set
+			int threshold = name.length()/5;//threshold is currently set to be at least 20% similar to the original name
 			int minDiff = Integer.MAX_VALUE;// initialized to max value as it is not expect that another name will require that many changes.
 			Vector<String> similarNames = new Vector<String>();//stores list of minDiff names or similar names
 			for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){
