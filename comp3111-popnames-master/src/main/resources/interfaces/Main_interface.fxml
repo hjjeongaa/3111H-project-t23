@@ -75,12 +75,12 @@
          </children></VBox>
       <TabPane fx:id="Main_pageOutput_TabPane" focusTraversable="false" layoutX="306.0" layoutY="100.0" prefHeight="570.0" prefWidth="924.0" stylesheets="@Main_controller_cuztomization.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Data Reporting">
-            <fx:include source="./DataReporting_interface.fxml" />
-          </Tab>
             <Tab text="Welcome">
               <fx:include source="./Main_welcome_interface.fxml" />
             </Tab>
+            <Tab text="Data Reporting">
+            	<fx:include source="./DataReporting_interface.fxml" />
+          	</Tab>
           <Tab text="Top Names">
             <fx:include source="./TopNNames_interface.fxml" />
           </Tab>

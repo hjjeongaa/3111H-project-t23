@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <Label alignment="TOP_LEFT" prefHeight="570.0" prefWidth="924.0" text="This is a name multitool, where you can do all sorts of fun and cool stuff with names. Currently, the features we support include basic name data reporting, finding the most popular name in a range of years, seeing the popularity of a name, trends in names, a baby name generator, and even finding the name of your soulmate! Of course we support many more features which you can explore. You can start by clicking any of the tabs on the left. If you would like to save your findings, then head to the export tab where you can export a seleciton of your findings as a PDF or online." wrapText="true">
+         <font>
+            <Font name="Segoe UI Light" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
