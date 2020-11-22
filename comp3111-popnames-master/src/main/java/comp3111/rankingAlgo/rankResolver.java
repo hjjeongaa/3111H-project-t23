@@ -1,24 +1,57 @@
 package comp3111.rankingAlgo;
 
+import comp3111.popnames.AnalyzeNames;
+import comp3111.popnames.Person;
+import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.util.*;
 /**
- * Class holds different methods of resolving unfound name in rank
+ * Class holds different methods of resolving not found name in rank
  * @author Yuxi Sun
- *
+ * v 1.0
  */
 public class rankResolver {
 	private int rank;
 	public int getRank() {return this.rank;};
 	
-	public rankResolver(String resolution, int size) {
-		if(resolution.equals("standard")) {
+	public rankResolver(String rankingMethod, String name, String gender, int yob, String country, String type, int size, String resolution) {
+		if(resolution.equals("standard")) { // using standard rank resolution
 			this.rank = size+1;
-		}
-	}
-	public rankResolver(String name, String gender, int yob, String country, String type, String resolution){
-		if(resolution.equals("nn")){//nearest name i.e. parses dataset to find the name that is the most similar 
+		}else 
 
+		if (resolution.equals("dld")){ //Using DLD for rank resolution
+			/**we iterate through the entire dataset and match the given name with the most similar name found according to the DLD function and take that names rank
+			 *this is for resolving variants of names.
+			 */
+			//iterates through iYOB's data
+			int threshold = Integer.MAX_VALUE;
+			int minDiff = Integer.MAX_VALUE;// initialized to max value as it is not expect that another name will require that many changes.
+			Vector<String> similarNames = new Vector<String>();//stores list of minDiff names or similar names
+			for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){
+				if (!rec.get(1).equals(gender)){
+					continue; //if the name is not of specified gender then skip
+				}
+				String currName = rec.get(0);
+				int currDiff = DLD.calculate(name,currName); // using DLD (Damerau–Levenshtein distance) to evaluate the how different the names are
+				if (currDiff == minDiff){
+					//name of same DLD difference as similarNames found so far e.g. jon has the same diff with jun and jan
+					similarNames.add(currName);
+				}else if(currDiff < minDiff){
+					//new more similar name found
+					similarNames.clear();
+					similarNames.add(currName);
+					minDiff = currDiff;
+				}
+			}
+			if(similarNames.size() <= 0 || minDiff >= threshold){
+				//if none found or the minDiff is larger then the acceptable threshold limits (coded into the system) then default to standard ranking
+				this.rank = size+1;
+			}else{
+				//The name that is going to be selected (if there are multiple names found with the same minDiff) is either the middle 
+				//or middle left ranking number in terms ranking in similarNames ordered from highest rank to lowest ranking.
+				String selectedName = similarNames.get((int)(similarNames.size()/2));
+				this.rank =  RankingAlgorithmFactory.getRankAlgorithm(rankingMethod, selectedName, gender, yob, country, type, resolution).getRank();// this call should not result in another call of this function (rankResolveR) method since name should be found.
+			}
 		}
 	}
 }

@@ -112,10 +112,11 @@ public class PredictCompatibilityScore{
 	 * @param typeMate particulars of the person to be matched
 	 * @param setting specifies the algorithm(s) that should be shown through the console
 	 */
-	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String setting) {
+	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String setting, String rankingAlgo, String resolver) {
 		this.time = LocalDateTime.now();
-		this.user = new Person(iName, iGender, iYOB, country, type);
-		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate);
+		// both names could not exist in the data set
+		this.user = new Person(iName, iGender, iYOB, country, type, rankingAlgo, resolver);
+		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate, rankingAlgo, resolver);
 		this.setting = setting;
 		this.oScore = new Vector<algoScore>();
 		//consider converting oScore to vector

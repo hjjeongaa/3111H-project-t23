@@ -8,7 +8,7 @@ import java.lang.Math;
 /**
  * super class for all algorithms
  * @author Marty Sun
- *
+ * v 1.0
  */
 public abstract class RankingAlgorithm {
 

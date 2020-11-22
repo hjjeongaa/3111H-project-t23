@@ -6,7 +6,7 @@ import edu.duke.*;
 /**
  * This class calculates the rank using Standard Competition Ranking system
  * @author Yuxi Sun
- *
+* v 1.0
  */
 public class SCR extends RankingAlgorithm {
 	private int size;
@@ -58,9 +58,9 @@ public class SCR extends RankingAlgorithm {
 			}
 		}
 		//setting size (number of names in yob)
-		this.size = rank+sameRankCount;
+		this.size = rank+sameRankCount - 1;
 		// if code gets to this point, then no name has been found
 		if (!found)
-			this.rank = new rankResolver(resolution, this.size).getRank();
+			this.rank = new rankResolver("scr", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
 }
