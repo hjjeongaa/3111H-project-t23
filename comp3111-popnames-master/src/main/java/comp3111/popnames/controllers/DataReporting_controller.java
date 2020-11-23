@@ -79,8 +79,6 @@ public class DataReporting_controller {
     	// anything like outputs and errors are cleared.
     	DataReporting_rankAndSummaryOutput_Label.setVisible(false);
     	DataReporting_top5Table_TableView.setVisible(false);
-    	DataReporting_rankColumn_TableColumn.setVisible(false);
-    	DaraReporting_nameColumn_TableColumn.setVisible(false);
     	
     	DataReporting_errorYear_Label.setVisible(false);
     	DataReporting_errorName_Label.setVisible(false);
@@ -107,9 +105,10 @@ public class DataReporting_controller {
     
     @FXML
     void initialize() {
+    	//Link each table column with the correct variable inside the data model for the tableview.
     	DataReporting_rankColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("rank"));
     	DaraReporting_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("name"));
-    	
+    	//Create an array of data models and link this array with the tableview.
     	this.tableViewList = FXCollections.<TaskZeroDataModel>observableArrayList();
     	DataReporting_top5Table_TableView.setItems(this.tableViewList);
     }
@@ -173,8 +172,6 @@ public class DataReporting_controller {
     		tableViewList.add(Entry5);
     		
     		DataReporting_top5Table_TableView.setVisible(true);
-    		DataReporting_rankColumn_TableColumn.setVisible(true);
-        	DaraReporting_nameColumn_TableColumn.setVisible(true);
    	 	}
    	 	return;
     }
