@@ -44,7 +44,7 @@ public class PredictCompatibilityScore{
 	 */
 
 	/**
-	 * NTK 6
+	 * NKT 6
 	 * @return oScore from nkt6 algorithm
 	 */
 	public double nkt6() {

@@ -1,6 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.TrendingNames_controller" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.TrendingNames_controller">
+   <children>
+      <SplitPane dividerPositions="0.36971830985915494" orientation="VERTICAL" prefHeight="570.0" prefWidth="924.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Text layoutX="191.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender of Interest">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <RadioButton fx:id="T3_male_RadioButton" layoutX="362.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="Male">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="T111" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="T3_female_RadioButton" layoutX="461.0" layoutY="14.0" mnemonicParsing="false" text="Female" toggleGroup="$T111">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </RadioButton>
+                  <Text layoutX="191.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="329.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="508.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Year">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="T3_type_ComboBox" layoutX="191.0" layoutY="130.0" onAction="#updateType" onInputMethodTextChanged="#updateType" prefHeight="28.0" prefWidth="99.0" promptText="Human" />
+                  <ComboBox fx:id="T3_country_ComboBox" layoutX="327.0" layoutY="130.0" onAction="#updateCountry" prefHeight="29.0" prefWidth="137.0" promptText="usa" />
+                  <Text layoutX="641.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Year">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="T3_generate_Button" layoutX="795.0" layoutY="128.0" mnemonicParsing="false" onAction="#trendInPopularity" text="Generate" />
+                  <TextField fx:id="T3_startYear_TextField" layoutX="508.0" layoutY="132.0" prefHeight="26.0" prefWidth="81.0" text="1941" />
+                  <TextField fx:id="T3_endYear_TextField" layoutX="641.0" layoutY="132.0" prefHeight="26.0" prefWidth="81.0" text="1945" />
+                  <Text fx:id="T3_start_year_limit_Text" layoutX="508.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1880">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="T3_end_year_limit_Text" layoutX="641.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2019">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TableView fx:id="T3_output_Table" layoutX="6.0" prefHeight="354.0" prefWidth="922.0">
+                    <columns>
+                      <TableColumn fx:id="T3_name_TableColumn" prefWidth="120.0" text="Name" />
+                        <TableColumn fx:id="T3_start_rank_TableColumn" prefWidth="170.0" text="Start Rank" />
+                        <TableColumn fx:id="T3_start_year_TableColumn" prefWidth="170.0" text="Start Ranking Year" />
+                      <TableColumn fx:id="T3_end_rank_TableColumn" minWidth="0.0" prefWidth="170.0" text="End Rank" />
+                        <TableColumn fx:id="T3_end_year_TableColumn" minWidth="0.0" prefWidth="170.0" text="End Ranking year" />
+                        <TableColumn fx:id="T3_trend_TableColumn" minWidth="0.0" prefWidth="121.0" text="Trend" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

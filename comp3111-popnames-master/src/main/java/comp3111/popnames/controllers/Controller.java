@@ -354,10 +354,10 @@ public class Controller {
     Task 3
     To be Triggered by the Generate report button on Task 3 Tab
     **/
-    
+
     @FXML
     void trendInPopularity() {
-   	     String oReport = "";
+   	    String oReport = "";
         int iStartYear = Integer.parseInt(T3_startYear_TextField.getText());
         int iEndYear = Integer.parseInt(T3_endYear_TextField.getText());
         String gender;
