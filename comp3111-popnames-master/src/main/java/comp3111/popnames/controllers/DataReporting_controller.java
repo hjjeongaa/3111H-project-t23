@@ -21,7 +21,7 @@ public class DataReporting_controller {
 
 	private ObservableList<TaskZeroDataModel> tableViewList;
 	
-	private class TaskZeroDataModel {
+	public class TaskZeroDataModel {
 		private final SimpleStringProperty rank;
 		private final SimpleStringProperty name;
 		
@@ -173,6 +173,8 @@ public class DataReporting_controller {
     		tableViewList.add(Entry5);
     		
     		DataReporting_top5Table_TableView.setVisible(true);
+    		DataReporting_rankColumn_TableColumn.setVisible(true);
+        	DaraReporting_nameColumn_TableColumn.setVisible(true);
    	 	}
    	 	return;
     }
