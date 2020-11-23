@@ -1,5 +1,6 @@
 package comp3111.rankingAlgo;
 
+import java.util.Vector;
 
 /**
  * Factory class used for different rank generation methods
@@ -8,6 +9,9 @@ package comp3111.rankingAlgo;
  */
 
 public class RankingAlgorithmFactory{
+	// logistical variables
+	private static Vector<String> nonIterativeMethods = null;		//stores non iterative (give name get rank) methods supported by current package
+	private static Vector<String> iterativeMethods = null;			//stores iterative methods supported by current package
 	/**
 	 * 
 	 * @param rankingMethod the method of evaluating rankings: ["scr" Standard Competition Ranking,"mcr" Modified Competition Ranking,"dr" Dense Ranking,"or" Ordinal Ranking]
@@ -47,5 +51,24 @@ public class RankingAlgorithmFactory{
 		else if("or".equals(rankingMethod))//ordinal ranking
 			return new OR(freq);
 		else return null;
+	}
+	public static Vector<String> getNonIterativeMethods(){
+		if (nonIterativeMethods == null) {
+			nonIterativeMethods = new Vector<String>();
+			nonIterativeMethods.add("scr");
+			nonIterativeMethods.add("mcr");
+			nonIterativeMethods.add("dr");
+			nonIterativeMethods.add("or");
+		}
+		return nonIterativeMethods;
+	}
+	public static Vector<String> getIterativeMethods(){
+		if (iterativeMethods == null) {
+			iterativeMethods = new Vector<String>();
+			iterativeMethods.add("scr");
+			iterativeMethods.add("dr");
+			iterativeMethods.add("or");
+		}
+		return iterativeMethods;
 	}
 }

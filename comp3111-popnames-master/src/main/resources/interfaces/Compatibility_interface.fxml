@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Arc?>
 <?import javafx.scene.shape.Circle?>
@@ -32,12 +33,15 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" text="Male">
+                                          <RadioButton fx:id="T6_user_male_RadioButton" layoutX="225.0" layoutY="81.0" selected="true" mnemonicParsing="false" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="T6_user_ToggleGroup" />
+                                             </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton fx:id="T6_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female">
+                                          <RadioButton fx:id="T6_user_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_user_ToggleGroup">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -63,9 +67,9 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <ComboBox fx:id="T6_user_type_ComboBox" layoutX="9.0" layoutY="197.0" prefHeight="28.0" prefWidth="99.0" />
-                                          <ComboBox fx:id="T6_user_country_ComboBox" layoutX="142.0" layoutY="197.0" prefHeight="28.0" prefWidth="150.0" />
-                                          <ComboBox fx:id="T6_user_yob_ComboBox" layoutX="307.0" layoutY="197.0" prefHeight="28.0" prefWidth="103.0" />
+                                          <ComboBox fx:id="T6_user_type_ComboBox" layoutX="9.0" layoutY="197.0" onAction="#selectUserType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
+                                          <ComboBox fx:id="T6_user_country_ComboBox" layoutX="142.0" layoutY="197.0" onAction="#selectUserCountry" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
+                                          <ComboBox fx:id="T6_user_yob_ComboBox" layoutX="307.0" layoutY="197.0" onAction="#selectUserYOB" prefHeight="28.0" prefWidth="103.0" promptText="1941" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="455.0">
@@ -75,12 +79,15 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" text="Male">
+                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="225.0" layoutY="81.0" selected="true" mnemonicParsing="false" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="T6_mate_ToggleGroup" />
+                                             </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton fx:id="T6_mate_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female">
+                                          <RadioButton fx:id="T6_mate_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_mate_ToggleGroup">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -106,9 +113,14 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <ComboBox fx:id="T6_mate_type_ComboBox" layoutX="9.0" layoutY="197.0" prefHeight="28.0" prefWidth="99.0" />
-                                          <ComboBox fx:id="T6_mate_country_ComboBox" layoutX="142.0" layoutY="197.0" prefHeight="28.0" prefWidth="150.0" />
+                                          <ComboBox fx:id="T6_mate_type_ComboBox" layoutX="9.0" layoutY="197.0" onAction="#selectMateType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
+                                          <ComboBox fx:id="T6_mate_country_ComboBox" layoutX="142.0" layoutY="197.0" onAction="#updatePreferences" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
                                           <ComboBox fx:id="T6_preferences_ComboBox" layoutX="307.0" layoutY="197.0" prefHeight="28.0" prefWidth="103.0" />
+                                          <Text fx:id="T6_pref_error_Text" fill="RED" layoutX="156.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Mate data of this database can be found given your settings" wrappingWidth="253.607421875">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
                                        </children>
                                     </AnchorPane>
                                 </items>
@@ -139,7 +151,7 @@
                   <Group layoutX="108.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_nkt6_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" length="270.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_nkt6_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Circle fx:id="nkt" fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
                         <Text fx:id="T6_nkt6_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-26.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE" />
@@ -149,7 +161,7 @@
                   <Group layoutX="333.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_parm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" length="280.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_parm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
                         <Text fx:id="T6_parm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARM" />
@@ -158,7 +170,7 @@
                   <Group layoutX="574.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_pasrm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" length="140.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_pasrm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
                         <Text fx:id="T6_pasrm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-17.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PASRM" />
@@ -167,7 +179,7 @@
                   <Group layoutX="802.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_dld_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" length="30.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_dld_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
                         <Text fx:id="T6_dld_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DLD" />

@@ -13,6 +13,16 @@ import java.util.*;
  */
 public class rankResolver {
 	private int rank;
+	/**
+	 * 
+	 * @return a Vector<String> of the resolution options
+	 */
+	public static Vector<String> getResolutionMethods() {
+		Vector<String> methods = new Vector<String>();
+		methods.add("standard");
+		methods.add("dld");
+		return methods;
+	}
 	public int getRank() {return this.rank;};
 	/**
 	 * 

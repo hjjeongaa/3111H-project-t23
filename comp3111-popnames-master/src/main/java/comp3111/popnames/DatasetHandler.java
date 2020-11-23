@@ -21,9 +21,6 @@ public class DatasetHandler {
     	for(String line: fr.lines()) {
     		types.add(line);
     	}
-//    	if (types.size() == 0) {//nothing found/ faulty 
-//    		throw new Exception("Faulty dataset/metadata.txt");
-//    	}
     	return types;
 	}
 	/**

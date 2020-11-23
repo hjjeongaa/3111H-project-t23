@@ -12,18 +12,16 @@ import javafx.scene.control.ToggleGroup;
 import comp3111.popnames.DatasetHandler;
 import comp3111.popnames.TrendInPopularity;
 
-import edu.duke.FileResource;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import java.util.*;
 import javafx.util.Pair;
-
-import java.io.*;
 
 public class TrendingNames_controller {
 
