@@ -3,14 +3,8 @@ package comp3111.popnames.controllers;
 import java.time.format.DateTimeFormatter;
 
 import comp3111.popnames.AnalyzeNames;
-import comp3111.popnames.PopularityOfName;
-import comp3111.popnames.RecommendBabyName;
-import comp3111.popnames.Reports;
-import comp3111.popnames.TopNNames;
-import comp3111.popnames.TrendInPopularity;
-import javafx.beans.property.SimpleBooleanProperty;
+
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,6 +15,7 @@ public class DataReporting_controller {
 
 	private ObservableList<TaskZeroDataModel> tableViewList;
 	
+	//Data model for each row of the TableView; each row has two columns, rank and name.
 	public class TaskZeroDataModel {
 		private final SimpleStringProperty rank;
 		private final SimpleStringProperty name;
@@ -29,7 +24,7 @@ public class DataReporting_controller {
 			this.rank = new SimpleStringProperty(Rank);
 			this.name = new SimpleStringProperty(Name);
 		}
-		
+		//Each table column will use these methods to retrieve the values of each cell.
 		public String getRank() {return this.rank.get();}
 		public String getName() {return this.name.get();}
 	}
@@ -71,7 +66,8 @@ public class DataReporting_controller {
     private TableColumn<TaskZeroDataModel, String> DataReporting_rankColumn_TableColumn;
 
     @FXML
-    private TableColumn<TaskZeroDataModel, String> DaraReporting_nameColumn_TableColumn;
+
+    private TableColumn<TaskZeroDataModel, String> DataReporting_nameColumn_TableColumn;
     
     /* Methods */
     
@@ -107,7 +103,8 @@ public class DataReporting_controller {
     void initialize() {
     	//Link each table column with the correct variable inside the data model for the tableview.
     	DataReporting_rankColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("rank"));
-    	DaraReporting_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("name"));
+    	DataReporting_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("name"));
+
     	//Create an array of data models and link this array with the tableview.
     	this.tableViewList = FXCollections.<TaskZeroDataModel>observableArrayList();
     	DataReporting_top5Table_TableView.setItems(this.tableViewList);
@@ -157,8 +154,10 @@ public class DataReporting_controller {
     	int year = getCleanedYear();
     	String gender = (DataReporting_isFemale_RadioButton.isSelected())?"F":"M";
     	if(year != -1) {
-    		tableViewList.clear();
     		
+    		//Get rid of any previous rows that might be sitting in the table.
+    		tableViewList.clear();
+    		//Create data models and add it to the table's array.
     		TaskZeroDataModel Entry1 = new TaskZeroDataModel("1", AnalyzeNames.getName(year, 1, gender));
     		TaskZeroDataModel Entry2 = new TaskZeroDataModel("2", AnalyzeNames.getName(year, 2, gender));
     		TaskZeroDataModel Entry3 = new TaskZeroDataModel("3", AnalyzeNames.getName(year, 3, gender));
