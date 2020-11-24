@@ -23,8 +23,6 @@ public class PopularityOfName extends Reports {
 	 * Computes all the ranks of the given name for each year between startYear and endYear, as well as the total number of names in each year, and puts it into an array.
 	 * @param startYear
 	 * @param endYear
-	 * @param name
-	 * @param gender
 	 * @param country
 	 * @param type dataset type
 	 */
