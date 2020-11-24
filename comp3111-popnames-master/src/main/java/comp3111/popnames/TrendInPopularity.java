@@ -9,7 +9,6 @@ package comp3111.popnames;
 
 import org.apache.commons.csv.*;
 
-import comp3111.popnames.TrendInPopularity.Name;
 import edu.duke.*;
 import java.util.*;
 /**
@@ -239,7 +238,7 @@ public class TrendInPopularity extends Reports{
 	 */
 	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
-		//collecting data from datasets and doing simple preprocessing to get the max rise/ fall of each Name
+		//collecting data from data sets and doing simple preprocessing to get the max rise/ fall of each Name
 		super.setTask("Task 3");
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
