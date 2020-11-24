@@ -76,14 +76,22 @@ public class PredictCompatibilityScore extends ReportLog{
 		return Math.max(0,1-  Math.abs(nMate-optMate));
 	}
 	/**
-	 *  string similarity using a modified Levenshtein distance. the values are squared to introduce nonlinearity.
+	 *  string similarity using a modified Levenshtein distance. The values are squared to introduce nonlinearity.
 	 *  @return (Levenshtein distance)^2/ (Max(user name length, mate name length)^2
 	 */
 	public double ld() {
 		int ldScore = LD.calculate(user.getName(), mate.getName());
 		return Math.max(0,1 - (double)Math.pow(ldScore,2)/Math.pow(Math.max(user.getName().length(),mate.getName().length()),2));
 	}
-
+	
+	public double composite(){
+		//should only be called after the other functions
+		double composite = 0;
+		composite += this.oScore.get("parm");
+		composite += this.oScore.get("pasrm");
+		composite += this.oScore.get("ld");
+		return composite/3;
+	}
 	/**
 	 * Constructor
 	 * @param iName name of the person seeking advice
@@ -111,5 +119,8 @@ public class PredictCompatibilityScore extends ReportLog{
 		this.oScore.put("pasrm", pasrm());
 		//Levenshtein distance
 		this.oScore.put("ld", ld());
+		//composite
+		this.oScore.put("composite", composite());
+
 	}
 }

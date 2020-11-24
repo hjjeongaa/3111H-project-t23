@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
@@ -69,7 +70,12 @@ public class TrendingNames_controller {
 
     @FXML
     private Text T3_end_year_error_Text;
-    //output tables
+    
+    //infobox
+    @FXML
+    private TextArea T3_infobox_TextArea;
+    
+    //output tables constructs
     @FXML
     private TableView<T3_row_structure> T3_output_Table;
 
@@ -92,11 +98,13 @@ public class TrendingNames_controller {
     private TableColumn<?, ?> T3_trend_TableColumn;
 
     private ObservableList<T3_row_structure> t3_rows;
+    
     //Combobox lists
     private ObservableList<String> types;
     private ObservableList<String> countries;
     private ObservableList<String> endOptions;
     private ObservableList<String> startOptions;
+    
     @FXML
     void initialize(){
         //Initialize and update both lists
@@ -328,6 +336,16 @@ public class TrendingNames_controller {
 	        }
 	//        System.out.println(report.getoReport());
         }
+    }
+    
+    //infoBox
+    @FXML 
+    void showInfoBox(){
+    	T3_infobox_TextArea.setVisible(true);
+    }
+    @FXML 
+    void hideInfoBox(){
+    	T3_infobox_TextArea.setVisible(false);
     }
 }
 

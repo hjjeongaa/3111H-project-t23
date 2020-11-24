@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
@@ -93,6 +94,12 @@ public class Compatibility_controller {
 
     @FXML
     private Text T6_ld_score_Text;
+    
+    @FXML
+    private Arc T6_composite_Arc;
+
+    @FXML
+    private Text T6_composite_score_Text;
 
     //error elements
     @FXML
@@ -121,7 +128,22 @@ public class Compatibility_controller {
 
     @FXML
     private Text T6_pref_null_error_Text;
+ 
+    //infoboxs
+    @FXML
+    private TextArea T6_infobox_TextArea;
+    
+    @FXML
+    private TextArea T6_composite_infobox_TextArea;
 
+    @FXML
+    private TextArea T6_parm_infobox_TextArea;
+
+    @FXML
+    private TextArea T6_pasrm_infobox_TextArea;
+
+    @FXML
+    private TextArea T6_ld_infobox_TextArea;
     //UI components
     public void initialize(){
     	//hide error message(s)
@@ -240,6 +262,14 @@ public class Compatibility_controller {
                 }else{
                     //display range error message
                     T6_pref_range_error_Text.setVisible(true);
+                    //get user YOB ranges
+    	            Pair<String,String> userValidRange = DatasetHandler.getValidRange(T6_user_type_ComboBox.getValue(),T6_user_country_ComboBox.getValue());
+    	            int ustart = Integer.parseInt(userValidRange.getKey());
+    	            int uend = Integer.parseInt(userValidRange.getValue());
+    	            int validStart = Math.max(ustart, start-5);
+    	            int validEnd = Math.min(uend, end+5);
+    	            //update message
+                    T6_pref_range_error_Text.setText(String.format("Your YOB must be between %s and %s for you to be able to have a preference", validStart,validEnd));
                     T6_preferences_ComboBox.setValue("");
                 }
 	    	}
@@ -346,10 +376,9 @@ public class Compatibility_controller {
     private boolean validateRankingInputs(String rankingAlgo, String resolver){
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
         //double check if rankingAlgo and resolver is from the supported options.
-    	//TODO:
         boolean valid = true;
-        valid = false;
-    	return true;
+        // valid = false;
+    	return valid;
     }
     //actual execution
     @FXML
@@ -398,20 +427,68 @@ public class Compatibility_controller {
      * @param oScores
      */
     private void updateGraphics(HashMap<String,Double> oScores){
+        double composite = toDegree(oScores.get("composite"));
         double parm = toDegree(oScores.get("parm"));
         double pasrm = toDegree(oScores.get("pasrm"));
         double ld = toDegree(oScores.get("ld"));
+
+        //update composite graphic
+        T6_composite_Arc.setLength(composite);
+        T6_composite_score_Text.setText(Double.toString(composite));
         //update parm graphic
-//      System.out.println(parm);
         T6_parm_Arc.setLength(parm);
         T6_parm_score_Text.setText(Double.toString(parm));
         //update pasrm graphic
-//      System.out.println(pasrm);
         T6_pasrm_Arc.setLength(pasrm);
         T6_pasrm_score_Text.setText(Double.toString(pasrm));
         //update ld graphic
-//      System.out.println(ld);
-        T6_ld_Arc.setLength(ld);;
+        T6_ld_Arc.setLength(ld);
         T6_ld_score_Text.setText(Double.toString(ld));
+
+
+    }
+    
+    //infoBox
+    @FXML 
+    void showInfoBox(){
+    	T6_infobox_TextArea.setVisible(true);
+    }
+    @FXML 
+    void hideInfoBox(){
+    	T6_infobox_TextArea.setVisible(false);
+    }
+
+
+    @FXML
+    void showCompositeInfoBox(){
+        T6_composite_infobox_TextArea.setVisible(true);
+    }
+    @FXML
+    void hideCompositeInfoBox(){
+        T6_composite_infobox_TextArea.setVisible(false);
+    }
+    @FXML
+    void showPARMInfoBox(){
+        T6_parm_infobox_TextArea.setVisible(true);
+    }
+    @FXML
+    void hidePARMInfoBox(){
+        T6_parm_infobox_TextArea.setVisible(false);
+    }
+    @FXML
+    void showPASRMInfoBox(){
+        T6_pasrm_infobox_TextArea.setVisible(true);
+    }
+    @FXML
+    void hidePASRMInfoBox(){
+        T6_pasrm_infobox_TextArea.setVisible(false);
+    }
+    @FXML
+    void showLDInfoBox(){
+        T6_ld_infobox_TextArea.setVisible(true);
+    }
+    @FXML
+    void hideLDInfoBox(){
+        T6_ld_infobox_TextArea.setVisible(false);
     }
 }

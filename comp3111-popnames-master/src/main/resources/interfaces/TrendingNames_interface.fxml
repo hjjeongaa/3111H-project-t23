@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -17,12 +18,12 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <Text layoutX="191.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender of Interest">
+                  <Text layoutX="191.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender of Interest">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <RadioButton fx:id="T3_male_RadioButton" layoutX="362.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="Male">
+                  <RadioButton fx:id="T3_male_RadioButton" layoutX="362.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="Male">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
@@ -30,12 +31,12 @@
                         <ToggleGroup fx:id="T111" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="T3_female_RadioButton" layoutX="461.0" layoutY="14.0" mnemonicParsing="false" text="Female" toggleGroup="$T111">
+                  <RadioButton fx:id="T3_female_RadioButton" layoutX="461.0" layoutY="15.0" mnemonicParsing="false" text="Female" toggleGroup="$T111">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </RadioButton>
-                  <Text layoutX="191.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                  <Text layoutX="191.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
@@ -57,7 +58,7 @@
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <Button fx:id="T3_generate_Button" layoutX="795.0" layoutY="128.0" mnemonicParsing="false" onAction="#trendInPopularity" text="Generate" />
+                  <Button fx:id="T3_generate_Button" layoutX="795.0" layoutY="130.0" mnemonicParsing="false" onAction="#trendInPopularity" text="Generate" />
                   <Text fx:id="T3_country_error_Text" fill="RED" layoutX="329.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
@@ -73,8 +74,8 @@
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="T3_startYear_ComboBox" layoutX="511.0" layoutY="131.0" prefHeight="28.0" prefWidth="99.0" promptText="1941" />
-                  <ComboBox fx:id="T3_endYear_ComboBox" layoutX="630.0" layoutY="131.0" prefHeight="28.0" prefWidth="99.0" promptText="1945" />
+                  <ComboBox fx:id="T3_startYear_ComboBox" layoutX="511.0" layoutY="130.0" prefHeight="28.0" prefWidth="99.0" promptText="1941" />
+                  <ComboBox fx:id="T3_endYear_ComboBox" layoutX="630.0" layoutY="130.0" prefHeight="28.0" prefWidth="99.0" promptText="1945" />
                   <Text fx:id="T3_start_year_error_Text" fill="RED" layoutX="511.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
@@ -85,11 +86,12 @@
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
+                  <Text layoutX="795.0" layoutY="188.0" onMouseEntered="#showInfoBox" onMouseExited="#hideInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="More Information" wrappingWidth="103.33984375" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="T3_output_Table" layoutX="6.0" prefHeight="354.0" prefWidth="922.0">
+                  <TableView fx:id="T3_output_Table" layoutX="-2.0" prefHeight="354.0" prefWidth="924.0">
                     <columns>
                       <TableColumn fx:id="T3_name_TableColumn" prefWidth="120.0" text="Name" />
                         <TableColumn fx:id="T3_start_rank_TableColumn" prefWidth="170.0" text="Start Rank" />
@@ -99,6 +101,7 @@
                         <TableColumn fx:id="T3_trend_TableColumn" minWidth="0.0" prefWidth="121.0" text="Trend" />
                     </columns>
                   </TableView>
+                  <TextArea fx:id="T3_infobox_TextArea" layoutX="237.0" layoutY="76.0" prefHeight="196.0" prefWidth="402.0" text="This feature generates the list of names  (and their most recent, shortest duration) with the largest rise or largest fall.&#10;&#10;You may specify the Gender (Male or Female), Type (human or animal), Country and a corresponding start year and end year (within the supported years).&#10;&#10;Click generate to generate the report&#10;&#10;The rankings are generated using Standard Competition Ranking: more can be found here (https://en.wikipedia.org/wiki/Ranking)." visible="false" wrapText="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
         </items>
