@@ -5,13 +5,15 @@ import org.apache.commons.csv.*;
 import edu.duke.*;
 /**
  * This class calculates the rank using Modified Competition Ranking system
+ * NOTE THAT THIS FUNCTION DOES NOT SUPPORT ITERATORS
  * @author Yuxi Sun 
- * v 1.0
+ * v 2.0
  */
 public class MCR extends RankingAlgorithm {
 	private int size;
 	private int rank;
-
+	private int sameRankCount;
+	private int lastFreq;
 	//accessors
 	public String getMethod(){
 		return "Modified Competition Ranking";
@@ -21,6 +23,9 @@ public class MCR extends RankingAlgorithm {
 	}
 	public int getSize(){
 		return size;
+	}
+	public void addEntry(int freq) {
+		//do nothing as look ahead is not support in the current format
 	}
 	public MCR(String name, String gender, int yob, String country, String type, String resolution){
 		int rank = 1;
@@ -45,7 +50,7 @@ public class MCR extends RankingAlgorithm {
 					++sameRankCount;
 				else{
 					//since we assume the file is grouped by gender and 
-					//order in decending order on frequency, no extra check is required 
+					//order in descending order on frequency, no extra check is required 
 					rank = rank + sameRankCount + 1;
 					sameRankCount = 0;//reset sameRankCount
 					if(!assigned && found){
@@ -53,16 +58,16 @@ public class MCR extends RankingAlgorithm {
 						assigned = true;
 					}
 				}
-				//update lastFreq (interation variable)
+				//update lastFreq (iteration variable)
 				lastFreq = Integer.parseInt(rec.get(2));
 			}
-			//now rank of curr name has been computed, check if the iName is found
+			//now rank of current name has been computed, check if the iName is found
 			if(rec.get(0).equals(name)){
 				this.rank = rank;
 				found = true;
 			}
 		}
-		if(!assigned && found){ // for the case that the name is found with the same freq as the last frequency
+		if(!assigned && found){ // for the case that the name is found with the same frequency as the last frequency
 			this.rank = rank;
 			assigned = true;
 		}

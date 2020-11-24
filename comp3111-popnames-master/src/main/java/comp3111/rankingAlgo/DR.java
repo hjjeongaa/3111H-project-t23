@@ -7,12 +7,13 @@ import edu.duke.*;
 /**
  * This class calculates the rank using Dense Ranking system
  * @author Yuxi Sun
-* v 1.0
+ * v 2.0
  */
 public class DR extends RankingAlgorithm {
 	private int size;
 	private int rank;
-
+	private int lastFreq;
+	private int unique; //stores the number of unique names seen so far
 	//accessors
 	public String getMethod(){
 		return "Dense Ranking";
@@ -23,9 +24,20 @@ public class DR extends RankingAlgorithm {
 	public int getSize(){
 		return size;
 	}
+	public void addEntry(int freq) {
+		if (lastFreq != freq)
+			//since we assume the file is grouped by gender and 
+			//order in descending order on frequency, no extra check is required 
+			//we increase rank if we sea a decrease in frequency
+			rank +=1;
+		//update lastFreq (iteration variable)
+		lastFreq = freq;
+		++unique;
+	}
+	
 	public DR(String name, String gender, int yob, String country, String type, String resolution){
 		int rank = 1;
-		int unique = 0; //stores the number of names seen with the same rank (frequency) as the current name (exclusive)
+		int unique = 0; //stores the number of unique names seen so far
 		//iterates through iYOB's data
 		int lastFreq = 0;//stores the last seen frequency (used for seeing if the current name should have the same rank as the previous name).
 		boolean found = false; 
@@ -61,5 +73,10 @@ public class DR extends RankingAlgorithm {
 		// if code gets to this point, then no name has been found
 		if (!found)
 			this.rank = new rankResolver("dr", name, gender, yob, country, type, this.size, resolution).getRank();
+	}
+	public DR(int freq) {
+		this.rank = 1;
+		this.unique = 0;
+		this.lastFreq = freq;
 	}
 }

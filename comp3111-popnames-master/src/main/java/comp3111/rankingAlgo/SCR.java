@@ -6,12 +6,13 @@ import edu.duke.*;
 /**
  * This class calculates the rank using Standard Competition Ranking system
  * @author Yuxi Sun
-* v 1.0
+ * v 2.0
  */
 public class SCR extends RankingAlgorithm {
 	private int size;
 	private int rank;
-
+	private int sameRankCount;
+	private int lastFreq;
 	//accessors
 	public String getMethod(){
 		return "Standard Competition Ranking";
@@ -22,6 +23,19 @@ public class SCR extends RankingAlgorithm {
 	public int getSize(){
 		return size;
 	}
+	
+	//Mutator: Iterator functions
+	public void addEntry(int freq) {
+		if (this.lastFreq == freq)
+			++this.sameRankCount;
+		else{
+			//since we assume the file is grouped by gender and 
+			//order in descending order on frequency, no extra check is required 
+			this.rank = this.rank + this.sameRankCount + 1;
+			this.sameRankCount = 0;//reset sameRankCount
+		}
+	}
+	//Constructors
 	public SCR(String name, String gender, int yob, String country, String type, String resolution){
 		int rank = 1;
 		int sameRankCount = 0; //stores the number of names seen with the same rank (frequency) as the current name (exclusive)
@@ -44,14 +58,14 @@ public class SCR extends RankingAlgorithm {
 					++sameRankCount;
 				else{
 					//since we assume the file is grouped by gender and 
-					//order in decending order on frequency, no extra check is required 
+					//order in descending order on frequency, no extra check is required 
 					rank = rank + sameRankCount + 1;
 					sameRankCount = 0;//reset sameRankCount
 				}
-				//update lastFreq (interation variable)
+				//update lastFreq (iteration variable)
 				lastFreq = Integer.parseInt(rec.get(2));
 			}
-			//now rank of curr name has been computed, check if the iName is found
+			//now rank of current name has been computed, check if the iName is found
 			if(rec.get(0).equals(name)){
 				this.rank = rank;
 				found = true;
@@ -63,4 +77,11 @@ public class SCR extends RankingAlgorithm {
 		if (!found)
 			this.rank = new rankResolver("scr", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
+	
+	public SCR(int freq) {
+		this.lastFreq = freq;
+		this.rank = 1;
+		this.sameRankCount = 0;
+	}
+	
 }
