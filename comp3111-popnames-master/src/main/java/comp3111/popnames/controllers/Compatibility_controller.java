@@ -418,6 +418,11 @@ public class Compatibility_controller {
     }
 
     //Helper functions
+    /**
+     *  Converts a [0,1] score to a [0,360] score
+     * @param oScore double between [0,1]
+     * @return double between [0,0,360]
+     */
     private double toDegree(double oScore){
     	//rounding performed here
         return Math.round((double)oScore*360*100)/100;
@@ -450,44 +455,74 @@ public class Compatibility_controller {
     
     //infoBox
     @FXML 
+    /**
+     * Show the feature Information Box
+     */
     void showInfoBox(){
     	T6_infobox_TextArea.setVisible(true);
     }
     @FXML 
+    /**
+     * Hide the feature Information Box
+     */
     void hideInfoBox(){
     	T6_infobox_TextArea.setVisible(false);
     }
 
 
     @FXML
+    /**
+     * Hide the composite Information Box
+     */
     void showCompositeInfoBox(){
         T6_composite_infobox_TextArea.setVisible(true);
     }
     @FXML
+    /**
+     * Hide the composite Information Box
+     */
     void hideCompositeInfoBox(){
         T6_composite_infobox_TextArea.setVisible(false);
     }
     @FXML
+    /**
+     * Show the PARM Information Box
+     */
     void showPARMInfoBox(){
         T6_parm_infobox_TextArea.setVisible(true);
     }
     @FXML
+    /**
+     * Hide the PARM Information Box
+     */
     void hidePARMInfoBox(){
         T6_parm_infobox_TextArea.setVisible(false);
     }
     @FXML
+    /**
+     * Show the PASRM Information Box
+     */
     void showPASRMInfoBox(){
         T6_pasrm_infobox_TextArea.setVisible(true);
     }
     @FXML
+    /**
+     * Hide the PASRM Information Box
+     */
     void hidePASRMInfoBox(){
         T6_pasrm_infobox_TextArea.setVisible(false);
     }
     @FXML
+    /**
+     * Show the LD Information Box
+     */
     void showLDInfoBox(){
         T6_ld_infobox_TextArea.setVisible(true);
     }
     @FXML
+    /**
+     * Hide the LD Information Box
+     */
     void hideLDInfoBox(){
         T6_ld_infobox_TextArea.setVisible(false);
     }

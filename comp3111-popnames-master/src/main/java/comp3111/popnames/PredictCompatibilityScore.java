@@ -21,27 +21,60 @@ public class PredictCompatibilityScore extends ReportLog{
 	//variables
 	private Person user;
 	private Person mate;
-
+	private String rankAlgo;
+	private String rankResolver;
 	private HashMap<String, Double> oScore;
 
 	//accessors
+	/**
+	 * returns the time said object was generated
+	 */
 	public LocalDateTime getTime(){return time;};
+	/**
+	 * returns the generated scores
+	 */
 	public HashMap<String, Double>  getoScore(){return oScore;};
+	/**
+	 * returns the Person object user
+	 */
 	public Person getUser(){return user;};
+	/**
+	 * returns the Person object mate
+	 */
 	public Person getMate(){return mate;};
+	/**
+	 * returns the String representing the ranking algorithm
+	 */
+	public String rankAlgo() {return rankAlgo;};
+	/**
+	 * returns the String representing the ranking resolving method
+	 */
+	public String getRankResolver() {return rankResolver;};
+	//functions for ReportLog class
+	/**
+	 * Returns a html string representing said object using the template stored in the exports package
+	 * template and code by Yuxi Sun
+	 * v1.0
+	 */
 	public String getHTML(){
-		//TODO::complete
-		String html = "<div>";
-		//insert content here
-		html += "</div>";
-		return null;
+		//grabbing template
+    	FileResource fr = new FileResource("resources/export/t6htmlTemplate.txt");
+    	//substituting values into the template
+		return String.format(fr.asString(), user.getName(),user.getGender(), user.getType(),user.getCountry(),user.getYob(),
+				mate.getName(),mate.getGender(), mate.getType(),mate.getCountry(),mate.getYob(),
+				this.rankAlgo, this.rankResolver);
 	};
+	
 	//accessors for Report History
+	/**
+	 * returns a string representing the task
+	 */
 	public String getTask(){
 		return "Task 6";
 	}
 	public String getoReport(){
-		String oReport = user.getName() + " " + mate.getName();
+		String oReport = String.format("%s %s %s and %s %s %s", user.getName(),user.getGender(), user.getYob(),
+				mate.getName(),mate.getGender(), mate.getYob());
 		return oReport;
 	}
 	/**
@@ -108,6 +141,8 @@ public class PredictCompatibilityScore extends ReportLog{
 	 */
 	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String rankingAlgo, String resolver) {
 		this.time = LocalDateTime.now();
+		this.rankAlgo = rankingAlgo;
+		this.rankResolver = resolver;
 		// both names could not exist in the data set hence a special rankingAlgo and resolver has been used.
 		this.user = new Person(iName, iGender, iYOB, country, type, rankingAlgo, resolver);
 		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate, rankingAlgo, resolver);

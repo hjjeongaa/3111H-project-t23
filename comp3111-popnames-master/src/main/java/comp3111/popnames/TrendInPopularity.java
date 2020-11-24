@@ -8,6 +8,8 @@
 package comp3111.popnames;
 
 import org.apache.commons.csv.*;
+
+import comp3111.popnames.TrendInPopularity.Name;
 import edu.duke.*;
 import java.util.*;
 /**
@@ -322,50 +324,46 @@ public class TrendInPopularity extends Reports{
 				}
 			}
 		}
-		write();
+		writeoReport();
+		writeoHTML();
+	}
+	private void writeoHTML() {
+		//generate table html
+		String table = "";
+		String row = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
+		//writing rising values to Super class oReport variable.
+		Iterator<Name> rise = setOfLargestRise.iterator();
+		while (rise.hasNext()){
+			Name nextRise = (Name)rise.next();
+		 	Trend mostRecent = nextRise.rise.lastElement();
+		 	table += String.format(row, nextRise.getName(), mostRecent.start.getYear(),mostRecent.start.getRank(),mostRecent.end.getYear(),mostRecent.end.getRank(),mostRecent.getChange());
+		 }
+
+		 //writing falling values to Super class oReport variable.
+		 Iterator<Name> fall = setOfLargestFall.iterator();
+		 while (fall.hasNext()){
+		 	Name nextFall = (Name)fall.next();
+		 	Trend mostRecent = nextFall.fall.lastElement();
+		 	table += String.format(row, nextFall.getName(), mostRecent.start.getYear(),mostRecent.start.getRank(),mostRecent.end.getYear(),mostRecent.end.getRank(),mostRecent.getChange());
+		 }
+		 
+		//grabbing template
+    	FileResource fr = new FileResource("resources/export/t6htmlTemplate.txt");
+    	//substituting values into the template
+    	String oHTML = String.format(fr.asString(), super.gettype(),super.getcountry(),super.getgender(), this.startYear, this.endYear,table);
+		super.setHTML(oHTML);
 	}
 	/**
-	 * This function parses through the filtered content and writes it to the super classes output format . 
+	 * This function parses through the filtered content and writes it to the super classes output string oReport. 
 	 */
-	private void write() {
-//		super.setoReport(this.name +" " +this.gender + " " + this.);
-
-		// String oReport = "";
-		// //writing rising values to Super class oReport variable.
-		// oReport+="Rising\n";
-		// Iterator rise = setOfLargestRise.iterator();
-		// while (rise.hasNext()){
-		// 	Name nextRise = (Name)rise.next();
-		// 	String temp = nextRise.getName();
-		// 	Trend mostRecent = nextRise.rise.lastElement();
-		// 	temp += " | Start Year: " + mostRecent.start.getYear();
-		// 	temp += " Start Rank:" + mostRecent.start.getRank();
-		// 	temp += " | End Year: " + mostRecent.end.getYear();
-		// 	temp += " End Rank: " + mostRecent.end.getRank();
-		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
-		// 	oReport += temp;
-		// }
-
-		// //writing falling values to Super class oReport variable.
-		// oReport+="Falling\n";
-		// Iterator fall = setOfLargestFall.iterator();
-		// while (fall.hasNext()){
-		// 	Name nextFall = (Name)fall.next();
-		// 	String temp = nextFall.getName();
-		// 	if (nextFall.fall.size() == 0) continue;
-		// 	Trend mostRecent = nextFall.fall.lastElement();
-		// 	temp += " | Start Year: " + mostRecent.start.getYear();
-		// 	temp += " Start Rank:" + mostRecent.start.getRank();
-		// 	temp += " | End Year: " + mostRecent.end.getYear();
-		// 	temp += " End Rank: " + mostRecent.end.getRank();
-		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
-		// 	oReport += temp;
-		// }
-//		super.setoReport(oReport);
+	private void writeoReport() {
+		 String oReport = String.format("%s %s %s %s %s", super.gettype(),super.getcountry(),super.getgender(), this.startYear, this.endYear);
+		
+		super.setoReport(oReport);
 	}
 
 	public HashMap<String,Vector<String>> getResults(){
-		//setting up output datastructure
+		//setting up output data structure
 		HashMap<String,Vector<String>> output = new HashMap<String,Vector<String>>();
 		// name
 		output.put("name", new Vector<String>());
@@ -398,7 +396,6 @@ public class TrendInPopularity extends Reports{
 		while (fall.hasNext()){
 			Name nextFall = (Name)fall.next();
 			output.get("name").add(nextFall.getName());
-			if (nextFall.fall.size() == 0) continue;
 			Trend mostRecent = nextFall.fall.lastElement();
 			//changing the order of outputting to suit the Task3 description 
 			output.get("startRank").add(String.valueOf(mostRecent.start.getRank()));
