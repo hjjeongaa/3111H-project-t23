@@ -72,6 +72,7 @@ public class Compatibility_controller {
     @FXML
     private Button T6_generate_Button;
 
+    //score elements
     @FXML
     private Arc T6_nkt6_Arc;
 
@@ -99,13 +100,37 @@ public class Compatibility_controller {
     @FXML
     private Text T6_ld_score_Text;
 
-    @FXML 
-    private Text T6_pref_error_Text;
-    
+    //error elements
+    @FXML
+    private Text T6_user_name_error_Text;
+
+    @FXML
+    private Text T6_user_type_error_Text;
+
+    @FXML
+    private Text T6_country_type_error_Text;
+
+    @FXML
+    private Text T6_user_yob_error_Text;
+
+    @FXML
+    private Text T6_pref_range_error_Text;
+
+    @FXML
+    private Text T6_mate_name_error_Text;
+
+    @FXML
+    private Text T6_mate_type_error_Text;
+
+    @FXML
+    private Text T6_mate_country_error_Text;
+
+    @FXML
+    private Text T6_pref_null_error_Text;
+
     //UI components
     public void initialize(){
     	//hide error message(s)
-    	T6_pref_error_Text.setVisible(false);
         //User initializers
         //set type options
         ObservableList<String> userType = FXCollections.observableArrayList(DatasetHandler.getTypes());
@@ -188,12 +213,13 @@ public class Compatibility_controller {
     private void updatePreferences() {
 //    	T6_pref_error_Text.setVisible(false);
     	//list of preferences [-5,5];
+        T6_pref_range_error_Text.setVisible(false);
         ObservableList<String> preferenceOptions = FXCollections.observableArrayList();
-        if (!T6_mate_country_ComboBox.getValue().strip().equals("")) {
+        if (!T6_mate_country_ComboBox.getValue().isBlank()) {
         	//if T6_mate_country_ComboBox has been set then we can update the preference options
-	        if (T6_user_yob_ComboBox.getValue().strip().equals("")) {
+	        if (T6_user_yob_ComboBox.getValue()==null) {
 	        	// if YOB is not set then give the users the full range of options from -5 to +5
-	            //getting start year and end year of specified dataset/type/country/
+	            //getting start year and end year of specified data set/type/country/
 	    		for (int i = -5; i <= 5; ++i) {
 	    			preferenceOptions.add(Integer.toString(i));
 	    		}
@@ -213,7 +239,15 @@ public class Compatibility_controller {
 	            for (int i = prefMin; i <= prefMax;++i) {
 	            	preferenceOptions.add(Integer.toString(i));
 	            }
-		        T6_preferences_ComboBox.setValue(Integer.toString((prefMin+prefMax)/2));//set to value at the middle of range
+	            int defaultPref = (prefMin+prefMax)/2;
+	          //set to value at the middle of range if -5<=defaultPref<=5 else sett it to "";
+                if (defaultPref>=-5&&defaultPref<=5){
+                    T6_preferences_ComboBox.setValue(Integer.toString(defaultPref));
+                }else{
+                    //display range error message
+                    T6_pref_range_error_Text.setVisible(true);
+                    T6_preferences_ComboBox.setValue("");
+                }
 	    	}
         }else {
             //if T6_mate_country_ComboBox has not be set then do not offer options
@@ -229,41 +263,41 @@ public class Compatibility_controller {
 
         //validation of input
         boolean valid = true;
-        if(iName.strip().equals("")){
+        if(iName.isBlank()){
             //if iName is empty
             valid = false;
+            T6_user_name_error_Text.setVisible(true);
         }else{
             //hide error message
+            T6_user_name_error_Text.setVisible(false);
         }
-        if(iGender.strip().equals("")){
+        if(iGender.isBlank()){
             //if iGender is empty
             valid = false;
-
-        }else{
-            //hide error message
+            System.out.println("Gender error");
         }
-        if(yob.strip().equals("")){
+        if(yob.isBlank()){
             //if yob is empty
             valid = false;
-
+            T6_user_yob_error_Text.setVisible(true);
         }else{//else assume YOB valid
-
+            T6_user_yob_error_Text.setVisible(false);
         }
-        if(country.strip().equals("")){
+        if(country.isBlank()){
             //if country is empty
             valid = false;
-            System.out.println(country);
-
+            T6_country_type_error_Text.setVisible(true);
         }else{
             //hide error message
-
+            T6_country_type_error_Text.setVisible(false);
         }
-        if(type.strip().equals("")){
+        if(type.isBlank()){
             //if type is empty
             valid = false;
-            System.out.println(type);
+            T6_user_type_error_Text.setVisible(true);
         }else{
             //hide error message
+            T6_user_type_error_Text.setVisible(false);
         }
         return valid;
     }
@@ -273,44 +307,45 @@ public class Compatibility_controller {
 
         //validate mate
         boolean valid = true;
-        if(iNameMate.strip().equals("")){
+        if(iNameMate.isBlank()){
             //if iNameMate is empty
             valid = false;
             System.out.println(iNameMate);
-
+            T6_mate_name_error_Text.setVisible(true);
         }else{
             //hide error message
+            T6_mate_name_error_Text.setVisible(false);
         }
-        if(iGenderMate.strip().equals("")){
+        if(iGenderMate.isBlank()){
             //if iGenderMate is empty
             valid = false;
-            System.out.println(iGenderMate);
-
-        }else{
-            //hide error message
-        }      
-        if(preference.strip().equals("")){
+            System.out.println("Gender error");
+        }
+        if(preference.isBlank()){
             //if iNameMate is empty
             valid = false;
-            System.out.println(preference);
-
+            T6_pref_null_error_Text.setVisible(true);
         }else{
-
+            //hide error message
+            T6_pref_null_error_Text.setVisible(false);
         }
-        if(countryMate.strip().equals("")){
+        if(countryMate.isBlank()){
             //if countryMate is empty
             valid = false;
             System.out.println(countryMate);
+            T6_mate_country_error_Text.setVisible(true);
         }else{
             //hide error message
+            T6_mate_country_error_Text.setVisible(false);
         }
-        if(typeMate.strip().equals("")){
+        if(typeMate.isBlank()){
             //if typeMate is empty
             valid = false;
             System.out.println(typeMate);
-
+            T6_mate_type_error_Text.setVisible(true);
         }else{
             //hide error message
+            T6_mate_type_error_Text.setVisible(false);
         }
         return valid;
     }

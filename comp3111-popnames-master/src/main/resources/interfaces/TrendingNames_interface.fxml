@@ -6,7 +6,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -51,22 +50,37 @@
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="T3_type_ComboBox" layoutX="191.0" layoutY="130.0" onAction="#updateType" onInputMethodTextChanged="#updateType" prefHeight="28.0" prefWidth="99.0" promptText="Human" />
-                  <ComboBox fx:id="T3_country_ComboBox" layoutX="327.0" layoutY="130.0" onAction="#updateCountry" prefHeight="29.0" prefWidth="137.0" promptText="usa" />
+                  <ComboBox fx:id="T3_type_ComboBox" layoutX="191.0" layoutY="130.0" onAction="#selectType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
+                  <ComboBox fx:id="T3_country_ComboBox" layoutX="327.0" layoutY="130.0" onAction="#selectCountry" prefHeight="29.0" prefWidth="137.0" promptText="usa" />
                   <Text layoutX="641.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Year">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
                   <Button fx:id="T3_generate_Button" layoutX="795.0" layoutY="128.0" mnemonicParsing="false" onAction="#trendInPopularity" text="Generate" />
-                  <TextField fx:id="T3_startYear_TextField" layoutX="508.0" layoutY="132.0" prefHeight="26.0" prefWidth="81.0" text="1941" />
-                  <TextField fx:id="T3_endYear_TextField" layoutX="641.0" layoutY="132.0" prefHeight="26.0" prefWidth="81.0" text="1945" />
-                  <Text fx:id="T3_start_year_limit_Text" layoutX="508.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1880">
+                  <Text fx:id="T3_country_error_Text" fill="RED" layoutX="329.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <Text fx:id="T3_end_year_limit_Text" layoutX="641.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2019">
+                  <Text fx:id="T3_type_error_Text" fill="RED" layoutX="191.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="T3_range_error_Text" fill="RED" layoutX="508.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="T3_startYear_ComboBox" layoutX="511.0" layoutY="131.0" onAction="#selectStart" prefHeight="28.0" prefWidth="99.0" promptText="1941" />
+                  <ComboBox fx:id="T3_endYear_ComboBox" layoutX="630.0" layoutY="131.0" onAction="#selectEnd" prefHeight="28.0" prefWidth="99.0" promptText="1945" />
+                  <Text fx:id="T3_start_year_error_Text" fill="RED" layoutX="511.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="T3_end_year_error_Text" fill="RED" layoutX="630.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>

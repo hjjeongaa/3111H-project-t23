@@ -47,7 +47,7 @@ public class rankResolver {
 			 * exist within their names.
 			 */
 			//iterates through iYOB's data
-			int threshold = name.length()/5;//threshold is currently set to be at least 20% similar to the original name
+			int threshold = Integer.MAX_VALUE;//name.length()/5;//threshold is currently set to be at least 20% similar to the original name
 			int minDiff = Integer.MAX_VALUE;// initialized to max value as it is not expect that another name will require that many changes.
 			Vector<String> similarNames = new Vector<String>();//stores list of minDiff names or similar names
 			for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){
