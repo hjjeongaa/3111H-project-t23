@@ -73,8 +73,8 @@
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="T3_startYear_ComboBox" layoutX="511.0" layoutY="131.0" onAction="#selectStart" prefHeight="28.0" prefWidth="99.0" promptText="1941" />
-                  <ComboBox fx:id="T3_endYear_ComboBox" layoutX="630.0" layoutY="131.0" onAction="#selectEnd" prefHeight="28.0" prefWidth="99.0" promptText="1945" />
+                  <ComboBox fx:id="T3_startYear_ComboBox" layoutX="511.0" layoutY="131.0" prefHeight="28.0" prefWidth="99.0" promptText="1941" />
+                  <ComboBox fx:id="T3_endYear_ComboBox" layoutX="630.0" layoutY="131.0" prefHeight="28.0" prefWidth="99.0" promptText="1945" />
                   <Text fx:id="T3_start_year_error_Text" fill="RED" layoutX="511.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not set" visible="false">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
