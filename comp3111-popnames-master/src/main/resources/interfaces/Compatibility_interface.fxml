@@ -33,7 +33,7 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_user_male_RadioButton" layoutX="225.0" layoutY="81.0" selected="true" mnemonicParsing="false" text="Male">
+                                          <RadioButton fx:id="T6_user_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -46,7 +46,7 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </RadioButton>
-                                          <TextField fx:id="T6_user_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" />
+                                          <TextField fx:id="T6_user_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" text="Joon" />
                                           <Text layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU">
                                              <font>
                                                 <Font name="Segoe UI Light" size="30.0" />
@@ -79,7 +79,7 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="225.0" layoutY="81.0" selected="true" mnemonicParsing="false" text="Male">
+                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -92,7 +92,7 @@
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </RadioButton>
-                                          <TextField fx:id="T6_mate_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" />
+                                          <TextField fx:id="T6_mate_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" text="Jon" />
                                           <Text layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MATE">
                                              <font>
                                                 <Font name="Segoe UI Light" size="30.0" />
@@ -179,10 +179,10 @@
                   <Group layoutX="802.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_dld_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_ld_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
-                        <Text fx:id="T6_dld_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DLD" />
+                        <Text fx:id="T6_ld_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LD" />
                      </children>
                   </Group>
                </children>

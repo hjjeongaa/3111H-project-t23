@@ -53,6 +53,7 @@ public class RankingAlgorithmFactory{
 		else return null;
 	}
 	public static Vector<String> getNonIterativeMethods(){
+		//if unintialized 
 		if (nonIterativeMethods == null) {
 			nonIterativeMethods = new Vector<String>();
 			nonIterativeMethods.add("scr");
@@ -62,7 +63,9 @@ public class RankingAlgorithmFactory{
 		}
 		return nonIterativeMethods;
 	}
+	
 	public static Vector<String> getIterativeMethods(){
+		//if unintialized 
 		if (iterativeMethods == null) {
 			iterativeMethods = new Vector<String>();
 			iterativeMethods.add("scr");
