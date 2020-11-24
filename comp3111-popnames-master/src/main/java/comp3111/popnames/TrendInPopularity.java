@@ -14,7 +14,7 @@ import java.util.*;
  * Code for Task 3, 
  * Finding the (names) with largest increase in popularity and 
  *  the (names) with largest decrease in popularity over a 
- *  specified period of time for the USA dataset.
+ *  specified period of time for the USA data set.
  * @author Yuxi Sun
  *
  */
@@ -45,7 +45,6 @@ public class TrendInPopularity extends Reports{
 	 * running record of the largest increase/ decrease in popularity of a name (such that each name has two Trends).
 	 */
 	private class Trend{
-
 		private Entry start;
 		private Entry end;
 		//accessors
@@ -239,6 +238,7 @@ public class TrendInPopularity extends Reports{
 	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
 		//collecting data from datasets and doing simple preprocessing to get the max rise/ fall of each Name
+		super.setTask("Task 3");
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
 			int rank = 1;
@@ -328,38 +328,40 @@ public class TrendInPopularity extends Reports{
 	 * This function parses through the filtered content and writes it to the super classes output format . 
 	 */
 	private void write() {
-		String oReport = "";
-		//writing rising values to Super class oReport variable.
-		oReport+="Rising\n";
-		Iterator rise = setOfLargestRise.iterator();
-		while (rise.hasNext()){
-			Name nextRise = (Name)rise.next();
-			String temp = nextRise.getName();
-			Trend mostRecent = nextRise.rise.lastElement();
-			temp += " | Start Year: " + mostRecent.start.getYear();
-			temp += " Start Rank:" + mostRecent.start.getRank();
-			temp += " | End Year: " + mostRecent.end.getYear();
-			temp += " End Rank: " + mostRecent.end.getRank();
-			temp += " | Trend : " + mostRecent.getChange() +"\n";
-			oReport += temp;
-		}
+//		super.setoReport(this.name +" " +this.gender + " " + this.);
 
-		//writing falling values to Super class oReport variable.
-		oReport+="Falling\n";
-		Iterator fall = setOfLargestFall.iterator();
-		while (fall.hasNext()){
-			Name nextFall = (Name)fall.next();
-			String temp = nextFall.getName();
-			if (nextFall.fall.size() == 0) continue;
-			Trend mostRecent = nextFall.fall.lastElement();
-			temp += " | Start Year: " + mostRecent.start.getYear();
-			temp += " Start Rank:" + mostRecent.start.getRank();
-			temp += " | End Year: " + mostRecent.end.getYear();
-			temp += " End Rank: " + mostRecent.end.getRank();
-			temp += " | Trend : " + mostRecent.getChange() +"\n";
-			oReport += temp;
-		}
-		super.setoReport(oReport);
+		// String oReport = "";
+		// //writing rising values to Super class oReport variable.
+		// oReport+="Rising\n";
+		// Iterator rise = setOfLargestRise.iterator();
+		// while (rise.hasNext()){
+		// 	Name nextRise = (Name)rise.next();
+		// 	String temp = nextRise.getName();
+		// 	Trend mostRecent = nextRise.rise.lastElement();
+		// 	temp += " | Start Year: " + mostRecent.start.getYear();
+		// 	temp += " Start Rank:" + mostRecent.start.getRank();
+		// 	temp += " | End Year: " + mostRecent.end.getYear();
+		// 	temp += " End Rank: " + mostRecent.end.getRank();
+		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
+		// 	oReport += temp;
+		// }
+
+		// //writing falling values to Super class oReport variable.
+		// oReport+="Falling\n";
+		// Iterator fall = setOfLargestFall.iterator();
+		// while (fall.hasNext()){
+		// 	Name nextFall = (Name)fall.next();
+		// 	String temp = nextFall.getName();
+		// 	if (nextFall.fall.size() == 0) continue;
+		// 	Trend mostRecent = nextFall.fall.lastElement();
+		// 	temp += " | Start Year: " + mostRecent.start.getYear();
+		// 	temp += " Start Rank:" + mostRecent.start.getRank();
+		// 	temp += " | End Year: " + mostRecent.end.getYear();
+		// 	temp += " End Rank: " + mostRecent.end.getRank();
+		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
+		// 	oReport += temp;
+		// }
+//		super.setoReport(oReport);
 	}
 
 	public HashMap<String,Vector<String>> getResults(){

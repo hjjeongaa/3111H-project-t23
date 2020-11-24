@@ -28,12 +28,12 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="477.0">
                                        <children>
-                                          <Text layoutX="9.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                                          <Text layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_user_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Male">
+                                          <RadioButton fx:id="T6_user_male_RadioButton" layoutX="216.0" layoutY="45.0" mnemonicParsing="false" selected="true" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -41,45 +41,65 @@
                                                 <ToggleGroup fx:id="T6_user_ToggleGroup" />
                                              </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton fx:id="T6_user_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_user_ToggleGroup">
+                                          <RadioButton fx:id="T6_user_female_RadioButton" layoutX="317.0" layoutY="45.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_user_ToggleGroup">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </RadioButton>
-                                          <TextField fx:id="T6_user_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" text="Joon" />
+                                          <TextField fx:id="T6_user_name_TextField" layoutX="64.0" layoutY="45.0" prefHeight="26.0" prefWidth="125.0" text="Joon" />
                                           <Text layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU">
                                              <font>
                                                 <Font name="Segoe UI Light" size="30.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="9.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                                          <Text layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="184.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+                                          <Text layoutX="175.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="307.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year of Birth">
+                                          <Text layoutX="298.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year of Birth">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <ComboBox fx:id="T6_user_type_ComboBox" layoutX="9.0" layoutY="197.0" onAction="#selectUserType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
-                                          <ComboBox fx:id="T6_user_country_ComboBox" layoutX="142.0" layoutY="197.0" onAction="#selectUserCountry" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
-                                          <ComboBox fx:id="T6_user_yob_ComboBox" layoutX="307.0" layoutY="197.0" onAction="#selectUserYOB" prefHeight="28.0" prefWidth="103.0" promptText="1941" />
+                                          <ComboBox fx:id="T6_user_type_ComboBox" layoutY="158.0" onAction="#selectUserType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
+                                          <ComboBox fx:id="T6_user_country_ComboBox" layoutX="133.0" layoutY="158.0" onAction="#selectUserCountry" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
+                                          <ComboBox fx:id="T6_user_yob_ComboBox" layoutX="298.0" layoutY="158.0" onAction="#selectUserYOB" prefHeight="28.0" prefWidth="103.0" promptText="1941" />
+                                          <Text fx:id="T6_user_name_error_Text" fill="RED" layoutX="64.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_user_type_error_Text" fill="RED" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_country_type_error_Text" fill="RED" layoutX="133.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_user_yob_error_Text" fill="RED" layoutX="307.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="455.0">
                                        <children>
-                                          <Text layoutX="9.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                                          <Text layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="225.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Male">
+                                          <RadioButton fx:id="T6_mate_male_RadioButton" layoutX="216.0" layoutY="45.0" mnemonicParsing="false" selected="true" text="Male">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
@@ -87,36 +107,56 @@
                                                 <ToggleGroup fx:id="T6_mate_ToggleGroup" />
                                              </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton fx:id="T6_mate_female_RadioButton" layoutX="326.0" layoutY="82.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_mate_ToggleGroup">
+                                          <RadioButton fx:id="T6_mate_female_RadioButton" layoutX="317.0" layoutY="45.0" mnemonicParsing="false" text="Female" toggleGroup="$T6_mate_ToggleGroup">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </RadioButton>
-                                          <TextField fx:id="T6_mate_name_TextField" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="125.0" text="Jon" />
+                                          <TextField fx:id="T6_mate_name_TextField" layoutX="64.0" layoutY="45.0" prefHeight="26.0" prefWidth="125.0" text="Jon" />
                                           <Text layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MATE">
                                              <font>
                                                 <Font name="Segoe UI Light" size="30.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="9.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                                          <Text layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="184.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+                                          <Text layoutX="175.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <Text layoutX="307.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preference">
+                                          <Text layoutX="298.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preference">
                                              <font>
                                                 <Font name="Segoe UI Light" size="20.0" />
                                              </font>
                                           </Text>
-                                          <ComboBox fx:id="T6_mate_type_ComboBox" layoutX="9.0" layoutY="197.0" onAction="#selectMateType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
-                                          <ComboBox fx:id="T6_mate_country_ComboBox" layoutX="142.0" layoutY="197.0" onAction="#updatePreferences" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
-                                          <ComboBox fx:id="T6_preferences_ComboBox" layoutX="307.0" layoutY="197.0" prefHeight="28.0" prefWidth="103.0" />
-                                          <Text fx:id="T6_pref_error_Text" fill="RED" layoutX="156.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Mate data of this database can be found given your settings" wrappingWidth="253.607421875">
+                                          <ComboBox fx:id="T6_mate_type_ComboBox" layoutY="158.0" onAction="#selectMateType" prefHeight="28.0" prefWidth="99.0" promptText="human" />
+                                          <ComboBox fx:id="T6_mate_country_ComboBox" layoutX="133.0" layoutY="158.0" onAction="#updatePreferences" prefHeight="28.0" prefWidth="150.0" promptText="usa" />
+                                          <ComboBox fx:id="T6_preferences_ComboBox" layoutX="298.0" layoutY="158.0" prefHeight="28.0" prefWidth="103.0" />
+                                          <Text fx:id="T6_pref_range_error_Text" fill="RED" layoutX="23.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Mate data of this database and year can be found given your settings" visible="false" wrappingWidth="386.607421875">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_mate_name_error_Text" fill="RED" layoutX="65.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_mate_type_error_Text" fill="RED" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_mate_country_error_Text" fill="RED" layoutX="133.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
+                                             <font>
+                                                <Font name="Segoe UI Light" size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="T6_pref_null_error_Text" fill="RED" layoutX="298.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not Set" visible="false" wrappingWidth="74.1943359375">
                                              <font>
                                                 <Font name="Segoe UI Light" size="18.0" />
                                              </font>

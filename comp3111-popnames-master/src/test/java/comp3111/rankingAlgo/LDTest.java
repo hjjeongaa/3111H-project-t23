@@ -6,6 +6,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import comp3111.rankingAlgo.LD;
+/**
+ * Outputs and new test cases can be verified/ generated using http://www.let.rug.nl/~kleiweg/lev/ with settings 
+ * indel = 1, substitution = 1, swap = 1
+ * @author Yuxi Sun
+ *
+ */
 public class LDTest {
 
 	@Test

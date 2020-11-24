@@ -36,8 +36,9 @@ public class RankingAlgorithmFactory{
 	}
 	/**
 	 * Used for data set iterators, the RankingAlgorithm function is fed a sequential set frequencies in 
-	 * descending order and returns the current rank using the getRank() function. Note that this function 
-	 * doesn't perform data set accessing itself.
+	 * descending order using the addEntry(int freq) function and returns the current rank using the getRank() function. 
+	 * 
+	 * Note that this function doesn't perform data set accessing itself.
 	 * NOTE THAT THESE ITERACTORS CANNOT PERFORM LOOK AHEAD AND HENCE DOES NOT SUPPORT MCR
 	 * @param rankingMethod the method of ranking
 	 * @param freq the frequency of the first name of the data set of specified gender
