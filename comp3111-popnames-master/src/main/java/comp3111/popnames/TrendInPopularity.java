@@ -238,7 +238,7 @@ public class TrendInPopularity extends Reports{
 	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
 		//collecting data from datasets and doing simple preprocessing to get the max rise/ fall of each Name
-		this.super.setTask("Task 3");
+		super.setTask("Task 3");
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
 			int rank = 1;
@@ -328,7 +328,7 @@ public class TrendInPopularity extends Reports{
 	 * This function parses through the filtered content and writes it to the super classes output format . 
 	 */
 	private void write() {
-		super.setoReport(this.name +" " +this.gender + " " + this.);
+//		super.setoReport(this.name +" " +this.gender + " " + this.);
 
 		// String oReport = "";
 		// //writing rising values to Super class oReport variable.
@@ -361,7 +361,7 @@ public class TrendInPopularity extends Reports{
 		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
 		// 	oReport += temp;
 		// }
-		super.setoReport(oReport);
+//		super.setoReport(oReport);
 	}
 
 	public HashMap<String,Vector<String>> getResults(){

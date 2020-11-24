@@ -74,12 +74,6 @@ public class Compatibility_controller {
 
     //score elements
     @FXML
-    private Arc T6_nkt6_Arc;
-
-    @FXML
-    private Circle nkt;
-
-    @FXML
     private Text T6_nkt6_score_Text;
 
     @FXML

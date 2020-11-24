@@ -13,7 +13,7 @@ import javafx.util.Pair;
 public class DatasetHandler {
 	/**
 	 * This function is used to get the valid types in the current data set
-	 * @return a Vector<String> of the support types in the current data set using the dataset/metadata.txt
+	 * @return a Vector<String> of the support types in the current data set using the data set/metadata.txt
 	 */
 	public static Vector<String> getTypes(){
 		Vector<String> types = new Vector<String>();

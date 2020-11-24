@@ -14,7 +14,7 @@ import java.lang.Math;
 /**
  * Code for predicting the compatibility of two names
  */
-public class PredictCompatibilityScore extend ReportLog{
+public class PredictCompatibilityScore extends ReportLog{
 	//records the time of creation or last modification
 	private LocalDateTime time;  
 
@@ -31,6 +31,9 @@ public class PredictCompatibilityScore extend ReportLog{
 	public Person getMate(){return mate;};
 	public String getHTML(){
 		//TODO::complete
+		String html = "<div>";
+		//insert content here
+		html += "</div>";
 		return null;
 	};
 	//accessors for Report History

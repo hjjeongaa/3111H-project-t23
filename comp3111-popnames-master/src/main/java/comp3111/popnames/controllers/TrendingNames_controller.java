@@ -99,7 +99,12 @@ public class TrendingNames_controller {
     private ObservableList<String> startOptions;
     @FXML
     void initialize(){
-        //perform link with T3_row_structure and fxml table
+        //Initialize and update both lists
+        endOptions = FXCollections.observableArrayList();
+        startOptions = FXCollections.observableArrayList();
+        T3_startYear_ComboBox.setItems(startOptions);
+        T3_endYear_ComboBox.setItems(endOptions);
+    	//perform link with T3_row_structure and fxml table
         T3_name_TableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         T3_start_rank_TableColumn.setCellValueFactory(new PropertyValueFactory<>("startRank"));
         T3_start_year_TableColumn.setCellValueFactory(new PropertyValueFactory<>("startYear"));
@@ -123,10 +128,8 @@ public class TrendingNames_controller {
         Pair<String,String> validRange = DatasetHandler.getValidRange("human","usa");
         T3_startYear_ComboBox.setValue(validRange.getKey());
         T3_endYear_ComboBox.setValue(validRange.getValue());
-
-        //Initialize and update both lists
-        endOptions = FXCollections.observableArrayList();
-        startOptions = FXCollections.observableArrayList();
+        
+        selectCountry();
     }
     
     /**
@@ -138,7 +141,6 @@ public class TrendingNames_controller {
     void selectType() {
     	//get countries from /type/metadata.txt
     	//Reset range string
-        System.out.println("select type");
         T3_startYear_ComboBox.setValue("");
         T3_endYear_ComboBox.setValue("");
         T3_startYear_ComboBox.setItems(null);
@@ -161,7 +163,7 @@ public class TrendingNames_controller {
     @FXML
     void selectCountry() {
     	//Getting start year and end year limits from /type/country/metadata.txt
-        System.out.println("select Country");
+
         if (T3_country_ComboBox.getValue() == null){
             //if nothing has been selected do nothing
             return;
@@ -170,12 +172,21 @@ public class TrendingNames_controller {
         String country = T3_country_ComboBox.getValue(); // getting country
         //update ranges
         Pair<String,String> validRange = DatasetHandler.getValidRange(type,country);
-        //set up comboBox default values and valid lists
-        T3_startYear_ComboBox.setValue(validRange.getKey());
-        T3_endYear_ComboBox.setValue(validRange.getValue());
+
         //update relevant menus
-        selectStart();
-        selectEnd();
+
+      int start = Integer.parseInt(validRange.getKey()); //+1 to avoid collision
+      int end = Integer.parseInt(validRange.getValue());//avoid collision with end
+      //set up end list
+      endOptions.clear();
+      startOptions.clear();
+      for (int i = start; i <= end ; ++i){
+          endOptions.add(Integer.toString(i));
+          startOptions.add(Integer.toString(i));
+      }
+      //set up comboBox default values and valid lists
+      T3_startYear_ComboBox.setValue(Integer.toString(start));
+      T3_endYear_ComboBox.setValue(Integer.toString(end));
     }
 
     /**
@@ -222,12 +233,15 @@ public class TrendingNames_controller {
     		int end  = Integer.parseInt(iEnd);
         	if (start>=end) {
         		T3_range_error_Text.setText("Start year should be <= end year");
+        		T3_range_error_Text.setVisible(true);
         		valid=false;
         	}else if (start<validStart) {
         		T3_range_error_Text.setText("Start year should be >= " + Integer.toString(validStart));
+        		T3_range_error_Text.setVisible(true);
         		valid=false;
         	}else if (end>validEnd) {
         		T3_range_error_Text.setText("End year should be <= " + Integer.toString(validEnd));
+        		T3_range_error_Text.setVisible(true);
         		valid=false;
         	}
     	}
@@ -244,6 +258,9 @@ public class TrendingNames_controller {
 //T3_range_error_Text;
     	return valid;
     }
+	void updateTable(T3_row_structure newEntry){
+		t3_rows.add(newEntry);
+	}
     //output Struct
     /**
      * Class used to display one row table
@@ -366,7 +383,4 @@ public class TrendingNames_controller {
 //         }
 //         T3_startYear_ComboBox.setItems(startOptions);
         
-//     }
-//     void updateTable(T3_row_structure newEntry){
-//         t3_rows.add(newEntry);
 //     }
