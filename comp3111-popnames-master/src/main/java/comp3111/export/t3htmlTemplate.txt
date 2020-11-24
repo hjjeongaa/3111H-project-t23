@@ -1,0 +1,75 @@
+<div>
+	<style>
+	.grid-container {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+        grid-gap: 10px;
+        background-color: #2196F3;
+        padding: 10px;
+        }
+        .grid-container > div {
+        padding: 10px  10px;
+        font-size: 30px;
+        }
+        .grid-item {
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            font-size: 20px;
+            font-family: 'Segoe UI';
+            text-align: left;
+        }
+            table, th, td {
+            font-size: 20px;
+            font-family: 'Segoe UI';
+            border: 1px solid black;
+            border-collapse: collapse;
+            }
+            th, td {
+            font-size: 20px;
+            font-family: 'Segoe UI';
+            padding: 10px;
+            text-align: left;    
+            }
+        </style>
+        <div class="grid-container">
+            <div>
+                Type: %s
+            </div>
+            <div>
+                Country: %s
+            </div>
+            <div>
+                Gender: %s
+            </div>
+            <div>
+                Start Year: %s
+            </div>
+            <div>
+                End Year: %s
+            </div>
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Start Rank
+                    </th>
+                    <th>
+                        Start Ranking Year
+                    </th>
+                    <th>
+                        End Year
+                    </th>
+                    <th>
+                        End Ranking Year
+                    </th>
+                    <th>
+                        Trend
+                    </th>
+                </tr>
+            </table>
+        </div>
+</div>

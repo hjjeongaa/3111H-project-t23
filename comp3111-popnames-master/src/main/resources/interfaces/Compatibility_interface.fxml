@@ -199,7 +199,7 @@
                         <Text layoutX="-38.0" layoutY="84.0" onMouseEntered="#showCompositeInfoBox" onMouseExited="#hideCompositeInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE" />
                         <TextArea fx:id="T6_composite_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="COMPOSITE&#10;&#10;Do you value being a power coulpe above all else?&#10;&#10;Composite is a merger of PARM, PASRM and LD." visible="false" wrapText="true">
                            <font>
-                              <Font name="Segoe UI Light" size="20.0" />
+                              <Font name="Segoe UI Light" size="12.0" />
                            </font>
                         </TextArea>
                      </children>
@@ -213,7 +213,7 @@
                         <Text layoutX="-12.0" layoutY="84.0" onMouseEntered="#showPARMInfoBox" onMouseExited="#hidePARMInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="PARM" />
                         <TextArea fx:id="T6_parm_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="PARM&#10;&#10;If you value a equality in a relationship then the higher this score the more compatible you are!&#10;&#10;Are you and your mate equally popular?" visible="false" wrapText="true">
                            <font>
-                              <Font name="Segoe UI Light" size="20.0" />
+                              <Font name="Segoe UI Light" size="12.0" />
                            </font>
                         </TextArea>
                      </children>
@@ -227,7 +227,7 @@
                         <Text layoutX="-17.0" layoutY="85.0" onMouseEntered="#showPASRMInfoBox" onMouseExited="#hidePASRMInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="PASRM" />
                         <TextArea fx:id="T6_pasrm_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="PASRM&#10;&#10;If you value balance over all things then the higher this score the more compatible you are! &#10;&#10;Do you and your mate  have a balance in populairty?" visible="false" wrapText="true">
                            <font>
-                              <Font name="Segoe UI Light" size="20.0" />
+                              <Font name="Segoe UI Light" size="12.0" />
                            </font>
                         </TextArea>
                      </children>
@@ -241,7 +241,7 @@
                         <Text layoutX="-1.0" layoutY="84.0" onMouseEntered="#showLDInfoBox" onMouseExited="#hideLDInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="LD" />
                         <TextArea fx:id="T6_ld_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="Levenshtein Distance &#10;&#10;If you love yourself and your own name more then you anything else then the higher this score the more compatible you are!" visible="false" wrapText="true">
                            <font>
-                              <Font name="Segoe UI Light" size="20.0" />
+                              <Font name="Segoe UI Light" size="12.0" />
                            </font>
                         </TextArea>
                      </children>
