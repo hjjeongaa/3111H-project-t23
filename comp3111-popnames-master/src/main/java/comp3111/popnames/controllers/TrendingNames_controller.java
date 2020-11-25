@@ -147,6 +147,8 @@ public class TrendingNames_controller {
      */
     @FXML
     void selectType() {
+    	//hide all errors
+    	hideErrors();
     	//get countries from /type/metadata.txt
     	//Reset range string
         T3_startYear_ComboBox.setValue("");
@@ -170,9 +172,10 @@ public class TrendingNames_controller {
      */
     @FXML
     void selectCountry() {
+    	//hide all errors
+    	hideErrors();
     	//Getting start year and end year limits from /type/country/metadata.txt
-
-        if (T3_country_ComboBox.getValue() == null){
+        if (isComboBoxEmpty(T3_country_ComboBox.getValue())){
             //if nothing has been selected do nothing
             return;
         }
@@ -196,18 +199,27 @@ public class TrendingNames_controller {
       T3_startYear_ComboBox.setValue(Integer.toString(start));
       T3_endYear_ComboBox.setValue(Integer.toString(end));
     }
-
+    //Helper functions
+    /**
+     * checks if a ComboBox is empty
+     */
+    private boolean isComboBoxEmpty(String entry){
+        return entry == null || entry.isBlank();
+    }
+    @FXML
     /**
      * Function is called to hide all error messages
-     * Yuxi Sun
+     * @author Yuxi Sun
      */
-    private void hideErrors(){
+    void hideErrors(){
         T3_country_error_Text.setVisible(false);
         T3_type_error_Text.setVisible(false);
         T3_range_error_Text.setVisible(false);
         T3_start_year_error_Text.setVisible(false);
         T3_end_year_error_Text.setVisible(false);
     }
+    
+    
     //validation
     /**
      * Input validation and error message handler for T3 Controller
@@ -219,23 +231,34 @@ public class TrendingNames_controller {
      */
     private boolean validateInputs(String iStart, String iEnd, String country, String type) {
     	hideErrors();
+    	int validStart;
+    	int validEnd;
         boolean valid = true;
-    	Pair<String,String> validRange = DatasetHandler.getValidRange(type, country);
-    	int validStart = Integer.parseInt(validRange.getKey());
-    	int validEnd = Integer.parseInt(validRange.getValue());
+        if (isComboBoxEmpty(type)) {
+        	valid = false;
+        	T3_type_error_Text.setVisible(true);
+        }
+        if (isComboBoxEmpty(country)) {
+        	valid = false;
+        	T3_country_error_Text.setVisible(true);
+        }
     	//checking if start year and end year are set
-        if (iStart == null){
+        if (isComboBoxEmpty(iStart)){
             //start is empty
             T3_start_year_error_Text.setVisible(true);
             valid = false;
         }
-        if (iEnd == null){
+        if (isComboBoxEmpty(iEnd)){
             //end is empty
             T3_end_year_error_Text.setVisible(true);
             valid = false;
         }
     	if (valid){
             //if years are not empty and valid perform further testing
+    		//fetch valid data range
+        	Pair<String,String> validRange = DatasetHandler.getValidRange(type, country);
+        	validStart = Integer.parseInt(validRange.getKey());
+        	validEnd = Integer.parseInt(validRange.getValue());
             //check year range validity
     		int start = Integer.parseInt(iStart);
     		int end  = Integer.parseInt(iEnd);
@@ -253,17 +276,14 @@ public class TrendingNames_controller {
         		valid=false;
         	}
     	}
-    	if(type == null) {
+    	if(isComboBoxEmpty(type)) {
     		//if type is not set
             T3_type_error_Text.setVisible(true);
     	}
-        if(country == null) {
+        if(isComboBoxEmpty(country)) {
             //if country is not set
             T3_country_error_Text.setVisible(true);
         }
-//T3_country_error_Text;
-//T3_type_error_Text;
-//T3_range_error_Text;
     	return valid;
     }
 	void updateTable(T3_row_structure newEntry){

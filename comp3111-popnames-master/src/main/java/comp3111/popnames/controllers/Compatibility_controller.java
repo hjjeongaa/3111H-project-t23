@@ -24,7 +24,7 @@ import javafx.util.Pair;
 /**
  * Controller for T6 Predict Compatibility Score
  * @author Yuxi Sun
- * v1.0
+ * v2.0
  */
 public class Compatibility_controller {
 
@@ -145,269 +145,376 @@ public class Compatibility_controller {
     @FXML
     private TextArea T6_ld_infobox_TextArea;
     //UI components
+
+    //combobox variables
+    ObservableList<String> userTypesList;
+    ObservableList<String> userCountriesList;
+    ObservableList<String> userYOBList;
+
+    ObservableList<String> mateTypesList;
+    ObservableList<String> mateCountries;
+    ObservableList<String> preferenceList;
+
+    ObservableList<String> rankingAlgorithmsList;
+    ObservableList<String> rankResolversList;
+    /**
+     * Initializes relevant UI components on system load.
+     * @author Yuxi Sun
+     */
     public void initialize(){
     	//hide error message(s)
         //User initializers
-        //set type options
-        ObservableList<String> userType = FXCollections.observableArrayList(DatasetHandler.getTypes());
-        T6_user_type_ComboBox.setItems(userType);
+        //initialize and link lists
+        userTypesList = FXCollections.observableArrayList(DatasetHandler.getTypes());
+        T6_user_type_ComboBox.setItems(userTypesList);
+        userCountriesList = FXCollections.observableArrayList();
+        T6_user_country_ComboBox.setItems(userCountriesList);
+        userYOBList = FXCollections.observableArrayList();
+        
+        T6_user_yob_ComboBox.setItems(userYOBList);
+        //set user type options
         T6_user_type_ComboBox.setValue("human");
-        
-        //set country options based on the default of usa
         selectUserType();
+
+        //set use country options based on the default of usa
         T6_user_country_ComboBox.setValue("usa");
-        
-        //update YOB list according to default
         selectUserCountry();
+        //update YOB list according to default
         T6_user_yob_ComboBox.setValue("1941");
 
         //Mate initializers
-        ObservableList<String> mateType = FXCollections.observableArrayList(DatasetHandler.getTypes());
-        T6_mate_type_ComboBox.setItems(mateType);
+        //initialize and link lists
+        mateTypesList = FXCollections.observableArrayList(DatasetHandler.getTypes());
+        T6_mate_type_ComboBox.setItems(mateTypesList);
         T6_mate_type_ComboBox.setValue("human");
+        
+        mateCountries = FXCollections.observableArrayList();
+        T6_mate_country_ComboBox.setItems(mateCountries);
+        preferenceList = FXCollections.observableArrayList();
         
         //set country options based on the default of usa
         selectMateType();
         T6_mate_country_ComboBox.setValue("usa");
-        
+
+        //update preference options
+        preferenceList = FXCollections.observableArrayList();
+        T6_preferences_ComboBox.setItems(preferenceList);
         updatePreferences();
-        
         
         //initialize ranking settings
         //initialize ranking Algorithm
-        ObservableList<String> rankingAlgorithms = FXCollections.observableArrayList(RankingAlgorithmFactory.getNonIterativeMethods());
-        T6_ranking_algorithm_ComboBox.setItems(rankingAlgorithms);
+        rankingAlgorithmsList = FXCollections.observableArrayList(RankingAlgorithmFactory.getNonIterativeMethods());
+        T6_ranking_algorithm_ComboBox.setItems(rankingAlgorithmsList);
         T6_ranking_algorithm_ComboBox.setValue("scr");
         //initialize rank Resolver
-        ObservableList<String> rankResolvers = FXCollections.observableArrayList(rankResolver.getResolutionMethods());
-        T6_ranking_resolver_ComboBox.setItems(rankResolvers);
+        rankResolversList = FXCollections.observableArrayList(rankResolver.getResolutionMethods());
+        T6_ranking_resolver_ComboBox.setItems(rankResolversList);
         T6_ranking_resolver_ComboBox.setValue("ld");
     }
     //User UI components
     @FXML
+    /**
+     * Update country list on change of user type
+     */
     private void selectUserType() {
-        ObservableList<String> userCountries = FXCollections.observableArrayList(DatasetHandler.getCountries(T6_user_type_ComboBox.getValue()));
-        T6_user_country_ComboBox.setItems(userCountries);
+        hideAllErrors();
+        userCountriesList.clear();
+        for (String country: DatasetHandler.getCountries(T6_user_type_ComboBox.getValue())){
+            userCountriesList.add(country);
+        }
         //clearing and resetting userCountry and userYOB;
         T6_user_country_ComboBox.setValue("");
-        T6_user_yob_ComboBox.setItems(FXCollections.observableArrayList());
         T6_user_yob_ComboBox.setValue("");
     }
     
     @FXML
+    /**
+     * Update userYOB on change of user country
+     */
     private void selectUserCountry() {
+        hideAllErrors();
     	//Initializing empty list
-        ObservableList<String> userYob = FXCollections.observableArrayList();
+        userYOBList.clear();
         //getting start year and end year of specified dataset/type/country/
-        Pair<String,String> userValidRange = DatasetHandler.getValidRange(T6_user_type_ComboBox.getValue(),T6_user_country_ComboBox.getValue());
-        int start = Integer.parseInt(userValidRange.getKey());
-        int end = Integer.parseInt(userValidRange.getValue());
-        for(int i = start; i <= end; ++i){
-        	//appending all valid years to the list to be displayed in 
-            userYob.add(Integer.toString(i));
+        String type = T6_user_type_ComboBox.getValue();
+        String country = T6_user_country_ComboBox.getValue();
+        if (!isComboBoxEmpty(type) && !isComboBoxEmpty(country)){
+            //only runs this if both start year and end year are valid.
+            Pair<String,String> userValidRange = DatasetHandler.getValidRange(type, country);
+            int start = Integer.parseInt(userValidRange.getKey());
+            int end = Integer.parseInt(userValidRange.getValue());
+            System.out.println(start);
+            System.out.println(end);
+            for(int i = start; i <= end; ++i){
+                //appending all valid years to the list to be displayed in 
+                userYOBList.add(Integer.toString(i));
+            }
+            System.out.println(userYOBList.toString());
+            T6_user_yob_ComboBox.setValue(Integer.toString((start+end)/2));//setting the default YOB to the median year of said range.
         }
-        T6_user_yob_ComboBox.setItems(userYob);
-        T6_user_yob_ComboBox.setValue(Integer.toString((start+end)/2));//setting the default YOB to the median year of said range.
     }
     
     @FXML
+    /**
+     * Update preferences
+     */
     private void selectUserYOB() {
-    	//update preference list
-    	updatePreferences();
+        //update preference list
+        updatePreferences();
     }
     //Mate UI components
     @FXML
+        /**
+     * Update country list on change of mate type
+     */
     private void selectMateType() {
-        ObservableList<String> mateCountries = FXCollections.observableArrayList(DatasetHandler.getCountries(T6_mate_type_ComboBox.getValue()));
-        T6_mate_country_ComboBox.setItems(mateCountries);
+        mateCountries.clear();
+        for (String country: DatasetHandler.getCountries(T6_mate_type_ComboBox.getValue()))
+            mateCountries.add(country);
         //clearing and resetting mateCountry and preference;
         T6_mate_country_ComboBox.setValue("");
-        T6_preferences_ComboBox.setItems(FXCollections.observableArrayList());
-        T6_preferences_ComboBox.setValue("");
+        updatePreferences();
+        hideAllErrors();
+    }
+    @FXML
+    private void selectMateCountry() {
+        hideAllErrors();
+    	updatePreferences();
     }
     @FXML
     private void updatePreferences() {
 //    	T6_pref_error_Text.setVisible(false);
+        // clear all errors();
+        hideAllErrors();
+        preferenceList.clear();
+        T6_preferences_ComboBox.setValue("");
     	//list of preferences [-5,5];
-        T6_pref_range_error_Text.setVisible(false);
         ObservableList<String> preferenceOptions = FXCollections.observableArrayList();
-        if (!T6_mate_country_ComboBox.getValue().isBlank()) {
-        	//if T6_mate_country_ComboBox has been set then we can update the preference options
-	        if (T6_user_yob_ComboBox.getValue()==null) {
-	        	// if YOB is not set then give the users the full range of options from -5 to +5
-	            //getting start year and end year of specified data set/type/country/
-	    		for (int i = -5; i <= 5; ++i) {
-	    			preferenceOptions.add(Integer.toString(i));
-	    		}
-	    		T6_preferences_ComboBox.setValue("0");
-	    	}
-	    	else {
-	        	//else restrict the options where applicable.
-	    		
-	    		//setting up useful variables
-	            //getting start year and end year of specified dataset/type/country/
-	            Pair<String,String> mateValidRange = DatasetHandler.getValidRange(T6_mate_type_ComboBox.getValue(),T6_mate_country_ComboBox.getValue());
-	            int start = Integer.parseInt(mateValidRange.getKey());
-	            int end = Integer.parseInt(mateValidRange.getValue());
-	            int userYOB = Integer.parseInt(T6_user_yob_ComboBox.getValue());
-	            int prefMin = Math.max(-5,start -userYOB); //either -5 or the earliest valid Mate data set
-	            int prefMax = Math.min(5,end -userYOB); //either 5 or the latest valid Mate data set
-	            for (int i = prefMin; i <= prefMax;++i) {
-	            	preferenceOptions.add(Integer.toString(i));
-	            }
-	            int defaultPref = (prefMin+prefMax)/2;
-	          //set to value at the middle of range if -5<=defaultPref<=5 else sett it to "";
-                if (defaultPref>=-5&&defaultPref<=5){
-                    T6_preferences_ComboBox.setValue(Integer.toString(defaultPref));
-                }else{
-                    //display range error message
-                    T6_pref_range_error_Text.setVisible(true);
-                    //get user YOB ranges
-    	            Pair<String,String> userValidRange = DatasetHandler.getValidRange(T6_user_type_ComboBox.getValue(),T6_user_country_ComboBox.getValue());
-    	            int ustart = Integer.parseInt(userValidRange.getKey());
-    	            int uend = Integer.parseInt(userValidRange.getValue());
-    	            int validStart = Math.max(ustart, start-5);
-    	            int validEnd = Math.min(uend, end+5);
-    	            //update message
-                    T6_pref_range_error_Text.setText(String.format("Your YOB must be between %s and %s for you to be able to have a preference", validStart,validEnd));
-                    T6_preferences_ComboBox.setValue("");
+            
+        if (validateUpdatePreference()){
+            //if all inputs are valid then update everything
+            //setting up useful variables
+            //getting start year and end year of specified dataset/type/country/
+            Pair<String,String> mateValidRange = DatasetHandler.getValidRange(T6_mate_type_ComboBox.getValue(),T6_mate_country_ComboBox.getValue());
+            int start = Integer.parseInt(mateValidRange.getKey());
+            int end = Integer.parseInt(mateValidRange.getValue());
+            int userYob = Integer.parseInt(T6_user_yob_ComboBox.getValue());
+            int prefMin = Math.max(-5,start -userYob); //either -5 or the earliest valid Mate data set
+            int prefMax = Math.min(5,end -userYob); //either 5 or the latest valid Mate data set
+            for (int i = prefMin; i <= prefMax;++i) {
+                preferenceList.add(Integer.toString(i));
+            }
+            int defaultPref = (prefMin+prefMax)/2;
+            //set to value at the middle of range if -5<=defaultPref<=5 else sett it to "";
+            if (defaultPref>=-5&&defaultPref<=5){
+                T6_preferences_ComboBox.setValue(Integer.toString(defaultPref));
+            }else{
+                //display range error message
+                T6_pref_range_error_Text.setVisible(true);
+                //get user YOB ranges
+                Pair<String,String> userValidRange = DatasetHandler.getValidRange(T6_user_type_ComboBox.getValue(),T6_user_country_ComboBox.getValue());
+                int ustart = Integer.parseInt(userValidRange.getKey());
+                int uend = Integer.parseInt(userValidRange.getValue());
+                int validStart = Math.max(ustart, start-5);
+                int validEnd = Math.min(uend, end+5);
+                //update message
+                T6_pref_range_error_Text.setText(String.format("Your YOB must be between %s and %s for you to be able to have a preference", validStart,validEnd));
+                T6_preferences_ComboBox.setValue("");
+            }
+        }else{
+            //else restrict the options where applicable.
+            if (!T6_mate_country_ComboBox.getValue().isBlank()|| T6_mate_country_ComboBox.getValue()!= null) {
+                //if T6_mate_country_ComboBox has been set then we can update the preference options
+                if (T6_user_yob_ComboBox.getValue()==null) {
+                    // if YOB is not set then give the users the full range of options from -5 to +5
+                    //getting start year and end year of specified data set/type/country/
+                    for (int i = -5; i <= 5; ++i) {
+                        preferenceOptions.add(Integer.toString(i));
+                    }
+                    T6_preferences_ComboBox.setValue("0");
                 }
-	    	}
-        }else {
-            //if T6_mate_country_ComboBox has not be set then do not offer options
-        	T6_preferences_ComboBox.setValue("");
+            }
         }
-        //update lists
-        T6_preferences_ComboBox.setItems(preferenceOptions);
     }
-
-    //Validation
-    boolean validateUserInputs(String iName, String iGender, String yob, String country, String type){
+    
+    private boolean validateUpdatePreference() {
+        //hide all previous error messages
+        hideAllErrors();
+        //load users variables
+        String iName = T6_user_name_TextField.getText();
+        String yob = T6_user_yob_ComboBox.getValue();
+        String type = T6_user_type_ComboBox.getValue();
+        String country = T6_user_country_ComboBox.getValue();
+        
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
-
         //validation of input
         boolean valid = true;
-        if(iName.isBlank()){
+        if(isComboBoxEmpty(iName)){
+            //if iName is empty
+            valid = false;
+        }
+        if(isComboBoxEmpty(yob)){
+            //if yob is empty
+            valid = false;
+        }
+        if(isComboBoxEmpty(country)){
+            //if country is empty
+            valid = false;
+        }
+        if(isComboBoxEmpty(type)){
+            //if type is empty
+            valid = false;
+        }//load all variables
+        String iNameMate = T6_mate_name_TextField.getText();
+        String countryMate = T6_mate_country_ComboBox.getValue();
+        String typeMate = T6_mate_type_ComboBox.getValue();
+        //At this point we assume that all input fields are either empty strings "" or valid. due to the way the UI is set up
+        //validate mate
+        if(isComboBoxEmpty(iNameMate)){
+            //if iNameMate is empty
+            valid = false;
+        }
+        if(isComboBoxEmpty(countryMate)){
+            //if countryMate is empty
+            valid = false;
+            T6_mate_country_error_Text.setVisible(true);
+        }
+        if(isComboBoxEmpty(typeMate)){
+            //if typeMate is empty
+            valid = false;
+            T6_mate_type_error_Text.setVisible(true);
+        }
+        return valid;
+    	
+    }
+    private void hideAllErrors(){
+        //user error messages
+        T6_user_name_error_Text.setVisible(false);
+        T6_country_type_error_Text.setVisible(false);
+        T6_user_type_error_Text.setVisible(false);
+        T6_user_yob_error_Text.setVisible(false);
+        //mate error messages
+        T6_mate_name_error_Text.setVisible(false);
+        T6_pref_null_error_Text.setVisible(false);
+        T6_mate_country_error_Text.setVisible(false);
+        T6_mate_type_error_Text.setVisible(false);
+    }
+    //Validation
+    boolean validateUserInputs(){
+        //load all variables
+        String iName = T6_user_name_TextField.getText();
+        String iGender = (T6_user_male_RadioButton.isSelected())?"M":"F";
+        String yob = T6_user_yob_ComboBox.getValue();
+        String type = T6_user_type_ComboBox.getValue();
+        String country = T6_user_country_ComboBox.getValue();
+        
+        //hide all previous error messages
+        hideAllErrors();
+        //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
+        //validation of input
+        boolean valid = true;
+        if(isComboBoxEmpty(iName)){
             //if iName is empty
             valid = false;
             T6_user_name_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_user_name_error_Text.setVisible(false);
         }
-        if(iGender.isBlank()){
-            //if iGender is empty
+        if(isComboBoxEmpty(iGender)){
+            //if iGender is empty or null (should never happen unless UI fails)
             valid = false;
             System.out.println("Gender error");
         }
-        if(yob.isBlank()){
+        if(isComboBoxEmpty(yob)){
             //if yob is empty
             valid = false;
             T6_user_yob_error_Text.setVisible(true);
-        }else{//else assume YOB valid
-            T6_user_yob_error_Text.setVisible(false);
         }
-        if(country.isBlank()){
+        if(isComboBoxEmpty(country)){
             //if country is empty
             valid = false;
             T6_country_type_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_country_type_error_Text.setVisible(false);
         }
-        if(type.isBlank()){
+        if(isComboBoxEmpty(type)){
             //if type is empty
             valid = false;
             T6_user_type_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_user_type_error_Text.setVisible(false);
         }
         return valid;
     }
 
-    boolean validateMateInputs(String iNameMate, String iGenderMate, String preference, String countryMate, String typeMate){
-        //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
+    boolean validateMateInputs(){
+        //hide all previous error messages
+        hideAllErrors();
 
+        //load all variables
+        String iNameMate = T6_mate_name_TextField.getText();
+        String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
+        String preference = T6_preferences_ComboBox.getValue();
+        String countryMate = T6_mate_country_ComboBox.getValue();
+        String typeMate = T6_mate_type_ComboBox.getValue();
+        //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
         //validate mate
         boolean valid = true;
-        if(iNameMate.isBlank()){
+        if(isComboBoxEmpty(iNameMate)){
             //if iNameMate is empty
             valid = false;
-            System.out.println(iNameMate);
             T6_mate_name_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_mate_name_error_Text.setVisible(false);
         }
-        if(iGenderMate.isBlank()){
+        if(isComboBoxEmpty(iGenderMate)){
             //if iGenderMate is empty
             valid = false;
             System.out.println("Gender error");
         }
-        if(preference.isBlank()){
+        if(isComboBoxEmpty(preference)){
             //if iNameMate is empty
             valid = false;
             T6_pref_null_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_pref_null_error_Text.setVisible(false);
         }
-        if(countryMate.isBlank()){
+        if(isComboBoxEmpty(countryMate)){
             //if countryMate is empty
             valid = false;
-            System.out.println(countryMate);
             T6_mate_country_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_mate_country_error_Text.setVisible(false);
         }
-        if(typeMate.isBlank()){
+        if(isComboBoxEmpty(typeMate)){
             //if typeMate is empty
             valid = false;
-            System.out.println(typeMate);
             T6_mate_type_error_Text.setVisible(true);
-        }else{
-            //hide error message
-            T6_mate_type_error_Text.setVisible(false);
         }
         return valid;
     }
-    private boolean validateRankingInputs(String rankingAlgo, String resolver){
-        //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
-        //double check if rankingAlgo and resolver is from the supported options.
-        boolean valid = true;
-        // valid = false;
-    	return valid;
-    }
+    
+    
+//    private boolean validateRankingInputs(){
+//        //At this point we assume that all input fields are either empty strings "" or valid. due to the way the UI is set up
+//        //double check if rankingAlgo and resolver is from the supported options.
+//        boolean valid = true;
+//        // valid = false;
+//    	return valid;
+//    }
     //actual execution
     @FXML
     void compatibilityScore() {
-    	//getting relevant variables
-        //user variables
-        String iName = T6_user_name_TextField.getText();
-        String iGender = (T6_user_male_RadioButton.isSelected())?"M":"F";
-        String yob = T6_user_yob_ComboBox.getValue();
-        int iYOB;
-        String type = T6_user_type_ComboBox.getValue();
-        String country = T6_user_country_ComboBox.getValue();
-        //mate variables
-        String iNameMate = T6_mate_name_TextField.getText();
-        String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
-        String preference = T6_preferences_ComboBox.getValue();
-        int iPreference;
-        String countryMate = T6_mate_country_ComboBox.getValue();
-        String typeMate = T6_mate_type_ComboBox.getValue();
-        //rank settings
-        String rankingAlgo = T6_ranking_algorithm_ComboBox.getValue();
-        String resolver = T6_ranking_resolver_ComboBox.getValue();
 
-        if (validateUserInputs(iName, iGender, yob, country, type) &&
-            validateMateInputs(iNameMate, iGenderMate, preference, countryMate, typeMate) &&
-            validateRankingInputs(rankingAlgo, resolver)){
-            //if the inputs are valid then proceed
-            iPreference = Integer.parseInt(preference);
-            iYOB = Integer.parseInt(T6_user_yob_ComboBox.getValue());
+
+        if (validateUserInputs() &&
+            validateMateInputs()){
+        	//if the inputs are valid then proceed
+        	//getting relevant variables
+            //user variables
+            String iName = T6_user_name_TextField.getText();
+            String iGender = (T6_user_male_RadioButton.isSelected())?"M":"F";
+            int iYOB = Integer.parseInt(T6_user_yob_ComboBox.getValue());
+            String type = T6_user_type_ComboBox.getValue();
+            String country = T6_user_country_ComboBox.getValue();
+            //mate variables
+            String iNameMate = T6_mate_name_TextField.getText();
+            String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
+            int iPreference = Integer.parseInt(T6_preferences_ComboBox.getValue());
+            String countryMate = T6_mate_country_ComboBox.getValue();
+            String typeMate = T6_mate_type_ComboBox.getValue();
+            //rank settings
+            String rankingAlgo = T6_ranking_algorithm_ComboBox.getValue();
+            String resolver = T6_ranking_resolver_ComboBox.getValue();
+            
             //initializing and generating report
             PredictCompatibilityScore report = new PredictCompatibilityScore(iName, iGender, iYOB, country, type , iNameMate, iGenderMate, iPreference, countryMate, typeMate, rankingAlgo, resolver);
             //update relevant variable
@@ -418,6 +525,12 @@ public class Compatibility_controller {
     }
 
     //Helper functions
+    /**
+     * checks if a ComboBox is empty
+     */
+    private boolean isComboBoxEmpty(String entry){
+        return entry == null || entry.isBlank();
+    }
     /**
      *  Converts a [0,1] score to a [0,360] score
      * @param oScore double between [0,1]
@@ -526,4 +639,5 @@ public class Compatibility_controller {
     void hideLDInfoBox(){
         T6_ld_infobox_TextArea.setVisible(false);
     }
+
 }
