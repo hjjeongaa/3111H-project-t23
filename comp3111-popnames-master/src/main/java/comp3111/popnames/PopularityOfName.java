@@ -65,7 +65,7 @@ public class PopularityOfName extends Reports {
 			//Calculate percentile of the name's rank
 			Double rank = (double)thisYearRank;
 			int total = thisYearRecordsLength;
-			Double thisRankPercentage = 100*(1-(rank/total));
+			Double thisRankPercentage = 100*(1-((rank-1)/total));
 			Triple<Integer,Integer,Double> rankAndYearSize = Triple.of(thisYearRank,thisYearRecordsLength,thisRankPercentage);
 			this.ranksInEachYear.add(rankAndYearSize);
 		}
