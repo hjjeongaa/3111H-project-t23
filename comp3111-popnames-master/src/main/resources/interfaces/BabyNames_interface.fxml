@@ -1,6 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.BabyNames_controller"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.BabyNames_controller">
+   <children>
+      <HBox layoutX="236.0" layoutY="195.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="570.0" prefWidth="631.0">
+               <children>
+                  <Label text="Here, you can generate baby names from a mother and father's information.">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Segoe UI Light" size="18.0" />
+                     </font>
+                  </Label>
+                  <GridPane prefHeight="199.0" prefWidth="630.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="310.0" minWidth="10.0" prefWidth="141.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="517.0" minWidth="10.0" prefWidth="205.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="517.0" minWidth="10.0" prefWidth="284.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Mother's Name">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Mother's YOB" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Father's Name" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Father's YOB" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Baby's Gender" GridPane.rowIndex="4">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="131.0" text="Vintage Year" GridPane.rowIndex="5">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="BabyNames_motherName_textField" text="Jessica" GridPane.columnIndex="1">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <TextField fx:id="BabyNames_motherYear_textField" text="1970" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <TextField fx:id="BabyNames_fatherName_textField" text="Alex" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <TextField fx:id="BabyNames_fatherYear_textField" text="1980" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <TextField fx:id="BabyNames_vintageYear_textField" promptText="(blank = 2019)" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <Label fx:id="BabyNames_motherNameError_label" textFill="#ff4c4c" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="BabyNames_motherYearError_label" textFill="#ff4c4c" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Segoe UI Light" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="BabyNames_fatherNameError_label" textFill="#ff4c4c" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="BabyNames_fatherYearError_label" textFill="#ff4c4c" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="Segoe UI Light" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="BabyNames_vintageYearError_label" textFill="#ff4c4c" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                           <font>
+                              <Font name="Segoe UI Light" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <RadioButton fx:id="BabyNames_male_radioButton" mnemonicParsing="false" selected="true" text="Male">
+                                 <font>
+                                    <Font name="Segoe UI Light" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="BabyNames_gender_toggleGroup" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="BabyNames_female_radioButton" mnemonicParsing="false" text="Female" toggleGroup="$BabyNames_gender_toggleGroup">
+                                 <font>
+                                    <Font name="Segoe UI Light" size="16.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <Button fx:id="BabyNames_generate_button" mnemonicParsing="false" onAction="#generateBabyNames" text="Generate">
+                     <font>
+                        <Font name="Segoe UI Light" size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="200.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <TableView fx:id="BabyNames_tableView" prefHeight="570.0" prefWidth="295.0">
+              <columns>
+                <TableColumn fx:id="BabyNames_tableView_name_tableColumn" prefWidth="187.0" text="Name" />
+                  <TableColumn fx:id="BabyNames_tableView_percentageScore_tableColumn" prefWidth="104.0" text="Percentage Score" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
