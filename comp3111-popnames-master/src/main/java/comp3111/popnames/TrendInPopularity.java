@@ -329,7 +329,7 @@ public class TrendInPopularity extends Reports{
 	private void writeoHTML() {
 		//generate table html
 		String table = "";
-		String row = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
+		String row = "<tr>\n\t<td>%s</td>\n\t<td>%s</td>\n\t<td>%s</td>\n\t<td>%s</td>\n\t<td>%s</td>\n\t<td>%s</td>\n</tr>\n";
 		//writing rising values to Super class oReport variable.
 		Iterator<Name> rise = setOfLargestRise.iterator();
 		while (rise.hasNext()){
@@ -347,17 +347,19 @@ public class TrendInPopularity extends Reports{
 		 }
 		 
 		//grabbing template
-    	FileResource fr = new FileResource("resources/export/t6htmlTemplate.txt");
+    	FileResource fr = new FileResource("export/t3htmlTemplate.txt");
+    	String template = fr.asString();
     	//substituting values into the template
-    	String oHTML = String.format(fr.asString(), super.gettype(),super.getcountry(),super.getgender(), this.startYear, this.endYear,table);
+    	String oHTML = String.format(template, super.gettype(), super.getcountry(), super.getgender(), Integer.toString(this.startYear), Integer.toString(this.endYear),table);
 		super.setHTML(oHTML);
 	}
 	/**
 	 * This function parses through the filtered content and writes it to the super classes output string oReport. 
 	 */
 	private void writeoReport() {
-		 String oReport = String.format("%s %s %s %s %s", super.gettype(),super.getcountry(),super.getgender(), this.startYear, this.endYear);
-		
+    	FileResource fr = new FileResource("export/t3oReportTemplate.txt");
+    	String template = fr.asString();
+		String oReport = String.format(template, super.gettype(),super.getcountry(),super.getgender(), this.startYear, this.endYear);
 		super.setoReport(oReport);
 	}
 

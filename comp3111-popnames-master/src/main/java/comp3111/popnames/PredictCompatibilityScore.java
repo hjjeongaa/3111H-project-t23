@@ -58,7 +58,7 @@ public class PredictCompatibilityScore extends ReportLog{
 	 */
 	public String getHTML(){
 		//grabbing template
-    	FileResource fr = new FileResource("resources/export/t6htmlTemplate.txt");
+    	FileResource fr = new FileResource("export/t6htmlTemplate.txt");
     	//substituting values into the template
 		return String.format(fr.asString(), user.getName(),user.getGender(), user.getType(),user.getCountry(),user.getYob(),
 				mate.getName(),mate.getGender(), mate.getType(),mate.getCountry(),mate.getYob(),
@@ -110,7 +110,7 @@ public class PredictCompatibilityScore extends ReportLog{
 	}
 	/**
 	 *  string similarity using a modified Levenshtein distance. The values are squared to introduce nonlinearity.
-	 *  @return (Levenshtein distance)^2/ (Max(user name length, mate name length)^2
+	 *  @return Max(0,1-(Levenshtein distance)^2/ (Max(user name length, mate name length)^2)
 	 */
 	public double ld() {
 		int ldScore = LD.calculate(user.getName(), mate.getName());

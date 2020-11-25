@@ -15,24 +15,24 @@ import comp3111.rankingAlgo.LD;
 public class LDTest {
 
 	@Test
-	public void dldTest1Valid() {
+	public void ldTest1Valid() {
 		assertTrue(LD.calculate("Jon", "Joon")==1);
 	}
 
 	@Test
-	public void dldTest2Valid() {
+	public void ldTest2Valid() {
 		assertTrue(LD.calculate("Joon", "Joon")==0);
 	}
 	@Test
-	public void dldTest3Valid() {
-		assertTrue(LD.calculate("joon", "Joon")==2);
+	public void ldTest3Valid() {
+		assertTrue(LD.calculate("joon", "Joon")==1);
 	}
 	@Test
-	public void dldTest4Valid() {
+	public void ldTest4Valid() {
 		assertTrue(LD.calculate("Amy", "Joon")==4);
 	}
 	@Test
-	public void dldTest5Valid() {
+	public void ldTest5Valid() {
 		assertTrue(LD.calculate("Leeman", "Joon")==5);
 	}
 	@Test

@@ -10,7 +10,7 @@ import javafx.util.Pair;
  * @author Yuxi Sun
  * v1.0
  */
-public class DatasetHandler {
+public abstract class DatasetHandler {
 	/**
 	 * This function is used to get the valid types in the current data set
 	 * @return a Vector<String> of the support types in the current data set using the data set/metadata.txt
@@ -29,6 +29,7 @@ public class DatasetHandler {
 	 * @return Vector<String> of the supported countries in the existing data set
 	 */
 	public static Vector<String> getCountries(String type){
+		type = type.strip(); //cleaning input
 		Vector<String> types = new Vector<String>();
     	FileResource fr = new FileResource(String.format("dataset/%s/metadata.txt", type));
     	for(String line: fr.lines()) {
@@ -38,17 +39,23 @@ public class DatasetHandler {
 	}
 
 	/**
-	 *  Used to get the valid start and end year ranges of a type/country inclusive
-	 * @param type
-	 * @param country
-	 * @return Pair<String,String> consisting of start year and end year inclusive of the supported years.
+	 * Used to get the valid start and end year ranges inclusive of a type/country
+	 * @param type the type of data set being used
+	 * @param country the country of data set being 
+	 * @return A Pair of type String,String with key start year and value end year or null if the type and country are invalid.
 	 */
 	public static Pair<String,String> getValidRange(String type, String country){
-    	FileResource fr = new FileResource(String.format("dataset/%s/%s/metadata.txt", type,country));
-    	Vector<String> metadata = new Vector<String>(); // used to store the first line of the metadata file (that holds the start and end year separated by a space
-    	for(String line: fr.lines()) {
-    		metadata.add(line);
-    	}
-		return new Pair<String,String>(metadata.get(0),metadata.get(1));
+		type = type.strip(); //cleaning input
+		country = country.strip(); //cleaning input
+		//validation
+		if (getTypes().contains(type) && getCountries(type).contains(country)){
+	    	FileResource fr = new FileResource(String.format("dataset/%s/%s/metadata.txt", type,country));
+	    	Vector<String> metadata = new Vector<String>(); // used to store the first line of the metadata file (that holds the start and end year separated by a space
+	    	for(String line: fr.lines()) {
+	    		metadata.add(line);
+	    	}
+			return new Pair<String,String>(metadata.get(0),metadata.get(1));
+		}
+		return null;//input error
 	}
 }

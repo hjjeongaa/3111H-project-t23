@@ -32,19 +32,19 @@
         </style>
         <div class="grid-container">
             <div>
-                Type: %s
+                Type: %s 
             </div>
             <div>
-                Country: %s
+                Country: %s 
             </div>
             <div>
-                Gender: %s
+                Gender: %s 
             </div>
             <div>
-                Start Year: %s
+                Start Year: %s 
             </div>
             <div>
-                End Year: %s
+                End Year: %s 
             </div>
         </div>
 
@@ -70,6 +70,7 @@
                         Trend
                     </th>
                 </tr>
+		%s 
             </table>
         </div>
 </div>
