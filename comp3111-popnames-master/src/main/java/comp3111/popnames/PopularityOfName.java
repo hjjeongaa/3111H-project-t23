@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import org.apache.commons.csv.*;
 import org.apache.commons.lang3.tuple.Triple;
+import comp3111.export.ReportHistory;
 
 public class PopularityOfName extends Reports {
 	//The inputs provided to generate the report.
@@ -29,7 +30,12 @@ public class PopularityOfName extends Reports {
 	public PopularityOfName(int startYear, int endYear, String name, String gender, String country, String type) {
 		//Call Report constructor
 		super(name, gender, country, type);
-
+		super.setoReport(name+" ("+gender+"), "+startYear+"~"+endYear);
+		super.setTask("Popularity of Name");
+		
+		String thisHtml = "<table><tr><th>Year</th><th>Your name's rank</th><th>Total # of names this year</th><th>Percentile</th></tr>";
+		String tableRow = "<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td><tr>";
+		
 		this.startYear = startYear;
 		this.endYear = endYear;
 		//Create array object - this will hold the rank of the name every year.
@@ -60,13 +66,20 @@ public class PopularityOfName extends Reports {
 				}
 			}
 			//Calculate percentile of the name's rank
-			DecimalFormat df = new DecimalFormat("#.##");
 			Double rank = (double)thisYearRank;
 			int total = thisYearRecordsLength;
-			Double thisRankPercentage = 100*(1-(rank/total));
+			Double thisRankPercentage = 100*(1-((rank-1)/total));
 			Triple<Integer,Integer,Double> rankAndYearSize = Triple.of(thisYearRank,thisYearRecordsLength,thisRankPercentage);
 			this.ranksInEachYear.add(rankAndYearSize);
+			DecimalFormat df = new DecimalFormat("#.##");
+			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearRecordsLength, df.format(thisRankPercentage)+"%");
 		}
+
+		thisHtml += "</table>";
+		thisHtml = "<div>" + thisHtml + "</div>";
+		super.setHTML(thisHtml);
+		
+		ReportHistory.addReportLog(this);
 	}
 	/**
 	 * Using the array computed when the constructor was called, a report is generated with each rank in each year.

@@ -18,6 +18,11 @@ task debug(type:JavaExec) {
 } 
 
 dependencies {
+	compile "com.itextpdf:itext7-core:7.1.9"
+	compile "com.itextpdf:html2pdf:2.1.6"
+	compile "org.slf4j:slf4j-api:1.7.5"
+	compile "org.slf4j:slf4j-log4j12:1.7.5"
+
 	// https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit
 	compile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.31'
 

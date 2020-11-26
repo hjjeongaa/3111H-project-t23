@@ -9,7 +9,6 @@ package comp3111.popnames;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
 
-
 public class Reports extends ReportLog{
 	//class formatter for formatting time, subclasses should use superclass variable to format to save space.
 	public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
@@ -20,8 +19,8 @@ public class Reports extends ReportLog{
 	private String country; //country the data set is from
 	private String type;    //human or pet data set
 	private String oReport; //output of report, output should be set in subclass
-	private String task;
-	private String html;
+	private String task;	//name of task the report was generated from
+	private String html;	//html output of the report's contents (must be wrapped in a <div>)
 	//accessors
 	public LocalDateTime getTime(){return time;};
 	public String getoReport(){return oReport;};
