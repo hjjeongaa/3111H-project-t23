@@ -1,3 +1,9 @@
+/**
+ * Export_controller
+ * UI controller for exporting reports, and showing a TableView of all generated reports so far.
+ * @author Hyun Joon Jeong
+ */
+
 package comp3111.popnames.controllers;
 
 
@@ -22,6 +28,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Export_controller {
+	//ReportHolder has to be defined separately because it is uesd within ReportHistory as well.
 	@FXML
     private TableView<ReportHolder> Export_tableView;
 
@@ -52,6 +59,10 @@ public class Export_controller {
     @FXML
     private Label Export_nothingSelectedError_label;
     
+    /**
+     * initialize: called once when the UI is initialized
+     * Bind the table view's columns to the data model, and link tableViewList with the table view.
+     */
     @FXML
     void initialize() {
     	Export_tableView_selected_tableColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
@@ -64,21 +75,31 @@ public class Export_controller {
     	Export_tableView.setItems(ReportHistory.getReportHoldersList());
     	Export_tableView.setPlaceholder(new Label("You haven't generated any reports yet."));
     }
-    
+    /**
+     * Mark all items in tableview as selected
+     */
     @FXML
     void Export_selectAllButtonPressed() {
     	ReportHistory.selectAll();
     }
-
+    /**
+     * Mark all items in tableview as unseleced
+     */
     @FXML
     void Export_selectNoneButtonPressed() {
     	ReportHistory.selectNone();
     }
-
+    /**
+     * Invert selection of all items in tableview
+     */
     @FXML
     void Export_invertSelectionButtonPressed() {
     	ReportHistory.invertSelection();
     }
+    /**
+     * Ask the user for a location to save a PDF file to, and call ReportHistory to export all selected reports as a PDF.
+     * Also handles cases where the location is invalid, in which case an appropriate error message will appear.
+     */
     @FXML
     void Export_exportSelectedButtonPressed() {
     	String initialFileName = ReportHistory.getLatestSelectedReportDate();
