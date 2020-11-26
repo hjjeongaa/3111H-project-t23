@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.Export_controller" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.Export_controller">
+   <children>
+      <HBox layoutX="262.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TableView fx:id="Export_tableView" editable="true" prefHeight="570.0" prefWidth="775.0">
+              <columns>
+                  <TableColumn fx:id="Export_tableView_selected_tableColumn" prefWidth="59.0" resizable="false" style="-fx-alignment: CENTER;" text="Selected?" />
+                <TableColumn fx:id="Export_tableView_time_tableColumn" editable="false" prefWidth="117.0" resizable="false" text="Time Generated" />
+                <TableColumn fx:id="Export_tableView_task_tableColumn" editable="false" prefWidth="168.0" text="Task Name" />
+                  <TableColumn fx:id="Export_tableView_summary_tableColumn" editable="false" prefWidth="412.0" text="Summary" />
+              </columns>
+            </TableView>
+            <VBox prefHeight="570.0" prefWidth="181.0">
+               <children>
+                  <Button fx:id="Export_selectAll_button" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#Export_selectAllButtonPressed" prefWidth="100.0" text="Select All">
+                     <VBox.margin>
+                        <Insets left="60.0" top="380.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="Export_selectNone_button" mnemonicParsing="false" onAction="#Export_selectNoneButtonPressed" prefWidth="100.0" text="Select None">
+                     <VBox.margin>
+                        <Insets left="60.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="Export_invertSelection_button" mnemonicParsing="false" onAction="#Export_invertSelectionButtonPressed" prefWidth="100.0" text="Invert Selection">
+                     <VBox.margin>
+                        <Insets left="60.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="Export_exportSelected_button" mnemonicParsing="false" onAction="#Export_exportSelectedButtonPressed" prefWidth="100.0" text="Export Selected">
+                     <VBox.margin>
+                        <Insets left="60.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="Export_nothingSelectedError_label" textFill="#ff4c4c">
+                     <VBox.margin>
+                        <Insets left="64.0" top="6.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

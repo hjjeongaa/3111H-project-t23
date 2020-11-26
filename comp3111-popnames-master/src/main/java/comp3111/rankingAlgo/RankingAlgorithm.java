@@ -7,13 +7,16 @@ import java.lang.Math;
 
 /**
  * super class for all algorithms
- * @author Marty Sun
- * v 1.0
+ * @author Yuxi Sun
+ * v 1.1
  */
 public abstract class RankingAlgorithm {
 
-	public abstract int getRank();
+	public abstract int getRank(); //getting rank of current Entry
 	public abstract int getSize(); // getting size of population
+	
+	public abstract void addEntry(int freq);//User for getting Ranks in Iterators, should be used with getRank()
+	
 	public abstract String getMethod();
 	@Override
 	/**

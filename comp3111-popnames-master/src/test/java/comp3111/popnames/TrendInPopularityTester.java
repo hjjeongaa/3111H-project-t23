@@ -31,85 +31,85 @@ public class TrendInPopularityTester extends ApplicationTest {
 		t = (TextArea)s.lookup("#textAreaConsole");
 	}
 	
-	@Test
-	public void testT3InterfaceGenerateValidBounds() {	
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("1900");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("2000");;
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-		assertFalse(s1.contains("Start Year should be within the valid range of 1880 - 2019")||
-				s1.contains("End Year should be within the valid range of 1880 - 2019")||
-				s1.contains("Start Year should be Smaller to End Year")
-				);
-	}
-	@Test
-	public void testT3InterfaceGenerateStartEndInvalidBounds1() {
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("2000");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("2000");
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-//		sleep(5000);
-		assertTrue(s1.contains("Start Year should be Smaller to End Year"));
-	}
-	
-	@Test
-	public void testT3InterfaceGenerateStartEndInvalidBounds2() {
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("2001");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("2000");
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-//		sleep(5000);
-		assertTrue(s1.contains("Start Year should be Smaller to End Year"));
-	}
-	
-	@Test
-	public void testT3InterfaceGenerateStartOutOfBounds() {
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("0");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("2000");
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-//		sleep(5000);
-		assertTrue(s1.contains("Start Year should be within the valid range of 1880 - 2019"));
-	}
-	@Test
-	public void testT3InterfaceGenerateEndOutOfBounds() {
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("2000");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("10000");
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-//		sleep(5000);
-		assertTrue(s1.contains("End Year should be within the valid range of 1880 - 2019"));
-	}
-	@Test
-	public void testT3InterfaceGenerateBothOutOfBounds() {	
-		clickOn("#tabReport3");
-		f = (TextField)s.lookup("#T3_startYear_TextField");
-		f.setText("0");
-		f = (TextField)s.lookup("#T3_endYear_TextField");
-		f.setText("10000");
-		clickOn("#GenerateT3");
-		String s1 = t.getText();
-//		sleep(5000);
-		assertTrue(s1.contains("Start Year should be within the valid range of 1880 - 2019") && s1.contains("End Year should be within the valid range of 1880 - 2019"));
-
-
-		//regression testing
-		//F 1941 - 1945: Alexis - 3758
-	}
+//	@Test
+//	public void testT3InterfaceGenerateValidBounds() {	
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("1900");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("2000");;
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+//		assertFalse(s1.contains("Start Year should be within the valid range of 1880 - 2019")||
+//				s1.contains("End Year should be within the valid range of 1880 - 2019")||
+//				s1.contains("Start Year should be Smaller to End Year")
+//				);
+//	}
+//	@Test
+//	public void testT3InterfaceGenerateStartEndInvalidBounds1() {
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("2000");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("2000");
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+////		sleep(5000);
+//		assertTrue(s1.contains("Start Year should be Smaller to End Year"));
+//	}
+//	
+//	@Test
+//	public void testT3InterfaceGenerateStartEndInvalidBounds2() {
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("2001");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("2000");
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+////		sleep(5000);
+//		assertTrue(s1.contains("Start Year should be Smaller to End Year"));
+//	}
+//	
+//	@Test
+//	public void testT3InterfaceGenerateStartOutOfBounds() {
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("0");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("2000");
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+////		sleep(5000);
+//		assertTrue(s1.contains("Start Year should be within the valid range of 1880 - 2019"));
+//	}
+//	@Test
+//	public void testT3InterfaceGenerateEndOutOfBounds() {
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("2000");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("10000");
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+////		sleep(5000);
+//		assertTrue(s1.contains("End Year should be within the valid range of 1880 - 2019"));
+//	}
+//	@Test
+//	public void testT3InterfaceGenerateBothOutOfBounds() {	
+//		clickOn("#tabReport3");
+//		f = (TextField)s.lookup("#T3_startYear_TextField");
+//		f.setText("0");
+//		f = (TextField)s.lookup("#T3_endYear_TextField");
+//		f.setText("10000");
+//		clickOn("#GenerateT3");
+//		String s1 = t.getText();
+////		sleep(5000);
+//		assertTrue(s1.contains("Start Year should be within the valid range of 1880 - 2019") && s1.contains("End Year should be within the valid range of 1880 - 2019"));
+//
+//
+//		//regression testing
+//		//F 1941 - 1945: Alexis - 3758
+//	}
 }
 

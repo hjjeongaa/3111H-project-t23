@@ -14,7 +14,7 @@ import java.util.*;
  * Code for Task 3, 
  * Finding the (names) with largest increase in popularity and 
  *  the (names) with largest decrease in popularity over a 
- *  specified period of time for the USA dataset.
+ *  specified period of time for the USA data set.
  * @author Yuxi Sun
  *
  */
@@ -45,7 +45,6 @@ public class TrendInPopularity extends Reports{
 	 * running record of the largest increase/ decrease in popularity of a name (such that each name has two Trends).
 	 */
 	private class Trend{
-
 		private Entry start;
 		private Entry end;
 		//accessors
@@ -82,7 +81,7 @@ public class TrendInPopularity extends Reports{
 		 */
 		private Vector<Trend> rise;			
 		private Entry lowest;				//stores the Entry of the lowest rank seen so far (highest value)
-		
+		private int lastYear; 				// used for maintaining update integrity
 		/**
 		* fall contains a non-trivial list of all Entries (year,rank) that has the same decrease in ranks as the largest
 		* fall in ranks (assumed negative).
@@ -116,6 +115,7 @@ public class TrendInPopularity extends Reports{
 		 * @return name of current data instance
 		 */
 		public String getName(){return this.name;}
+		
 		//mutators
 		/**
 		 * Calls the updateRise and updateFall functions to update the relevant variable.
@@ -123,23 +123,32 @@ public class TrendInPopularity extends Reports{
 		 * @param rank the rank of name in the corresponding year.
 		 * 
 		 */
+		
 		public void addYear(int year,int rank){
+			if (lastYear>=year){ // if year occurred before the last seen year then don't do anything, this is a faulty entry!
+				return;
+			}
 			updateRise(year, rank);
 			updateFall(year, rank);
+			this.lastYear = year; // update last year
 		}
+		
 		/**
 		 *  Updates the Rising variables
 		 * @param year the year the name was found in and should be strictly higher then the years seen previously.
 		 * @param rank the rank of name in the corresponding year.
 		 */
+		
 		private void updateRise(int year,int rank){
 			if(rank >= lowest.getRank()){
 				//a lower rank has been found (since a higher numeric value of rank means a lower actual rank)
-				lowest.update(year,rank);
+				//it is set to update lowest even if the rank is the same as doing so will mean if a large increase in rank is found, the period of rise would
+				//be smaller then otherwise.
+				lowest = new Entry(year,rank);
 			}else if(rise.size() == 0){
-				//case of no found valid rising trend yet
-				if (lowest.getRank() > rank){
-					//current entry has a higher rank then the lowest rank seen so far and is an increase in rank for said name. Update Trend
+				//case of no found valid rising trend yet/ so far
+				if (rank < lowest.getRank()){
+					//current entry has a non trivially higher rank then the lowest rank seen so far and is thus an increase in rank for said name. Update/ Initialize rise Trend
 					rise.add(new Trend(lowest,new Entry(year,rank)));
 				}
 			}else if((lowest.getRank() - rank) > getRise()){
@@ -152,6 +161,7 @@ public class TrendInPopularity extends Reports{
 			}
 			//otherwise don't do anything
 		}
+		
 		/**
 		 *  Updates the Falling variables
 		 * @param year the year the name was found in and should be strictly higher then the years seen previously.
@@ -163,7 +173,7 @@ public class TrendInPopularity extends Reports{
 			*/
 			if(rank <= highest.getRank()){
 				//a higher rank has been found (since a lower numeric value of rank means a higher actual rank)
-				highest.update(year,rank);
+				highest = new Entry(year,rank);
 			}else if(fall.size() == 0){
 				//case of no found valid falling trend yet
 				if (lowest.getRank() < rank){
@@ -190,11 +200,13 @@ public class TrendInPopularity extends Reports{
 			fall = new Vector<Trend>();
 			highest = new Entry(year,rank);
 			lowest = new Entry(year,rank);
+			lastYear = year;
 		}
 	}
 	private int startYear;
 	private int endYear;
-	
+	Vector<Name> setOfLargestRise;
+	Vector<Name> setOfLargestFall;
 	//Note: data should be validated before being passed to a constructor/ mutator
 	
 	//mutators
@@ -226,6 +238,7 @@ public class TrendInPopularity extends Reports{
 	public void generate(){		
 		HashMap<String,Name> seenNames = new HashMap<String,Name>();
 		//collecting data from datasets and doing simple preprocessing to get the max rise/ fall of each Name
+		super.setTask("Task 3");
 		for(int year = this.startYear; year<=this.endYear;++year){
 			//Iterate through all years in range inclusive
 			int rank = 1;
@@ -275,8 +288,8 @@ public class TrendInPopularity extends Reports{
 		/**
 		 * filter the data generate from prepare to keep only the names with the largest rise or largest fall
 		 */
-		Vector<Name> setOfLargestRise  = new Vector<Name>();
-		Vector<Name> setOfLargestFall  = new Vector<Name>();
+		setOfLargestRise  = new Vector<Name>();
+		setOfLargestFall  = new Vector<Name>();
 		//initialize the sets for the iterations
 		Iterator nameiter = seenNames.entrySet().iterator();
 		if(nameiter.hasNext()){
@@ -309,43 +322,91 @@ public class TrendInPopularity extends Reports{
 				}
 			}
 		}
-		write(setOfLargestRise,setOfLargestFall);
+		write();
 	}
 	/**
 	 * This function parses through the filtered content and writes it to the super classes output format . 
-	 * @param setOfLargestRise Contains a vector of Names that has trends equal to the largest increase in trends
-	 * @param setOfLargestFall Contains a vector of Names that has trends equal to the largest decrease in trends
 	 */
-	private void write(Vector<Name> setOfLargestRise, Vector<Name> setOfLargestFall) {
+	private void write() {
+//		super.setoReport(this.name +" " +this.gender + " " + this.);
+
+		// String oReport = "";
+		// //writing rising values to Super class oReport variable.
+		// oReport+="Rising\n";
+		// Iterator rise = setOfLargestRise.iterator();
+		// while (rise.hasNext()){
+		// 	Name nextRise = (Name)rise.next();
+		// 	String temp = nextRise.getName();
+		// 	Trend mostRecent = nextRise.rise.lastElement();
+		// 	temp += " | Start Year: " + mostRecent.start.getYear();
+		// 	temp += " Start Rank:" + mostRecent.start.getRank();
+		// 	temp += " | End Year: " + mostRecent.end.getYear();
+		// 	temp += " End Rank: " + mostRecent.end.getRank();
+		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
+		// 	oReport += temp;
+		// }
+
+		// //writing falling values to Super class oReport variable.
+		// oReport+="Falling\n";
+		// Iterator fall = setOfLargestFall.iterator();
+		// while (fall.hasNext()){
+		// 	Name nextFall = (Name)fall.next();
+		// 	String temp = nextFall.getName();
+		// 	if (nextFall.fall.size() == 0) continue;
+		// 	Trend mostRecent = nextFall.fall.lastElement();
+		// 	temp += " | Start Year: " + mostRecent.start.getYear();
+		// 	temp += " Start Rank:" + mostRecent.start.getRank();
+		// 	temp += " | End Year: " + mostRecent.end.getYear();
+		// 	temp += " End Rank: " + mostRecent.end.getRank();
+		// 	temp += " | Trend : " + mostRecent.getChange() +"\n";
+		// 	oReport += temp;
+		// }
+//		super.setoReport(oReport);
+	}
+
+	public HashMap<String,Vector<String>> getResults(){
+		//setting up output datastructure
+		HashMap<String,Vector<String>> output = new HashMap<String,Vector<String>>();
+		// name
+		output.put("name", new Vector<String>());
+		// lowest_rank
+		output.put("startRank", new Vector<String>());
+		// lowest_year
+		output.put("startYear", new Vector<String>());
+		// highest_rank
+		output.put("endRank", new Vector<String>());
+		// highest_year
+		output.put("endYear", new Vector<String>());
+		// trend
+		output.put("trend", new Vector<String>());
+
 		//writing rising values to Super class oReport variable.
-		
-		String oReport = "";
 		Iterator rise = setOfLargestRise.iterator();
 		while (rise.hasNext()){
+			//putting variables into output structure
 			Name nextRise = (Name)rise.next();
-			String temp = nextRise.getName();
-			Trend mostRecent = nextRise.rise.lastElement();
-			temp += " | Start Year: " + mostRecent.start.getYear();
-			temp += " Start Rank:" + mostRecent.start.getRank();
-			temp += " | End Year: " + mostRecent.end.getYear();
-			temp += " End Rank: " + mostRecent.end.getRank();
-			temp += " | Trend : " + mostRecent.getChange() +"\n";
-			oReport += temp;
+			output.get("name").add(nextRise.getName());
+			Trend mostRecent = nextRise.rise.lastElement(); // getting the most recent trend
+			output.get("startRank").add(String.valueOf(mostRecent.start.getRank()));
+			output.get("startYear").add(String.valueOf(mostRecent.start.getYear()));
+			output.get("endRank").add(String.valueOf(mostRecent.end.getRank()));
+			output.get("endYear").add(String.valueOf(mostRecent.end.getYear()));
+			output.get("trend").add(String.valueOf(mostRecent.getChange()));
 		}
 		//writing falling values to Super class oReport variable.
 		Iterator fall = setOfLargestFall.iterator();
 		while (fall.hasNext()){
 			Name nextFall = (Name)fall.next();
-			String temp = nextFall.getName();
+			output.get("name").add(nextFall.getName());
 			if (nextFall.fall.size() == 0) continue;
 			Trend mostRecent = nextFall.fall.lastElement();
-			temp += " | Start Year: " + mostRecent.start.getYear();
-			temp += " Start Rank:" + mostRecent.start.getRank();
-			temp += " | End Year: " + mostRecent.end.getYear();
-			temp += " End Rank: " + mostRecent.end.getRank();
-			temp += " | Trend : " + mostRecent.getChange() +"\n";
-			oReport += temp;
+			//changing the order of outputting to suit the Task3 description 
+			output.get("startRank").add(String.valueOf(mostRecent.start.getRank()));
+			output.get("startYear").add(String.valueOf(mostRecent.start.getYear()));
+			output.get("endRank").add(String.valueOf(mostRecent.end.getRank()));
+			output.get("endYear").add(String.valueOf(mostRecent.end.getYear()));
+			output.get("trend").add(String.valueOf(mostRecent.getChange()));
 		}
-		super.setoReport(oReport);
+		return output;
 	}
 }

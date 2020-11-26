@@ -5,19 +5,16 @@ package comp3111.popnames;
 * @author Yuxi Sun
 * @version 1.1
 */
-import comp3111.rankingAlgo.DLD;
+import comp3111.rankingAlgo.LD;
 import org.apache.commons.csv.*;
 import edu.duke.*;
-import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;  
 import java.util.*;
 import java.lang.Math;
 /**
  * Code for predicting the compatibility of two names
  */
-public class PredictCompatibilityScore{
-	//class formatter for formatting time, subclasses should use superclass variable to format to save space.
-	public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+public class PredictCompatibilityScore extends ReportLog{
 	//records the time of creation or last modification
 	private LocalDateTime time;  
 
@@ -26,31 +23,31 @@ public class PredictCompatibilityScore{
 	private Person mate;
 
 	private HashMap<String, Double> oScore;
-	private String setting;
 
 	//accessors
 	public LocalDateTime getTime(){return time;};
 	public HashMap<String, Double>  getoScore(){return oScore;};
-	public String getSetting(){return setting;};
 	public Person getUser(){return user;};
 	public Person getMate(){return mate;};
-	public String generateHTML(){
+	public String getHTML(){
 		//TODO::complete
+		String html = "<div>";
+		//insert content here
+		html += "</div>";
 		return null;
 	};
+	//accessors for Report History
+	public String getTask(){
+		return "Task 6";
+	}
+	public String getoReport(){
+		String oReport = user.getName() + " " + mate.getName();
+		return oReport;
+	}
 	/**
 	 * Evaluation functions
 	 * these functions should be called in the controller based on user selections to return scalar oScore.
 	 */
-
-	/**
-	 * NTK 6
-	 * @return oScore from nkt6 algorithm
-	 */
-	public double nkt6() {
-		// the closer the rank the better your score 
-		return (1-(double)Math.abs(user.getRank()-mate.getRank())/user.getRank());
-	}
 
 	/**
 	 * parm: Population Adjusted Rank Matching
@@ -60,9 +57,9 @@ public class PredictCompatibilityScore{
 	 */
 	public double parm() {
 		//normalizing ranks of each user
-		double nUser = (double)user.getRank()/user.getSize();
-		double nMate = (double)mate.getRank()/mate.getSize();
-		return (1-Math.abs(nUser-nMate));
+		double nUser = (double)user.getRank()/(user.getSize()+1);
+		double nMate = (double)mate.getRank()/(mate.getSize()+1);
+		return Math.max(0,(1-Math.abs(nUser-nMate)));
 	}
 	/** 
 	 * parsm: Population Adjusted Symmetric Rank Matching
@@ -73,17 +70,18 @@ public class PredictCompatibilityScore{
 	*/
 	public double pasrm(){
 		//normalizing ranks of each user 
-		double nUser = (double)user.getRank()/user.getSize();
-		double nMate = (double)mate.getRank()/mate.getSize();
+		double nUser = (double)user.getRank()/(user.getSize()+1);
+		double nMate = (double)mate.getRank()/(mate.getSize()+1);
 		double optMate = 0.5-(nUser -0.5);
-		return 1-  Math.abs(nMate-optMate);
+		return Math.max(0,1-  Math.abs(nMate-optMate));
 	}
 	/**
-	 *  string similarity using a modified Damerau-Levenshtein distance
-	 *  @return Damerau-Levenshtein distance/ (user name length + mate name length)
+	 *  string similarity using a modified Levenshtein distance. the values are squared to introduce nonlinearity.
+	 *  @return (Levenshtein distance)^2/ (Max(user name length, mate name length)^2
 	 */
-	public double dld() {
-		return 1 - (double)DLD.calculate(user.getName(), mate.getName())/(user.getName().length()+mate.getName().length());
+	public double ld() {
+		int ldScore = LD.calculate(user.getName(), mate.getName());
+		return Math.max(0,1 - (double)Math.pow(ldScore,2)/Math.pow(Math.max(user.getName().length(),mate.getName().length()),2));
 	}
 
 	/**
@@ -106,13 +104,12 @@ public class PredictCompatibilityScore{
 		this.user = new Person(iName, iGender, iYOB, country, type, rankingAlgo, resolver);
 		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate, rankingAlgo, resolver);
 		this.oScore = new HashMap<String, Double>();
-		//consider converting oScore to vector
-		this.oScore.put("nkt6", nkt6());
+		//Note that preference will have no effect on the oScores if the name is not found within the dataset
 		//Population Adjusted Rank Matching
 		this.oScore.put("parm", parm());
 		//Population Adjusted Symmetric Rank Matching
 		this.oScore.put("pasrm", pasrm());
-		//Damerau-Levenshtein distance
-		this.oScore.put("dld", dld());
+		//Levenshtein distance
+		this.oScore.put("ld", ld());
 	}
 }

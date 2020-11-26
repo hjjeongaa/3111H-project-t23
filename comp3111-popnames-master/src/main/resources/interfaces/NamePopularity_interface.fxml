@@ -1,6 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.NamePopularity_controller"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.NamePopularity_controller">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="570.0" prefWidth="1357.0">
+               <children>
+                  <Label text="Here, you can generate a table of your name's popularity over the years.">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Segoe UI Light" size="18.0" />
+                     </font>
+                  </Label>
+                  <GridPane prefHeight="110.0" prefWidth="589.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0" prefWidth="103.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="233.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="221.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Name">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="Gender" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="Year Range" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="NamePopularity_name_textField" GridPane.columnIndex="1">
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                           </effect>
+                        </TextField>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <RadioButton fx:id="NamePopularity_male_radioButton" mnemonicParsing="false" selected="true" text="Male">
+                                 <HBox.margin>
+                                    <Insets right="60.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Segoe UI Light" size="16.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="NamePopularity_gender_toggleGroup" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="NamePopularity_female_radioButton" mnemonicParsing="false" text="Female" toggleGroup="$NamePopularity_gender_toggleGroup">
+                                 <font>
+                                    <Font name="Segoe UI Light" size="16.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <TextField fx:id="NamePopularity_startYear_textField" prefHeight="25.0" prefWidth="100.0">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                                 </effect>
+                              </TextField>
+                              <Label text="to" />
+                              <TextField fx:id="NamePopularity_endYear_textField" prefWidth="100.0">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="#ff000000" />
+                                 </effect>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <Label fx:id="NamePopularity_yearError_label" textFill="#ff4c4c" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="NamePopularity_nameError_label" textFill="#ff4c4c" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="Segoe UI Light" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <Button fx:id="NamePopularity_generate_button" mnemonicParsing="false" onAction="#generatePopularityOfName" text="Generate">
+                     <VBox.margin>
+                        <Insets left="160.0" top="25.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Segoe UI Light" size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <TableView fx:id="NamePopularity_tableView" prefHeight="285.0" prefWidth="1170.0">
+              <columns>
+                <TableColumn fx:id="NamePopularity_tableView_year_tableColumn" prefWidth="40.0" text="Year" />
+                <TableColumn fx:id="NamePopularity_tableView_rank_tableColumn" prefWidth="108.0" text="Your name's rank" />
+                  <TableColumn fx:id="NamePopularity_tableView_total_tableColumn" prefWidth="152.0" text="Total # of names this year" />
+                  <TableColumn fx:id="NamePopularity_tableView_percentile_tableColumn" minWidth="0.0" prefWidth="66.0" text="Percentile" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
