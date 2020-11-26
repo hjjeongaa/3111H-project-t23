@@ -27,7 +27,11 @@ import javafx.event.ActionEvent;
 
 import java.util.*;
 import javafx.util.Pair;
-
+/**
+ * Controller for Trend In Popularity T3 Interface
+ * @author Yuxi Sun
+ *
+ */
 public class TrendingNames_controller {
 
     @FXML
@@ -106,6 +110,10 @@ public class TrendingNames_controller {
     private ObservableList<String> startOptions;
     
     @FXML
+    /**
+     * Initializes lists for combo boxes
+     * @author Yuxi Sun
+     */
     void initialize(){
         //Initialize and update both lists
         endOptions = FXCollections.observableArrayList();
@@ -197,9 +205,12 @@ public class TrendingNames_controller {
       T3_startYear_ComboBox.setValue(Integer.toString(start));
       T3_endYear_ComboBox.setValue(Integer.toString(end));
     }
+    
+    
     //Helper functions
     /**
      * checks if a ComboBox is empty
+     * @author Yuxi Sun
      */
     private boolean isComboBoxEmpty(String entry){
         return entry == null || entry.isBlank();
@@ -225,7 +236,8 @@ public class TrendingNames_controller {
      * @param end end year specified by user
      * @param country specified by user
      * @param type specified by user
-     * @return
+     * @return true if input fields are valid
+     * @author Yuxi Sun
      */
     private boolean validateInputs(String iStart, String iEnd, String country, String type) {
     	hideErrors();
@@ -289,12 +301,17 @@ public class TrendingNames_controller {
         }
     	return valid;
     }
+    /**
+     * updates the table
+     * @param newEntry a T3_row_structure representing a new row 
+     * @author Yuxi Sun
+     */
 	void updateTable(T3_row_structure newEntry){
 		t3_rows.add(newEntry);
 	}
     //output Struct
     /**
-     * Class used to display one row table
+     * Class used as a data structure to represent one row of the table
      * @author Yuxi Sun
      * v 1.0
      */
@@ -307,14 +324,48 @@ public class TrendingNames_controller {
         private SimpleStringProperty trend;
 
         //accessors
+        /**
+         * @return name of the row
+         * @author Yuxi Sun
+         */
         public String getName(){return name.get();}
+        /**
+         * @return start rank of the row
+         * @author Yuxi Sun
+         */
         public String getStartRank(){return startRank.get();}
+        /**
+         * @return start year of the row
+         * @author Yuxi Sun
+         */
         public String getStartYear(){return startYear.get();}
+        /**
+         * @return end rank of the row
+         * @author Yuxi Sun
+         */
         public String getEndRank(){return endRank.get();}
+         /**
+          * @return end year of the row
+         * @author Yuxi Sun
+          */
         public String getEndYear(){return endYear.get();}
+        /**
+         * @return trend of the row
+         * @author Yuxi Sun
+         */
         public String getTrend(){return trend.get();}
 
         //constructor
+        /**
+         * Constructor of data structure
+         * @param name name associated with row
+         * @param startRank start rank of the row
+         * @param startYear start year of the row
+         * @param endRank end rank of the row
+         * @param endYear end year of the row
+         * @param trend trend of the row
+         * @author Yuxi Sun
+         */
         public T3_row_structure(String name, String startRank, String startYear, String endRank, String endYear, String trend){
             this.name = new SimpleStringProperty(name);
             this.startRank = new SimpleStringProperty(startRank);
@@ -327,6 +378,10 @@ public class TrendingNames_controller {
 
 
     @FXML
+    /**
+     * Generate function that validates inputs and creates a TrendInPopularity and updates graphic interface.
+         * @author Yuxi Sun
+     */
     void trendInPopularity() {
     	//clearing table
     	this.t3_rows.clear();
@@ -362,10 +417,18 @@ public class TrendingNames_controller {
     
     //infoBox
     @FXML 
+    /**
+     * Helper function that shows infobox
+     * @author Yuxi Sun
+     */
     void showInfoBox(){
     	T3_infobox_TextArea.setVisible(true);
     }
     @FXML 
+    /**
+     * Hides function that shows infobox
+     * @author Yuxi Sun
+     */
     void hideInfoBox(){
     	T3_infobox_TextArea.setVisible(false);
     }

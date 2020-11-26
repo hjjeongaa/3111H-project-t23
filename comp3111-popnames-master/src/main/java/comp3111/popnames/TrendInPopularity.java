@@ -42,7 +42,7 @@ public class TrendInPopularity extends Reports{
 
 		//mutators not needed
 		/**
-		 * used to update datastructure
+		 * used to update data structure
 		 * @param year year to be updated
 		 * @param rank rank to be updated
 		 * @author Yuxi Sun
@@ -54,8 +54,8 @@ public class TrendInPopularity extends Reports{
 		//constructor
 		/**
 		 * Entry Constructor 
-		 * @param year year of said datastructure
-		 * @param rank rank of said datastructure
+		 * @param year year of said data structure
+		 * @param rank rank of said data structure
 		 */
 		public Entry(int year, int rank){
 			this.year = year;
@@ -181,7 +181,7 @@ public class TrendInPopularity extends Reports{
 			else return 0;//if returned value is positive or 0, means no valid input found
 		}
 		/**
-		 * @return name a String represeting the name the current instance is tracking.
+		 * @return name a String representing the name the current instance is tracking.
 		 * @author Yuxi Sun
 		 */
 		public String getName(){return this.name;}
@@ -295,9 +295,9 @@ public class TrendInPopularity extends Reports{
 	 * 
 	 * @param startYear new start year of period to be parsed (inclusive)
 	 * @param endYear new end year of period to be parsed (inclusive)
-	 * @param gender new gender of specefied data set 
-	 * @param country new country of specefied data set 
-	 * @param type new type of specefied data set [human or pet] 
+	 * @param gender new gender of specified data set 
+	 * @param country new country of specified data set 
+	 * @param type new type of specified data set [human or pet] 
 	 * @author Yuxi Sun
 	 */
 	public void modify(int startYear, int endYear, String gender, String country, String type){
@@ -310,9 +310,9 @@ public class TrendInPopularity extends Reports{
 	 *  Constructor
 	 * @param startYear start year of period to be parsed (inclusive)
 	 * @param endYear end year of period to be parsed (inclusive)
-	 * @param gender gender of specefied data set 
-	 * @param country country of specefied data set 
-	 * @param type type of specefied data set [human or pet] 
+	 * @param gender gender of specified data set 
+	 * @param country country of specified data set 
+	 * @param type type of specified data set [human or pet] 
 	 * @author Yuxi Sun
 	 */
 	public TrendInPopularity(int startYear, int endYear, String gender, String country, String type){

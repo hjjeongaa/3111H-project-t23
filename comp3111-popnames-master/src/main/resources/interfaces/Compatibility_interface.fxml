@@ -194,7 +194,7 @@
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
                         <Arc fx:id="T6_composite_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Circle fx:id="nkt" fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
                         <Text fx:id="T6_composite_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text fx:id="T6_composite_Text" layoutX="-38.0" layoutY="84.0" onMouseEntered="#showCompositeInfoBox" onMouseExited="#hideCompositeInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE" />
                         <TextArea fx:id="T6_composite_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="COMPOSITE&#10;&#10;Do you value being a power coulpe above all else?&#10;&#10;Composite is a merger of PARM, PASRM and LD." visible="false" wrapText="true">

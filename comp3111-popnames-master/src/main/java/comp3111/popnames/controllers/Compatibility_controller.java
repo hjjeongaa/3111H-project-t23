@@ -215,6 +215,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Update country list on change of user type
+     * @author Yuxi Sun
      */
     private void selectUserType() {
         hideAllErrors();
@@ -230,6 +231,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Update userYOB on change of user country
+     * @author Yuxi Sun
      */
     private void selectUserCountry() {
         hideAllErrors();
@@ -253,7 +255,8 @@ public class Compatibility_controller {
     
     @FXML
     /**
-     * Update preferences
+     * Called when User YOB is changed
+     * @author Yuxi Sun
      */
     private void selectUserYOB() {
         //update preference list
@@ -261,8 +264,9 @@ public class Compatibility_controller {
     }
     //Mate UI components
     @FXML
-        /**
+    /**
      * Update country list on change of mate type
+     * @author Yuxi Sun
      */
     private void selectMateType() {
         hideAllErrors();
@@ -274,11 +278,19 @@ public class Compatibility_controller {
         updatePreferences();
     }
     @FXML
+    /**
+     * called when Mate Country is changed
+     * @author Yuxi Sun
+     */
     private void selectMateCountry() {
         hideAllErrors();
     	updatePreferences();
     }
     @FXML
+    /**
+     * called to update preference list
+     * @author Yuxi Sun
+     */
     private void updatePreferences() {
 //    	T6_pref_error_Text.setVisible(false);
         // clear all errors();
@@ -333,11 +345,13 @@ public class Compatibility_controller {
             }
         }
     }
-    
+    /**
+     * helper function to check if preference lists can be set
+     * @return if preference list can be set i.e. user data set details are set and mate data set details are set
+     */
     private boolean validateUpdatePreference() {
         //hide all previous error messages
         //load users variables
-        String iName = T6_user_name_TextField.getText();
         String yob = T6_user_yob_ComboBox.getValue();
         String type = T6_user_type_ComboBox.getValue();
         String country = T6_user_country_ComboBox.getValue();
@@ -345,10 +359,6 @@ public class Compatibility_controller {
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
         //validation of input
         boolean valid = true;
-        if(isComboBoxEmpty(iName)){
-            //if iName is empty
-            valid = false;
-        }
         if(isComboBoxEmpty(yob)){
             //if yob is empty
             valid = false;
@@ -363,15 +373,10 @@ public class Compatibility_controller {
 //            valid = false;
 //        }
         //load all variables
-        String iNameMate = T6_mate_name_TextField.getText();
         String countryMate = T6_mate_country_ComboBox.getValue();
         String typeMate = T6_mate_type_ComboBox.getValue();
         //At this point we assume that all input fields are either empty strings "" or valid. due to the way the UI is set up
         //validate mate
-        if(isComboBoxEmpty(iNameMate)){
-            //if iNameMate is empty
-            valid = false;
-        }
         if(isComboBoxEmpty(countryMate)){
             //if countryMate is empty
             valid = false;
@@ -386,6 +391,10 @@ public class Compatibility_controller {
         return valid;
     	
     }
+    /**
+     * Helper function to hide all errors
+     * @author Yuxi Sun
+     */
     private void hideAllErrors(){
         //user error messages
         T6_user_name_error_Text.setVisible(false);
@@ -399,6 +408,11 @@ public class Compatibility_controller {
         T6_mate_type_error_Text.setVisible(false);
     }
     //Validation
+    /**
+     * Helper function to validate user input fields 
+     * @return true if user input fields are valid
+     * @author Yuxi Sun
+     */
     boolean validateUserInputs(){
         //load all variables
         String iName = T6_user_name_TextField.getText();
@@ -439,7 +453,11 @@ public class Compatibility_controller {
 //        }
         return valid;
     }
-
+    /**
+     * Helper function to validate mate input fields 
+     * @return true if mate input fields are valid
+     * @author Yuxi Sun
+     */
     boolean validateMateInputs(){
         //load all variables
         String iNameMate = T6_mate_name_TextField.getText();
@@ -490,6 +508,10 @@ public class Compatibility_controller {
 //    }
     //actual execution
     @FXML
+    /**
+     * Generate function, calls PredictCompatabilityScore object and updates graphical output
+     * @author Yuxi Sun
+     */
     void compatibilityScore() {
         //hide all previous error messages
         hideAllErrors();
@@ -519,13 +541,14 @@ public class Compatibility_controller {
             //update relevant variable
             HashMap<String,Double> oScores = report.getoScore();
             //update graphics
-            updateGraphics(oScores);
+            updateGraphics(oScores);//info can be found in helper functions section
         }
     }
 
     //Helper functions
     /**
      * checks if a ComboBox is empty
+     * @author Yuxi Sun
      */
     private boolean isComboBoxEmpty(String entry){
         return entry == null || entry.isBlank();
@@ -533,42 +556,46 @@ public class Compatibility_controller {
     /**
      *  Converts a [0,1] score to a [0,360] score
      * @param oScore double between [0,1]
-     * @return double between [0,0,360]
+     * @return double between [0,360]
+     * @author Yuxi Sun
      */
     private double toDegree(double oScore){
     	//rounding performed here
-        return Math.round((double)oScore*360*100)/100;
+        return roundTo2dp(oScore*360);
+    }
+    private double roundTo2dp(double score){
+        return (double)Math.round(score*100)/100;
     }
     /**
      * Updates the score graphics and presents the results of the predictions.
      * @param oScores
+     * @author Yuxi Sun
      */
     private void updateGraphics(HashMap<String,Double> oScores){
         double composite = toDegree(oScores.get("composite"));
         double parm = toDegree(oScores.get("parm"));
         double pasrm = toDegree(oScores.get("pasrm"));
         double ld = toDegree(oScores.get("ld"));
-
+        
         //update composite graphic
         T6_composite_Arc.setLength(composite);
-        T6_composite_score_Text.setText(Double.toString(composite));
+        T6_composite_score_Text.setText(Double.toString(roundTo2dp(oScores.get("composite"))));
         //update parm graphic
         T6_parm_Arc.setLength(parm);
-        T6_parm_score_Text.setText(Double.toString(parm));
+        T6_parm_score_Text.setText(Double.toString(roundTo2dp(oScores.get("parm"))));
         //update pasrm graphic
         T6_pasrm_Arc.setLength(pasrm);
-        T6_pasrm_score_Text.setText(Double.toString(pasrm));
+        T6_pasrm_score_Text.setText(Double.toString(roundTo2dp(oScores.get("pasrm"))));
         //update ld graphic
         T6_ld_Arc.setLength(ld);
-        T6_ld_score_Text.setText(Double.toString(ld));
-
-
+        T6_ld_score_Text.setText(Double.toString(roundTo2dp(oScores.get("ld"))));
     }
     
     //infoBox
     @FXML 
     /**
      * Show the feature Information Box
+     * @author Yuxi Sun
      */
     void showInfoBox(){
     	T6_infobox_TextArea.setVisible(true);
@@ -576,6 +603,7 @@ public class Compatibility_controller {
     @FXML 
     /**
      * Hide the feature Information Box
+     * @author Yuxi Sun
      */
     void hideInfoBox(){
     	T6_infobox_TextArea.setVisible(false);
@@ -585,6 +613,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Hide the composite Information Box
+     * @author Yuxi Sun
      */
     void showCompositeInfoBox(){
         T6_composite_infobox_TextArea.setVisible(true);
@@ -592,6 +621,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Hide the composite Information Box
+     * @author Yuxi Sun
      */
     void hideCompositeInfoBox(){
         T6_composite_infobox_TextArea.setVisible(false);
@@ -599,6 +629,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Show the PARM Information Box
+     * @author Yuxi Sun
      */
     void showPARMInfoBox(){
         T6_parm_infobox_TextArea.setVisible(true);
@@ -606,6 +637,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Hide the PARM Information Box
+     * @author Yuxi Sun
      */
     void hidePARMInfoBox(){
         T6_parm_infobox_TextArea.setVisible(false);
@@ -613,6 +645,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Show the PASRM Information Box
+     * @author Yuxi Sun
      */
     void showPASRMInfoBox(){
         T6_pasrm_infobox_TextArea.setVisible(true);
@@ -620,6 +653,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Hide the PASRM Information Box
+     * @author Yuxi Sun
      */
     void hidePASRMInfoBox(){
         T6_pasrm_infobox_TextArea.setVisible(false);
@@ -627,6 +661,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Show the LD Information Box
+     * @author Yuxi Sun
      */
     void showLDInfoBox(){
         T6_ld_infobox_TextArea.setVisible(true);
@@ -634,6 +669,7 @@ public class Compatibility_controller {
     @FXML
     /**
      * Hide the LD Information Box
+     * @author Yuxi Sun
      */
     void hideLDInfoBox(){
         T6_ld_infobox_TextArea.setVisible(false);

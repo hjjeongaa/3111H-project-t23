@@ -40,10 +40,11 @@ public class TrendingNamesControllerTest extends ApplicationTest {
 //
 //    
 
-	//test empty country and empty start end year
-	//test cases
+	/**
+	 * Tests empty country and empty start, end year and checks for country, start and end error messages
+	 */
 	@Test
-	public void test() {
+	public void emptyCountryStartEnd() {
 		//TODO
 		clickOn("#Main_trendingNames_Button");
 		clickOn("#T3_type_ComboBox");
@@ -58,9 +59,11 @@ public class TrendingNamesControllerTest extends ApplicationTest {
 		
 		assertTrue(countryError.isVisible()&&startYearError.isVisible()&&endYearError.isVisible());
 	}
-//	same year Error
-//	1880 1880
 	@Test
+	/**
+	 * Checks if the validation system catches the same year errors
+	 * 1880 1880
+	 */
 	public void testStartEndEquals() {	
 		clickOn("#Main_trendingNames_Button");
 		clickOn("#T3_endYear_ComboBox");
