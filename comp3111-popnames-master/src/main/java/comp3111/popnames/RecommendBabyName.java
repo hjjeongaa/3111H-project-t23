@@ -6,6 +6,9 @@
  */
 
 package comp3111.popnames;
+
+import comp3111.export.ReportHistory;
+
 import java.util.*;
 import java.time.LocalDateTime;
 import java.lang.Math;
@@ -150,6 +153,7 @@ public class RecommendBabyName extends ReportLog {
 				babyNamesList.add(fatherCandidateNames.get(fatherListIndex++));
 		}
 		babyNamesList.sort(candidateNameComparator);
+		ReportHistory.addReportLog(this);
 	}
 	public List<Triple<String,Integer,Integer>> getBabyNamesList() {
 		return babyNamesList;
@@ -158,7 +162,7 @@ public class RecommendBabyName extends ReportLog {
 		return this.time;
 	}
 	public String getoReport() {
-		return fatherName+" (" + fatherYOB + "), " + motherName + " ("+motherYOB+"), Vintage year: "+vintageYear;
+		return "Baby " +  (babyGender.equals("M")? "boy":"girl")+ " for " + fatherName+" (" + fatherYOB + "), " + motherName + " ("+motherYOB+"), Vintage year: "+vintageYear;
 	}
 	public String getTask() {
 		return "Recommended Baby Name";

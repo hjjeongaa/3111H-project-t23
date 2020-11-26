@@ -31,8 +31,10 @@ public class PopularityOfName extends Reports {
 		super(name, gender, country, type);
 		super.setoReport(name+" ("+gender+"), "+startYear+"~"+endYear);
 		super.setTask("Popularity of Name");
-		super.setHTML("<div>Html output</div>");
-
+		
+		String thisHtml = "<table><tr><th>Year</th><th>Your name's rank</th><th>Total # of names this year</th><th>Percentile</th></tr>";
+		String tableRow = "<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td><tr>";
+		
 		this.startYear = startYear;
 		this.endYear = endYear;
 		//Create array object - this will hold the rank of the name every year.
@@ -68,7 +70,14 @@ public class PopularityOfName extends Reports {
 			Double thisRankPercentage = 100*(1-((rank-1)/total));
 			Triple<Integer,Integer,Double> rankAndYearSize = Triple.of(thisYearRank,thisYearRecordsLength,thisRankPercentage);
 			this.ranksInEachYear.add(rankAndYearSize);
+			
+			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearRecordsLength, thisRankPercentage);
 		}
+
+		thisHtml += "</table>";
+		thisHtml = "<div>" + thisHtml + "</div>";
+		super.setHTML(thisHtml);
+		
 		ReportHistory.addReportLog(this);
 	}
 	/**

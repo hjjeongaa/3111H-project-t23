@@ -1,14 +1,25 @@
 package comp3111.popnames.controllers;
 
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import comp3111.export.*;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.CheckBoxTableCell;
+
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Export_controller {
 	@FXML
@@ -65,10 +76,35 @@ public class Export_controller {
     void Export_invertSelectionButtonPressed() {
     	ReportHistory.invertSelection();
     }
-
     @FXML
     void Export_exportSelectedButtonPressed() {
-    	ReportHistory.exportSelected();
+    	String initialFileName = ReportHistory.getLatestSelectedReportDate();
+    	if (!initialFileName.isBlank()) {
+    		FileChooser fc = new FileChooser();
+        	fc.setTitle("Save PDF to where?");
+        	fc.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
+        	fc.setInitialFileName("Report_"+initialFileName.replace(":", "")+".pdf");
+        	File outputFile = fc.showSaveDialog(Export_exportSelected_button.getScene().getWindow());
+        	
+        	try {
+				ReportHistory.exportSelected(outputFile);
+			} catch (FileNotFoundException e) {
+				//show error label
+				
+				e.printStackTrace();
+			} catch (IOException e) {
+				//show io error label
+
+	    		Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error");
+	    		alert.setHeaderText("I/O Error");
+	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
+	    		alert.showAndWait();
+				e.printStackTrace();
+			}
+    	} else {
+    		//show error label
+    	}
     }
     
 }
