@@ -13,7 +13,7 @@ import javafx.util.Pair;
 public abstract class DatasetHandler {
 	/**
 	 * This function is used to get the valid types in the current data set
-	 * @return a Vector<String> of the support types in the current data set using the data set/metadata.txt
+	 * @return a Vector of Strings of the support types in the current data set using the data set/metadata.txt
 	 */
 	public static Vector<String> getTypes(){
 		Vector<String> types = new Vector<String>();
@@ -26,7 +26,7 @@ public abstract class DatasetHandler {
 	/**
 	 * This function is used to get the valid countries given a type using the dataset/(type)/metadata.txt
 	 * @param type [human, pet]
-	 * @return Vector<String> of the supported countries in the existing data set
+	 * @return Vector of Strings of the supported countries in the existing data set
 	 */
 	public static Vector<String> getCountries(String type){
 		type = type.strip(); //cleaning input

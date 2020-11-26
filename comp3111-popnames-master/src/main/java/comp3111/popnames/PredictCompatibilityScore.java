@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.lang.Math;
 /**
- * Code for predicting the compatibility of two names
+ * Code for Task 6, predicting the compatibility of two names
+ * @author Yuxi Sun
  */
 public class PredictCompatibilityScore extends ReportLog{
 	//records the time of creation or last modification
@@ -27,34 +28,41 @@ public class PredictCompatibilityScore extends ReportLog{
 
 	//accessors
 	/**
-	 * returns the time said object was generated
+	 * @return the time said object was generated
+ 	 * @author Yuxi Sun
 	 */
 	public LocalDateTime getTime(){return time;};
 	/**
-	 * returns the generated scores
+	 * @return the generated scores
+	 * @author Yuxi Sun
 	 */
 	public HashMap<String, Double>  getoScore(){return oScore;};
 	/**
-	 * returns the Person object user
+	 * @return the Person object user
+	 * @author Yuxi Sun
 	 */
 	public Person getUser(){return user;};
 	/**
-	 * returns the Person object mate
+	 * @return the Person object mate
+	 * @author Yuxi Sun
 	 */
 	public Person getMate(){return mate;};
 	/**
-	 * returns the String representing the ranking algorithm
+	 * @return the String representing the ranking algorithm
+	 * @author Yuxi Sun
 	 */
 	public String rankAlgo() {return rankAlgo;};
 	/**
-	 * returns the String representing the ranking resolving method
+	 * @return the String representing the ranking resolving method
+	 * @author Yuxi Sun
 	 */
 	public String getRankResolver() {return rankResolver;};
 	//functions for ReportLog class
 	/**
-	 * Returns a html string representing said object using the template stored in the exports package
+	 * @return a html string representing said object using the template stored in the exports package
 	 * template and code by Yuxi Sun
 	 * v1.0
+	 * @author Yuxi Sun
 	 */
 	public String getHTML(){
 		//grabbing template
@@ -67,11 +75,16 @@ public class PredictCompatibilityScore extends ReportLog{
 	
 	//accessors for Report History
 	/**
-	 * returns a string representing the task
+	 * @return a string representing the task
+	 * @author Yuxi Sun
 	 */
 	public String getTask(){
 		return "Task 6";
 	}
+	/**
+	 * @return a string representing the content of the question, for ReportLog class
+	 * @author Yuxi Sun
+	 */
 	public String getoReport(){
 		String oReport = String.format("%s %s %s and %s %s %s", user.getName(),user.getGender(), user.getYob(),
 				mate.getName(),mate.getGender(), mate.getYob());
@@ -87,6 +100,7 @@ public class PredictCompatibilityScore extends ReportLog{
 	 * Self made function 1 (WOW FACTOR), takes take population size of each year into account so that the most compatible pair of names
 	 * are the names that have the same population adjusted rank in their respective years.
 	 * @return oScore from parm algorithm
+	 * @author Yuxi Sun
 	 */
 	public double parm() {
 		//normalizing ranks of each user
@@ -100,6 +114,7 @@ public class PredictCompatibilityScore extends ReportLog{
 	 * e.g. if there are 100 names and iName is rank 70th, his most compatible name would be at rank 30th.
 	 * The idea of this algorithm is that both names combined together would result in a neutral/ average level of uniqueness
 	 * @return oScore from pasrm algorithm
+	 * @author Yuxi Sun
 	*/
 	public double pasrm(){
 		//normalizing ranks of each user 
@@ -109,14 +124,20 @@ public class PredictCompatibilityScore extends ReportLog{
 		return Math.max(0,1-  Math.abs(nMate-optMate));
 	}
 	/**
-	 *  string similarity using a modified Levenshtein distance. The values are squared to introduce nonlinearity.
-	 *  @return Max(0,1-(Levenshtein distance)^2/ (Max(user name length, mate name length)^2)
+	 *  String similarity using a modified Levenshtein distance. The values are squared to introduce nonlinearity.
+	 *  @return Max(0,1-(Levenshtein distance)^2/ (Max(user name length, mate name length)^2)\
+	 *  @author Yuxi Sun
 	 */
 	public double ld() {
 		int ldScore = LD.calculate(user.getName(), mate.getName());
 		return Math.max(0,1 - (double)Math.pow(ldScore,2)/Math.pow(Math.max(user.getName().length(),mate.getName().length()),2));
 	}
 	
+	/**
+	 * 
+	 * @return the mean score of parm, pasrm, and ld
+	 * @author Yuxi Sun
+	 */
 	public double composite(){
 		//should only be called after the other functions
 		double composite = 0;
@@ -137,8 +158,11 @@ public class PredictCompatibilityScore extends ReportLog{
 	 * @param iPreference Specify the preference on having a younger (negative number) or older (positive number) soul mate
 	 * @param countryMate particulars of the person to be matched
 	 * @param typeMate particulars of the person to be matched
-	 * @param setting specifies the algorithm(s) that should be shown through the console
+	 * @param rankingAlgo the method in which to perform ranking, call RankingAlgorithmFactory.getRankAlgorithm(name,gender,year,country,type) to find out about the supported methods
+	 * @param resolver the method in which to perform rank resolution: when a name is not found in a year, call rankResolution.getResolutionMethods()
+	 * @author Yuxi Sun
 	 */
+
 	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String rankingAlgo, String resolver) {
 		this.time = LocalDateTime.now();
 		this.rankAlgo = rankingAlgo;

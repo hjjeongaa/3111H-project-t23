@@ -57,7 +57,7 @@ public class DR extends RankingAlgorithm {
 	 * This function should be purely used for Iterative methods, this is used to update the state of the ranking and should be used with getRank().
 	 * NOTHING will occur if this function is called on an iterative method to insure the integrity of the data.
 	 * @param freq the frequency of the current entry to be entered 
-	 * @return true if the addEntry succeeded
+	 * @return if the addEntry succeeded true, false otherwise
 	 * @author Yuxi Sun
 	 */
 	public boolean addEntry(int freq) {
@@ -74,12 +74,15 @@ public class DR extends RankingAlgorithm {
 		++size;
 		return true;
 	}
-	//Mutator: Iterator functions
 	/**
-	 * This function should be purely used for Iterative methods, this is used to update the state of the ranking and should be used with getRank().
-	 * NOTHING will occur if this function is called on an iterative method to insure the integrity of the data.
-	 * @param freq the frequency of the current entry to be entered 
-	 * @return true if the addEntry succeeded
+	 * Non-iterative constructor for this object which is used strictly for getting the rank of a name in a specified data set and the size of the data set.
+	 * No further mutations to this class will be allowed if this constructor is called.
+	 * @param name the name you wish to rank for
+	 * @param gender the gender of the name
+	 * @param yob the year of the data set you wish to use
+	 * @param country the of the data set you wish to use
+	 * @param type the type of the data set you wish to use
+	 * @param resolution the method you wish to use to replace a rank if name is not found in the specified data set. More can be found in the rankResolver class
 	 * @author Yuxi Sun
 	 */
 	public DR(String name, String gender, int yob, String country, String type, String resolution){
@@ -122,15 +125,10 @@ public class DR extends RankingAlgorithm {
 		if (!found)
 			this.rank = new rankResolver("dr", name, gender, yob, country, type, this.size, resolution).getRank();
 	}
-		/**
-	 * Non-iterative constructor for this object which is used strictly for getting the rank of a name in a specified data set and the size of the data set.
-	 * No further mutations to this class will be allowed if this constructor is called.
-	 * @param name the name you wish to rank for
-	 * @param gender the gender of the name
-	 * @param yob the year of the data set you wish to use
-	 * @param country the of the data set you wish to use
-	 * @param type the type of the data set you wish to use
-	 * @param resolution the method you wish to use to replace a rank if name is not found in the specified data set. More can be found in the rankResolver class
+	/**
+	 * This constructor should be purely used for Iterative methods, this is used to update the state of the ranking and should be used with getRank().
+	 * NOTHING will occur if this function is called on an iterative method to insure the integrity of the data.
+	 * @param freq the frequency of the current entry to be entered 
 	 * @author Yuxi Sun
 	 */
 	public DR(int freq) {
