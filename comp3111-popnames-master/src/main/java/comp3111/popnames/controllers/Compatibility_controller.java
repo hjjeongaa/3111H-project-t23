@@ -243,13 +243,10 @@ public class Compatibility_controller {
             Pair<String,String> userValidRange = DatasetHandler.getValidRange(type, country);
             int start = Integer.parseInt(userValidRange.getKey());
             int end = Integer.parseInt(userValidRange.getValue());
-            System.out.println(start);
-            System.out.println(end);
             for(int i = start; i <= end; ++i){
                 //appending all valid years to the list to be displayed in 
                 userYOBList.add(Integer.toString(i));
             }
-            System.out.println(userYOBList.toString());
             T6_user_yob_ComboBox.setValue(Integer.toString((start+end)/2));//setting the default YOB to the median year of said range.
         }
     }
@@ -268,13 +265,13 @@ public class Compatibility_controller {
      * Update country list on change of mate type
      */
     private void selectMateType() {
+        hideAllErrors();
         mateCountries.clear();
         for (String country: DatasetHandler.getCountries(T6_mate_type_ComboBox.getValue()))
             mateCountries.add(country);
         //clearing and resetting mateCountry and preference;
         T6_mate_country_ComboBox.setValue("");
         updatePreferences();
-        hideAllErrors();
     }
     @FXML
     private void selectMateCountry() {
@@ -339,7 +336,6 @@ public class Compatibility_controller {
     
     private boolean validateUpdatePreference() {
         //hide all previous error messages
-        hideAllErrors();
         //load users variables
         String iName = T6_user_name_TextField.getText();
         String yob = T6_user_yob_ComboBox.getValue();
@@ -361,10 +357,12 @@ public class Compatibility_controller {
             //if country is empty
             valid = false;
         }
-        if(isComboBoxEmpty(type)){
-            //if type is empty
-            valid = false;
-        }//load all variables
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(type)){
+//            //if type is empty
+//            valid = false;
+//        }
+        //load all variables
         String iNameMate = T6_mate_name_TextField.getText();
         String countryMate = T6_mate_country_ComboBox.getValue();
         String typeMate = T6_mate_type_ComboBox.getValue();
@@ -377,13 +375,14 @@ public class Compatibility_controller {
         if(isComboBoxEmpty(countryMate)){
             //if countryMate is empty
             valid = false;
-            T6_mate_country_error_Text.setVisible(true);
+//            T6_mate_country_error_Text.setVisible(true);
         }
-        if(isComboBoxEmpty(typeMate)){
-            //if typeMate is empty
-            valid = false;
-            T6_mate_type_error_Text.setVisible(true);
-        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(typeMate)){
+//            //if typeMate is empty
+//            valid = false;
+////            T6_mate_type_error_Text.setVisible(true);
+//        }
         return valid;
     	
     }
@@ -408,8 +407,6 @@ public class Compatibility_controller {
         String type = T6_user_type_ComboBox.getValue();
         String country = T6_user_country_ComboBox.getValue();
         
-        //hide all previous error messages
-        hideAllErrors();
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
         //validation of input
         boolean valid = true;
@@ -418,11 +415,12 @@ public class Compatibility_controller {
             valid = false;
             T6_user_name_error_Text.setVisible(true);
         }
-        if(isComboBoxEmpty(iGender)){
-            //if iGender is empty or null (should never happen unless UI fails)
-            valid = false;
-            System.out.println("Gender error");
-        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(iGender)){
+//            //if iGender is empty or null (should never happen unless UI fails)
+//            valid = false;
+//            System.out.println("Gender error");
+//        }
         if(isComboBoxEmpty(yob)){
             //if yob is empty
             valid = false;
@@ -433,18 +431,16 @@ public class Compatibility_controller {
             valid = false;
             T6_country_type_error_Text.setVisible(true);
         }
-        if(isComboBoxEmpty(type)){
-            //if type is empty
-            valid = false;
-            T6_user_type_error_Text.setVisible(true);
-        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(type)){
+//            //if type is empty
+//            valid = false;
+//            T6_user_type_error_Text.setVisible(true);
+//        }
         return valid;
     }
 
     boolean validateMateInputs(){
-        //hide all previous error messages
-        hideAllErrors();
-
         //load all variables
         String iNameMate = T6_mate_name_TextField.getText();
         String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
@@ -459,11 +455,12 @@ public class Compatibility_controller {
             valid = false;
             T6_mate_name_error_Text.setVisible(true);
         }
-        if(isComboBoxEmpty(iGenderMate)){
-            //if iGenderMate is empty
-            valid = false;
-            System.out.println("Gender error");
-        }
+//        //Will not occur with current UI setup
+//        if(isComboBoxEmpty(iGenderMate)){
+//            //if iGenderMate is empty
+//            valid = false;
+//            System.out.println("Gender error");
+//        }
         if(isComboBoxEmpty(preference)){
             //if iNameMate is empty
             valid = false;
@@ -474,11 +471,12 @@ public class Compatibility_controller {
             valid = false;
             T6_mate_country_error_Text.setVisible(true);
         }
-        if(isComboBoxEmpty(typeMate)){
-            //if typeMate is empty
-            valid = false;
-            T6_mate_type_error_Text.setVisible(true);
-        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(typeMate)){
+//            //if typeMate is empty
+//            valid = false;
+//            T6_mate_type_error_Text.setVisible(true);
+//        }
         return valid;
     }
     
@@ -493,10 +491,11 @@ public class Compatibility_controller {
     //actual execution
     @FXML
     void compatibilityScore() {
-
-
-        if (validateUserInputs() &&
-            validateMateInputs()){
+        //hide all previous error messages
+        hideAllErrors();
+        boolean vMate = validateUserInputs();
+        boolean vUser = validateMateInputs();
+        if (vMate && vUser){
         	//if the inputs are valid then proceed
         	//getting relevant variables
             //user variables

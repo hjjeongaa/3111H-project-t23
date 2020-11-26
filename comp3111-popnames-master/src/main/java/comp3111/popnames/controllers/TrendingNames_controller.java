@@ -153,8 +153,6 @@ public class TrendingNames_controller {
     	//Reset range string
         T3_startYear_ComboBox.setValue("");
         T3_endYear_ComboBox.setValue("");
-        T3_startYear_ComboBox.setItems(null);
-        T3_endYear_ComboBox.setItems(null);
         //update country list
         String type = T3_type_ComboBox.getValue(); // getting type
         countries.clear();
@@ -186,8 +184,8 @@ public class TrendingNames_controller {
 
         //update relevant menus
 
-      int start = Integer.parseInt(validRange.getKey()); //+1 to avoid collision
-      int end = Integer.parseInt(validRange.getValue());//avoid collision with end
+      int start = Integer.parseInt(validRange.getKey());
+      int end = Integer.parseInt(validRange.getValue());
       //set up end list
       endOptions.clear();
       startOptions.clear();
@@ -234,10 +232,11 @@ public class TrendingNames_controller {
     	int validStart;
     	int validEnd;
         boolean valid = true;
-        if (isComboBoxEmpty(type)) {
-        	valid = false;
-        	T3_type_error_Text.setVisible(true);
-        }
+//    	//will not occur due to UI interface
+//        if (isComboBoxEmpty(type)) {
+//        	valid = false;
+//        	T3_type_error_Text.setVisible(true);
+//        }
         if (isComboBoxEmpty(country)) {
         	valid = false;
         	T3_country_error_Text.setVisible(true);
@@ -266,20 +265,24 @@ public class TrendingNames_controller {
         		T3_range_error_Text.setText("Start year should be <= end year");
         		T3_range_error_Text.setVisible(true);
         		valid=false;
-        	}else if (start<validStart) {
-        		T3_range_error_Text.setText("Start year should be >= " + Integer.toString(validStart));
-        		T3_range_error_Text.setVisible(true);
-        		valid=false;
-        	}else if (end>validEnd) {
-        		T3_range_error_Text.setText("End year should be <= " + Integer.toString(validEnd));
-        		T3_range_error_Text.setVisible(true);
-        		valid=false;
         	}
+//        	//will not occur due to UI interface
+//        	else if (start<validStart) {
+//        		T3_range_error_Text.setText("Start year should be >= " + Integer.toString(validStart));
+//        		T3_range_error_Text.setVisible(true);
+//        		valid=false;
+//        	}else if (end>validEnd) {
+//        		T3_range_error_Text.setText("End year should be <= " + Integer.toString(validEnd));
+//        		T3_range_error_Text.setVisible(true);
+//        		valid=false;
+//        	}
     	}
-    	if(isComboBoxEmpty(type)) {
-    		//if type is not set
-            T3_type_error_Text.setVisible(true);
-    	}
+//    	//will not occur due to UI interface
+//    	if(isComboBoxEmpty(type)) {
+//    		//if type is not set
+//            T3_type_error_Text.setVisible(true);
+//    	}
+    	
         if(isComboBoxEmpty(country)) {
             //if country is not set
             T3_country_error_Text.setVisible(true);
@@ -354,7 +357,6 @@ public class TrendingNames_controller {
 	            //update table
 	        	updateTable(entry);
 	        }
-	//        System.out.println(report.getoReport());
         }
     }
     
@@ -368,57 +370,3 @@ public class TrendingNames_controller {
     	T3_infobox_TextArea.setVisible(false);
     }
 }
-
-
-//     /**
-//      * updates end year list
-//      * Yuxi Sun
-//      * v1.0
-//      */
-//     @FXML 
-//     void selectStart(){        
-//         if (T3_startYear_ComboBox.getValue() == null){
-//             //if nothing has been selected do nothing
-//             return;
-//         }
-//      System.out.println("start trigger");
-//         //getting valid range
-//         Pair<String,String> validRange = DatasetHandler.getValidRange(T3_type_ComboBox.getValue(),T3_country_ComboBox.getValue());
-
-//         int start = Integer.parseInt(T3_startYear_ComboBox.getValue())+1; //+1 to avoid collision
-//         int end = Integer.parseInt(validRange.getValue());//avoid collision with end
-//         //set up end list
-        
-//         endOptions.clear();
-//         for (int i = start; i <= end ; ++i){
-//             endOptions.add(Integer.toString(i));
-//         }
-        
-//         T3_endYear_ComboBox.setItems(endOptions);
-//     }
-//     /**
-//      * updates start year list
-//      * Yuxi Sun
-//      * v1.0
-//      */
-//     @FXML 
-//     void selectEnd(){
-//         if (T3_endYear_ComboBox.getValue() == null){
-//             //if nothing has been selected do nothing
-//             return;
-//         }
-//         System.out.println("end trigger");
-//         //getting valid range
-//         Pair<String,String> validRange = DatasetHandler.getValidRange(T3_type_ComboBox.getValue(),T3_country_ComboBox.getValue());
-//         int start = Integer.parseInt(validRange.getKey());        //avoid collision with start
-//         int end = Integer.parseInt(T3_endYear_ComboBox.getValue())-1; //+1 to avoid collision
-//         //set up start list
-// //        System.out.println(start);
-// //        System.out.println(end);
-//         startOptions.clear();
-//         for (int i = start; i <= end ; ++i){
-//             startOptions.add(Integer.toString(i));
-//         }
-//         T3_startYear_ComboBox.setItems(startOptions);
-        
-//     }
