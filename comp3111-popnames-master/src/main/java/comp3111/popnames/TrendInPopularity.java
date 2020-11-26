@@ -7,6 +7,7 @@
 
 package comp3111.popnames;
 
+import comp3111.export.ReportHistory;
 import org.apache.commons.csv.*;
 
 import edu.duke.*;
@@ -321,6 +322,7 @@ public class TrendInPopularity extends Reports{
 		this.startYear = startYear;
 		this.endYear = endYear;
 		generate();
+		ReportHistory.addReportLog(this);
 	}
 	/**
 	 * Fetch all relevant data from database and process them to get a list of largest rise and fall for each name.
