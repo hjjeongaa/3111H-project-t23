@@ -217,6 +217,7 @@ public class TrendingNamesControllerTest extends ApplicationTest {
 	
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 
 
