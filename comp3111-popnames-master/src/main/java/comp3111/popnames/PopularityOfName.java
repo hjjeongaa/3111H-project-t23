@@ -7,6 +7,7 @@
 
 package comp3111.popnames;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import org.apache.commons.csv.*;
 import org.apache.commons.lang3.tuple.Triple;
@@ -70,8 +71,8 @@ public class PopularityOfName extends Reports {
 			Double thisRankPercentage = 100*(1-((rank-1)/total));
 			Triple<Integer,Integer,Double> rankAndYearSize = Triple.of(thisYearRank,thisYearRecordsLength,thisRankPercentage);
 			this.ranksInEachYear.add(rankAndYearSize);
-			
-			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearRecordsLength, thisRankPercentage);
+			DecimalFormat df = new DecimalFormat("#.##");
+			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearRecordsLength, df.format(thisRankPercentage)+"%");
 		}
 
 		thisHtml += "</table>";

@@ -50,6 +50,9 @@ public class Export_controller {
     private Button Export_exportSelected_button;
     
     @FXML
+    private Label Export_nothingSelectedError_label;
+    
+    @FXML
     void initialize() {
     	Export_tableView_selected_tableColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
     	Export_tableView_selected_tableColumn.setCellFactory(CheckBoxTableCell.forTableColumn(Export_tableView_selected_tableColumn));
@@ -80,6 +83,7 @@ public class Export_controller {
     void Export_exportSelectedButtonPressed() {
     	String initialFileName = ReportHistory.getLatestSelectedReportDate();
     	if (!initialFileName.isBlank()) {
+    		Export_nothingSelectedError_label.setText("");
     		FileChooser fc = new FileChooser();
         	fc.setTitle("Save PDF to where?");
         	fc.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
@@ -89,12 +93,15 @@ public class Export_controller {
         	try {
 				ReportHistory.exportSelected(outputFile);
 			} catch (FileNotFoundException e) {
-				//show error label
+				Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error");
+	    		alert.setHeaderText("I/O Error");
+	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
+	    		alert.showAndWait();
+				e.printStackTrace();
 				
 				e.printStackTrace();
 			} catch (IOException e) {
-				//show io error label
-
 	    		Alert alert = new Alert(AlertType.ERROR);
 	    		alert.setTitle("Error");
 	    		alert.setHeaderText("I/O Error");
@@ -103,7 +110,7 @@ public class Export_controller {
 				e.printStackTrace();
 			}
     	} else {
-    		//show error label
+    		Export_nothingSelectedError_label.setText("Nothing selected.");
     	}
     }
     
