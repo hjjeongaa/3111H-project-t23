@@ -15,7 +15,7 @@ public class rankResolver {
 	private int rank;
 	/**
 	 * 
-	 * @return a Vector<String> of the resolution options
+	 * @return a Vector of Strings of the resolution options
 	 */
 	public static Vector<String> getResolutionMethods() {
 		Vector<String> methods = new Vector<String>();
@@ -26,7 +26,7 @@ public class rankResolver {
 	public int getRank() {return this.rank;};
 	/**
 	 * 
-	 * @param rankingMethod
+	 * @param rankingMethod the method in which to perform ranking, call RankingAlgorithmFactory.getRankAlgorithm(name,gender,year,country,type) to find out about the supported methods
 	 * @param name name of person that cannot be found in data set
 	 * @param gender gender affiliation of name
 	 * @param yob year of birth of name
@@ -34,6 +34,7 @@ public class rankResolver {
 	 * @param type type of name (human or pet)
 	 * @param size number of unique names in current data set.
 	 * @param resolution means of resolution ["standard" giving the name size of data set + 1, "ld": uses class LD to find a ranked name with the least difference with current name and adopts said names rank]
+	 * @author Yuxi Sun
 	 */
 	public rankResolver(String rankingMethod, String name, String gender, int yob, String country, String type, int size, String resolution) {
 		if(resolution.equals("standard")) { // using standard rank resolution

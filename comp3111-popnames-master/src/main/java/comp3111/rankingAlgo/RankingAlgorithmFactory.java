@@ -13,7 +13,7 @@ public class RankingAlgorithmFactory{
 	private static Vector<String> nonIterativeMethods = null;		//stores non iterative (give name get rank) methods supported by current package
 	private static Vector<String> iterativeMethods = null;			//stores iterative methods supported by current package
 	/**
-	 * 
+	 * All input parameters are assumed to be correct. you can use DatasetHandler to check whether or not these inputs are valid.
 	 * @param rankingMethod the method of evaluating rankings: ["scr" Standard Competition Ranking,"mcr" Modified Competition Ranking,"dr" Dense Ranking,"or" Ordinal Ranking]
 	 * @param name name being searched.
 	 * @param gender gender of search
@@ -22,6 +22,7 @@ public class RankingAlgorithmFactory{
 	 * @param type type of data set being searched
 	 * @param resolution method of resolving not found names ["standard": return #unique names in specified data set + 1]
 	 * @return RankingAlgorithm object
+	 * @author Yuxi Sun
 	 */
 	public static RankingAlgorithm getRankAlgorithm(String rankingMethod, String name, String gender, int yob, String country, String type, String resolution) {
 		if("scr".equals(rankingMethod))//standard competition ranking
@@ -43,6 +44,7 @@ public class RankingAlgorithmFactory{
 	 * @param rankingMethod the method of ranking
 	 * @param freq the frequency of the first name of the data set of specified gender
 	 * @return RankingAlgorithm object
+	 * @author Yuxi Sun
 	 */
 	public static RankingAlgorithm getRankAlgorithm(String rankingMethod, int freq) {
 		if("scr".equals(rankingMethod))//standard competition ranking
@@ -53,6 +55,11 @@ public class RankingAlgorithmFactory{
 			return new OR(freq);
 		else return null;
 	}
+	/**
+	 * creates nonIterativeMethods Vector if not yet created and returns the pointer to the callee.
+	 * @return a Vector of Strings listing the supported Non-iterative methods
+	 * @author Yuxi Sun
+	 */
 	public static Vector<String> getNonIterativeMethods(){
 		//if unintialized 
 		if (nonIterativeMethods == null) {
@@ -64,7 +71,11 @@ public class RankingAlgorithmFactory{
 		}
 		return nonIterativeMethods;
 	}
-	
+	/**
+	 * creates iterativeMethods Vector if not yet created and returns the pointer to the callee.
+	 * @return a Vector of Strings listing the supported Iterative methods
+	 * @author Yuxi Sun
+	 */
 	public static Vector<String> getIterativeMethods(){
 		//if unintialized 
 		if (iterativeMethods == null) {

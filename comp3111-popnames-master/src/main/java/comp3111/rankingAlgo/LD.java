@@ -10,9 +10,16 @@ public class LD {
 	 * Code is written based off the Algorithm defined here https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
 	 * @param a string or name
 	 * @param b string or name
-	 * @return float giving the number of changes needed to change string a to string b
+	 * @return int giving the number of changes needed to change string a to string b, returns -1 or -2 if a or b are empty strings respectively.
+	 * @author Yuxi Sun
 	 */
 	public static int calculate(String a, String b) {
+		if (a.length() == 0) {
+			return -1; //invalid a length
+		}
+		if (b.length() == 0) {
+			return -2; //invalid b length
+		}
 		int[][] dp = new int[a.length()+1][b.length()+1];
 		for (int i = 0; i< a.length()+1; ++i)
 			dp[i][0] = i;
