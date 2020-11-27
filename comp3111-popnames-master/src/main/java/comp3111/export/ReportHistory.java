@@ -10,11 +10,18 @@ import comp3111.popnames.ReportLog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.utils.PdfMerger;
+
 
 public class ReportHistory {
 	private static final ReportHistory instance = new ReportHistory();
@@ -42,7 +49,7 @@ public class ReportHistory {
 	 */
 	public static void addReportLog(ReportLog reportLogToAdd) {
 		ReportHolder reportHolderToAdd = new ReportHolder(reportLogToAdd);
-		reportHoldersList.add(reportHolderToAdd);
+		reportHoldersList.add(0,reportHolderToAdd);
 	}
 	/**
 	 * UI method to make all reports selected
@@ -82,33 +89,32 @@ public class ReportHistory {
 		return "";
 	}
 	/**
-	 * Method that, given a File object to write to, collates all the HTML from all selected reports and converts the combined HTML document into a PDF.
+	 * Method that, given a File object to write to, converts each HTML string from all selected reports to individual PDFs and merges all of them together.
 	 * @param outputFile File object which is the destination of the PDF file.
-	 * @throws FileNotFoundException when something goes wrong with the filepath.
+	 * @throws FileNotFoundException when something is wrong with the filepath.
 	 * @throws IOException when something goes wrong whilst writing to the filepath.
 	 */
 	public static void exportSelected(File outputFile) throws FileNotFoundException, IOException {
-		//debug
-		System.out.println("The following HTML code will be exported");
-		for (int i = 0; i < reportHoldersList.size(); ++i) {
-			ReportHolder thisReportHolder = reportHoldersList.get(i);
-			if (thisReportHolder.getSelected()) {
-				System.out.println(thisReportHolder.getHTML());
-			}
-		}
+		System.out.println("Begin PDF merge & export.");
 		
-		String combinedHTML = "";
+		PdfDocument outputPdf = new PdfDocument(new PdfWriter(outputFile));
+		PdfMerger merger = new PdfMerger(outputPdf);
+		
 		for (int i = 0; i < reportHoldersList.size(); ++i) {
-			ReportHolder thisReportHolder = reportHoldersList.get(i);
-			if (thisReportHolder.getSelected()) {
-				//add a header with basic information on the report
-				combinedHTML += "<h1>" + thisReportHolder.getTask() + " report generated at " + thisReportHolder.getDate() + " (" + thisReportHolder.getSummary() + ")</h1>";
-				combinedHTML += thisReportHolder.getHTML();
-			}
+			String reportHtml = reportHoldersList.get(i).getHTML();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			//wrap in html tag
+			HtmlConverter.convertToPdf("<!DOCTYPE html><html>" + reportHtml + "</html>", outputStream);
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+			//create new pdf document from the converted html
+			PdfDocument pdfToMerge = new PdfDocument(new PdfReader(inputStream));
+			//merge all pages in the pdf to the output file
+			merger.merge(pdfToMerge, 1, pdfToMerge.getNumberOfPages());
+			pdfToMerge.close();
 		}
-		//wrap it up in the outermost html tag
-		combinedHTML = "<!DOCTYPE html><html>" + combinedHTML + "</html>";
-		HtmlConverter.convertToPdf(combinedHTML, new FileOutputStream(outputFile));
+		//merging finished, close it!
+		outputPdf.close();
+		System.out.println("PDF merge & export finished.");
 	}
 }
  
