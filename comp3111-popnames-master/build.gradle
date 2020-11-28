@@ -18,6 +18,7 @@ task debug(type:JavaExec) {
 } 
 
 dependencies {
+	compile "com.kennycason:kumo-core:1.28"
 	compile "com.itextpdf:itext7-core:7.1.9"
 	compile "com.itextpdf:html2pdf:2.1.6"
 	compile "org.slf4j:slf4j-api:1.7.5"

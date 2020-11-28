@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,7 +17,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.BabyNames_controller">
    <children>
@@ -175,6 +175,11 @@
                         <Insets left="200.0" top="20.0" />
                      </VBox.margin>
                   </Button>
+                  <ImageView fx:id="BabyNames_wordCloud_imageView" fitHeight="220.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="50.0" top="20.0" />
+                     </VBox.margin>
+                  </ImageView>
                </children>
             </VBox>
             <TableView fx:id="BabyNames_tableView" prefHeight="570.0" prefWidth="295.0">

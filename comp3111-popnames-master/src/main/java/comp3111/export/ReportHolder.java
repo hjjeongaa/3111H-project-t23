@@ -1,5 +1,5 @@
 /**
- * ReportHolder: A data model for the export  table view.
+ * ReportHolder: A data model for the export table view in Export_controller.
  * Creates properties from all the attributes of the ReportLog class,
  * and adds a 'selected' property to allow user to select which reports
  * they want to be exported.

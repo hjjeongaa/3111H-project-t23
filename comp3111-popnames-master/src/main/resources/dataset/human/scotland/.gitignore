@@ -7,3 +7,4 @@
 master.csv
 # Ignore Gradle build output directory
 build
+/Untitled.ipynb

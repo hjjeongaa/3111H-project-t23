@@ -55,6 +55,7 @@ public class Person {
 	 * @param yob		the year of birth of the person
 	 * @param country	the country in which the information was scraped from
 	 * @param type		the type of database in which the information was scraped from (human/pet)
+	 * @author Yuxi Sun 
 	 */
 	public Person(String name, String gender, int yob, String country, String type){
 		this.name = name;
@@ -66,14 +67,15 @@ public class Person {
 	}
 
 	/**
-	 * This is the simple constructor that assumes the RankingAlgo used should be standard competition ranking and the resolution type used should be "standard"
-	 * @param name		the name of the person
-	 * @param gender	the gender of the person
-	 * @param yob		the year of birth of the person
-	 * @param country	the country in which the information was scraped from
-	 * @param type		the type of database in which the information was scraped from (human/pet)
-	 * @param rankingAlgo
-	 * @param resolution
+	 * This is the simple constructor for Person class
+	 * @param name the name of the person
+	 * @param gender the gender of the person
+	 * @param yob the year of birth of the person
+	 * @param country the country in which the information was scraped from
+	 * @param type the type of database in which the information was scraped from (human/pet)
+	 * @param rankingAlgo the method in which to perform ranking, call RankingAlgorithmFactory.getRankAlgorithm(name,gender,year,country,type) to find out about the supported methods
+	 * @param resolver the method in which to perform rank resolution: when a name is not found in a year, call rankResolution.getResolutionMethods()
+	 * @author Yuxi Sun 
 	 */
 	public Person(String name, String gender, int yob, String country, String type, String rankingAlgo, String resolver){
 		this.name = name;
@@ -85,12 +87,13 @@ public class Person {
 	}
 	/**
 	 * Overloaded constructor such that person acts only as a data structure.
-	 * @param name		the name of the person
-	 * @param gender	the gender of the person
-	 * @param yob		the year of birth of the person
-	 * @param country	the country in which the information was scraped from
-	 * @param type		the type of database in which the information was scraped from (human/pet)
-	 * @param rank		the rank of the person
+	 * @param name the name of the person
+	 * @param gender the gender of the person
+	 * @param yob the year of birth of the person
+	 * @param country the country in which the information was scraped from
+	 * @param type the type of database in which the information was scraped from (human/pet)
+	 * @param rank the rank of the person
+	 * @author Yuxi Sun 
 	 */
 	public Person(String name, String gender, int yob, String country, String type, int rank){
 		this.name = name;
