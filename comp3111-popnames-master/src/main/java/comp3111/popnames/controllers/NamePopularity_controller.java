@@ -1,3 +1,9 @@
+/**
+ * NamePopularity_controller
+ * UI controller for task 2's tab
+ * @author Hyun Joon Jeong
+ */
+
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.PopularityOfName;
@@ -24,7 +30,10 @@ import org.apache.commons.lang3.tuple.Triple;
 public class NamePopularity_controller {
 	//will hold data model of each row in the table view
 	private ObservableList<NamePopularityTableDataModel> tableViewList;
-	//data model for table view's rows
+	/**
+	 * Data model for the table view which will store all results.
+	 * Table view's columns consist of the name's year, rank, total # of names in the year, and the name's rank's percentile.
+	 */
 	public class NamePopularityTableDataModel {
 		private final SimpleStringProperty year;
 		private final SimpleStringProperty rank;
@@ -81,7 +90,10 @@ public class NamePopularity_controller {
 
     @FXML
     private TableColumn<NamePopularityTableDataModel, String> NamePopularity_tableView_percentile_tableColumn;
-    
+    /**
+     * initialize: called once when the UI is initialized
+     * Bind the table view's columns to the data model, and link tableViewList with the table view.
+     */
     @FXML
     void initialize() {
     	NamePopularity_tableView_year_tableColumn.setCellValueFactory(new PropertyValueFactory<NamePopularityTableDataModel,String>("year"));
@@ -92,20 +104,28 @@ public class NamePopularity_controller {
     	NamePopularity_tableView.setItems(this.tableViewList);
     	NamePopularity_tableView.setPlaceholder(new Label("You haven't generated anything yet."));
     }
-    
+    /**
+     * Helper function to create a red highlight around text fields with an error.
+     * @param errorField the text field to highlight
+     * @param on whether the error highlight should be on or not
+     */
     private void errorEffect(TextField errorField, boolean on) {
     	DropShadow errorShadow = (DropShadow) (errorField.getEffect());
 		errorShadow.setColor(Color.color(1,0,0,(on? 1 : 0)));
 		errorField.setEffect(errorShadow);
     }
-    
+    /**
+     * Called when the generate button is pressed.
+     * Performs input checking on all the inputs, and handles error UI. If none of the inputs have errors, the PopularityOfName object is called and a report is generated. The resultant List from the object is used to fill the table view in the UI.
+     */
     @FXML
     void generatePopularityOfName() {
-    	/* Variables */
+    	//variables needed to generate report
     	String name = NamePopularity_name_textField.getText();
     	int startYear = -1;
     	int endYear = -1;
     	String gender;
+    	
     	final int MAX_YEAR = 2019;
     	final int MIN_YEAR = 1880;
     	
@@ -124,12 +144,14 @@ public class NamePopularity_controller {
     			NamePopularity_yearError_label.setText("Your start year is out of range.");
     		} else {
     			errorEffect(NamePopularity_startYear_textField, false);
-    			//Handle end year
+    			//Handle end year. Try/catch must be nested because the error message depends on whether both the start year and end year having errors
     			try {
 	        		endYear = Integer.parseInt(NamePopularity_endYear_textField.getText());
 	        		if(endYear > MAX_YEAR || endYear < startYear) {
 	        			endYearError = true;
 	        			NamePopularity_yearError_label.setText("Your end year is out of range.");
+	        		} else {
+	        			NamePopularity_yearError_label.setText("");
 	        		}
 	        	} catch(NumberFormatException e) {
 	        		endYearError = true;
@@ -142,16 +164,16 @@ public class NamePopularity_controller {
     	}
     	errorEffect(NamePopularity_startYear_textField, startYearError);
     	errorEffect(NamePopularity_endYear_textField, endYearError);
-    	if (!(startYearError || endYearError))
-    		NamePopularity_yearError_label.setText("");
 	    		
     	if(!(nameError || startYearError || endYearError)) {
+    		//Clear tableview from any previous entries
     		this.tableViewList.clear();
     		gender = (NamePopularity_male_radioButton.isSelected())?"M":"F";
+    		//Generate the report.
     		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,"usa", "human");
     		List<Triple<Integer,Integer,Double>> namePopularityList = namePopularity.getPopularityList();
-    		
-    		for (int i = 0; i < endYear - startYear; ++i) {
+    		//Using the list of results obtained from PopularityOfName, fill the tableview by converting each entry in the List to the data model for the table.
+    		for (int i = 0; i < endYear - startYear + 1; ++i) {
     			Triple<Integer,Integer,Double> yearlyStatistics = namePopularityList.get(i);
     			
     			String formattedYear = Integer.toString(i+startYear);

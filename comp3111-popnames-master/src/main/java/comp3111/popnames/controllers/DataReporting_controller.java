@@ -1,6 +1,9 @@
 package comp3111.popnames.controllers;
 
+import java.time.format.DateTimeFormatter;
+
 import comp3111.popnames.AnalyzeNames;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -63,6 +66,7 @@ public class DataReporting_controller {
     private TableColumn<TaskZeroDataModel, String> DataReporting_rankColumn_TableColumn;
 
     @FXML
+
     private TableColumn<TaskZeroDataModel, String> DataReporting_nameColumn_TableColumn;
     
     /* Methods */
@@ -100,6 +104,7 @@ public class DataReporting_controller {
     	//Link each table column with the correct variable inside the data model for the tableview.
     	DataReporting_rankColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("rank"));
     	DataReporting_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TaskZeroDataModel,String>("name"));
+
     	//Create an array of data models and link this array with the tableview.
     	this.tableViewList = FXCollections.<TaskZeroDataModel>observableArrayList();
     	DataReporting_top5Table_TableView.setItems(this.tableViewList);
@@ -149,7 +154,7 @@ public class DataReporting_controller {
     	int year = getCleanedYear();
     	String gender = (DataReporting_isFemale_RadioButton.isSelected())?"F":"M";
     	if(year != -1) {
-    		DataReporting_top5Table_TableView.setVisible(true);
+    		
     		//Get rid of any previous rows that might be sitting in the table.
     		tableViewList.clear();
     		//Create data models and add it to the table's array.
@@ -164,6 +169,8 @@ public class DataReporting_controller {
     		tableViewList.add(Entry3);
     		tableViewList.add(Entry4);
     		tableViewList.add(Entry5);
+    		
+    		DataReporting_top5Table_TableView.setVisible(true);
    	 	}
    	 	return;
     }

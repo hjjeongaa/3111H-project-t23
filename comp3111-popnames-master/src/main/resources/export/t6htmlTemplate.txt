@@ -10,12 +10,12 @@
             .grid-container > div {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 10px  10px;
-            font-size: 30px;
+            font-size: 15px;
             }
             .grid-item {
               background-color: rgba(255, 255, 255, 0.8);
               border: 1px solid rgba(0, 0, 0, 0.8);
-              font-size: 20px;
+              font-size: 10px;
               font-family: 'Segoe UI';
               text-align: left;
             }
@@ -50,7 +50,7 @@
                         Country: %s
                     </div>
                     <div style = "float:left;padding-left: 40px;">
-                        Year of Birth: %s
+                        Year of Birth: %d
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         Country: %s
                     </div>
                     <div style = "float:left;padding-left: 40px;">
-                        Year of Birth: %s
+                        Year of Birth: %d
                     </div>
                 </div>
             </div>
@@ -86,16 +86,16 @@
             </div>  
             <div class="item3 grid-container">
                 <div  class= "grid-item">
-                    Composite: %s
+                    Composite: %.2f
                 </div>
                 <div  class= "grid-item">
-                    PARM: %s
+                    PARM: %.2f
                 </div>
                 <div  class= "grid-item">
-                    PASRM: %s
+                    PASRM: %.2f
                 </div>
                 <div  class= "grid-item">
-                    LD: %s
+                    LD: %.2f
                 </div>
             </div>
         </div>

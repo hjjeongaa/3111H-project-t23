@@ -274,7 +274,7 @@ public class Controller {
     	if(!anyErrors) {
     		// All inputs are valid, now to display the desired output.
     		gender = (T1_male_RadioButton.isSelected())?"M":"F";
-    		TopNNames results = new TopNNames(startYear, endYear, gender,"usa", "human");
+    		TopNNames results = new TopNNames(startYear, endYear, gender, numOfNames,"usa", "human");
     		
     		output += String.format("Top %d Names From %d to %d:\n",numOfNames, startYear, endYear);
     		output += "Rank  Frequency\tName\n";
@@ -331,7 +331,7 @@ public class Controller {
     	if(!anyErrors) {
     		// All inputs are valid, now to display the desired output.
     		gender = (T2_male_RadioButton.isSelected())?"M":"F";
-    		TopNNames results = new TopNNames(startYear, endYear, gender,"usa", "human");
+    		TopNNames results = new TopNNames(startYear, endYear, gender, -1, "usa", "human");
     		int rank = results.getNameIndex(name);
     		if( rank == -1 ) {
     			output += String.format("Sorry, %s wasnt found between %d and %d\n",name, startYear, endYear);
@@ -343,7 +343,7 @@ public class Controller {
 	    				rank+1);
 	    		*/
     			PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender, "usa", "human");
-	    		output += namePopularity.getReport();
+	    		//output += namePopularity.getReport();
     		}
     	}
 		textAreaConsole.setText(output);

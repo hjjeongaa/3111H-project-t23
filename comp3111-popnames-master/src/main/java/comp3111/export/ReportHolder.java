@@ -1,6 +1,6 @@
 /**
- * ReportHolder: A data model for the export reports table view.
- * Creates properties from all the attributes of the Reports class,
+ * ReportHolder: A data model for the export table view in Export_controller.
+ * Creates properties from all the attributes of the ReportLog class,
  * and adds a 'selected' property to allow user to select which reports
  * they want to be exported.
  */
@@ -9,11 +9,7 @@ package comp3111.export;
 
 import java.time.format.DateTimeFormatter;
 
-import comp3111.popnames.PopularityOfName;
-import comp3111.popnames.Reports;
-import comp3111.popnames.TopNNames;
-import comp3111.popnames.TrendInPopularity;
-import comp3111.popnames.RecommendBabyName;
+import comp3111.popnames.ReportLog;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -21,33 +17,16 @@ import javafx.beans.property.SimpleStringProperty;
 public class ReportHolder {
 	private SimpleBooleanProperty selected;
 	private final SimpleStringProperty date;
-	private final SimpleStringProperty reportType;
-	private final SimpleStringProperty name;
-	private final SimpleStringProperty gender;
-	//private final SimpleStringProperty years;
-	private final SimpleStringProperty dataType;
-	private final SimpleStringProperty country;
+	private final SimpleStringProperty task;
+	private final SimpleStringProperty summary;
+	private String html;
 	
-	public ReportHolder(Reports reportToAdd) {
+	public ReportHolder(ReportLog reportLogToAdd) {
 		this.selected = new SimpleBooleanProperty(true);
-		this.name = new SimpleStringProperty(reportToAdd.getname());
-		this.date = new SimpleStringProperty(reportToAdd.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-		if (reportToAdd instanceof PopularityOfName) {
-			this.reportType = new SimpleStringProperty("NamePop.");
-		}
-		else if (reportToAdd instanceof TopNNames){
-			this.reportType = new SimpleStringProperty("TopNames");
-		} else if (reportToAdd instanceof TrendInPopularity) {
-			this.reportType = new SimpleStringProperty("Trend");
-		} else if (reportToAdd instanceof RecommendBabyName) {
-			this.reportType = new SimpleStringProperty("BabyNames");
-		} else {
-			this.reportType = new SimpleStringProperty("Task456");
-		}
-		this.gender = new SimpleStringProperty(reportToAdd.getgender());
-		//this.years = new SimpleStringProperty(reportToAdd.getyears());
-		this.dataType = new SimpleStringProperty(reportToAdd.gettype());
-		this.country = new SimpleStringProperty(reportToAdd.getcountry());
+		this.date = new SimpleStringProperty(reportLogToAdd.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		this.task = new SimpleStringProperty(reportLogToAdd.getTask());
+		this.summary = new SimpleStringProperty(reportLogToAdd.getoReport());
+		this.html = reportLogToAdd.getHTML();
 	}
 	
 	public Boolean getSelected() {return this.selected.get();}
@@ -55,10 +34,7 @@ public class ReportHolder {
 	public SimpleBooleanProperty selectedProperty() {return this.selected;}
 	
 	public String getDate() {return this.date.get();}
-	public String getReportType() {return this.reportType.get();}
-	public String getName() {return this.name.get();}
-	public String getGender() {return this.gender.get();}
-	//public String getYears() {return this.years.get();}
-	public String getDataType() {return this.dataType.get();}
-	public String getCountry() {return this.country.get();}
+	public String getTask() {return this.task.get();}
+	public String getSummary() {return this.summary.get();}
+	public String getHTML() {return this.html;}
 }

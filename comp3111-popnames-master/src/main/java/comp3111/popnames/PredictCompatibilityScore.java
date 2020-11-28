@@ -6,6 +6,7 @@ package comp3111.popnames;
 * @version 1.1
 */
 import comp3111.rankingAlgo.LD;
+import comp3111.export.ReportHistory;
 import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.time.LocalDateTime;  
@@ -68,9 +69,23 @@ public class PredictCompatibilityScore extends ReportLog{
 		//grabbing template
     	FileResource fr = new FileResource("export/t6htmlTemplate.txt");
     	//substituting values into the template
-		return String.format(fr.asString(), user.getName(),user.getGender(), user.getType(),user.getCountry(),user.getYob(),
-				mate.getName(),mate.getGender(), mate.getType(),mate.getCountry(),mate.getYob(),
-				this.rankAlgo, this.rankResolver);
+		return String.format(fr.asString(),
+				user.getName(),
+				user.getGender(),
+				user.getType(),
+				user.getCountry(),
+				user.getYob(),
+				mate.getName(),
+				mate.getGender(),
+				mate.getType(),
+				mate.getCountry(),
+				mate.getYob(),
+				this.rankAlgo,
+				this.rankResolver,
+				this.oScore.get("composite"),
+				this.oScore.get("parm"),
+				this.oScore.get("pasrm"),
+				this.oScore.get("ld"));
 	};
 	
 	//accessors for Report History
@@ -180,6 +195,6 @@ public class PredictCompatibilityScore extends ReportLog{
 		this.oScore.put("ld", ld());
 		//composite
 		this.oScore.put("composite", composite());
-
+		ReportHistory.addReportLog(this);
 	}
 }

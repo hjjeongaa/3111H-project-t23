@@ -1,6 +1,10 @@
 package comp3111.rankingAlgo;
 
 import comp3111.popnames.AnalyzeNames;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.*;
 import edu.duke.*;
 /**
@@ -120,5 +124,30 @@ public class MCR extends RankingAlgorithm {
 		// if code gets to this point, then no name has been found
 		if (!found)
 			this.rank = new rankResolver("mcr", name, gender, yob, country, type, this.size, resolution).getRank();
+	}
+	
+	/**
+	 * This function returns a list of names which have a rank of the specified rank.
+	 * @author Ryder Khoi Daniel
+	 * v 1.0
+	 */
+	public List<String> getNameFromRank(int rank, String gender, int yob, String type, String country){
+		int rankUnderInspection = 1;
+		int prevFreq = -1;
+		List<String> output = new ArrayList<String>();
+		List<String> currentGroup = new ArrayList<String>();
+		for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){
+			if (rec.get(1).equals(gender)) {
+				if(rankUnderInspection > rank) break;
+				if(Integer.parseInt(rec.get(2)) != prevFreq) {
+					currentGroup = new ArrayList<String>();
+					currentGroup.add(rec.get(0));
+				}
+				rankUnderInspection++;
+				prevFreq = Integer.parseInt(rec.get(2));
+			}
+		}
+		if(rankUnderInspection -1 == rank) output = currentGroup;
+		return output;
 	}
 }
