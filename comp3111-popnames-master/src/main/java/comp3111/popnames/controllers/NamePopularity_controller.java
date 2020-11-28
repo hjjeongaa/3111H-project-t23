@@ -173,7 +173,7 @@ public class NamePopularity_controller {
     		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,"usa", "human");
     		List<Triple<Integer,Integer,Double>> namePopularityList = namePopularity.getPopularityList();
     		//Using the list of results obtained from PopularityOfName, fill the tableview by converting each entry in the List to the data model for the table.
-    		for (int i = 0; i < endYear - startYear; ++i) {
+    		for (int i = 0; i < endYear - startYear + 1; ++i) {
     			Triple<Integer,Integer,Double> yearlyStatistics = namePopularityList.get(i);
     			
     			String formattedYear = Integer.toString(i+startYear);

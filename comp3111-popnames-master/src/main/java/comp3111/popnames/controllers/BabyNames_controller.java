@@ -9,6 +9,9 @@ package comp3111.popnames.controllers;
 import comp3111.popnames.RecommendBabyName;
 import java.util.*;
 import org.apache.commons.lang3.tuple.Triple;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +20,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -81,6 +86,9 @@ public class BabyNames_controller {
 
     @FXML
     private Button BabyNames_generate_button;
+    
+    @FXML
+    private ImageView BabyNames_wordCloud_imageView;
 
     @FXML
     private TableView<BabyNamesTableDataModel> BabyNames_tableView;
@@ -202,11 +210,15 @@ public class BabyNames_controller {
             for (int i = 0; i < babyNamesList.size(); ++i) {
                 Triple<String,Integer,Integer> babyName = babyNamesList.get(i);
                 DecimalFormat df = new DecimalFormat("#.##");
-                String formattedPercentageScore = df.format(babyNamesList.get(i).getMiddle()*babyNamesList.get(i).getRight());//df.format(babyName.getRight())+"%";
+                String formattedPercentageScore = df.format((i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight()));//df.format(babyName.getRight())+"%";
                 
                 BabyNamesTableDataModel row = new BabyNamesTableDataModel(babyName.getLeft(), formattedPercentageScore);
                 this.tableViewList.add(row);
             }
+            InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());
+            Image image = new Image(input);
+            BabyNames_wordCloud_imageView.setImage(image);
+            
         }
     }
 }
