@@ -343,7 +343,7 @@ public class Controller {
 	    				rank+1);
 	    		*/
     			PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender, "usa", "human");
-	    		output += namePopularity.getReport();
+	    		//output += namePopularity.getReport();
     		}
     	}
 		textAreaConsole.setText(output);
