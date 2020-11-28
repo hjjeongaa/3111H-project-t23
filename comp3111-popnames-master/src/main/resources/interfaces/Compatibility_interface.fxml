@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -26,9 +27,9 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="298.99999084472654" minHeight="10.0" prefHeight="228.0000061035156" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="233.60001220703126" minHeight="0.0" prefHeight="63.199993896484386" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="380.80000000000007" minHeight="10.0" prefHeight="278.4000061035157" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="309.0" minHeight="10.0" prefHeight="270.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="233.60001220703126" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="380.80000000000007" minHeight="10.0" prefHeight="247.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -99,14 +100,14 @@
                                     <Font name="Segoe UI Light" size="18.0" />
                                  </font>
                               </Text>
-                              <Separator layoutX="412.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="230.0" prefWidth="67.0" />
+                              <Separator layoutX="412.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="270.0" prefWidth="67.0" />
 
                            </children>
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="455.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="481.0">
                            <children>
                               <Text layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                                  <font>
@@ -181,19 +182,24 @@
                   </HBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="922.0" GridPane.rowIndex="2">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="245.0" prefWidth="924.0" GridPane.rowIndex="2">
                <children>
                   <Group layoutX="108.0" layoutY="118.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f200" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="#ffffff00" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_nkt6_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="T6_composite_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
                         <Circle fx:id="nkt" fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
-                        <Text fx:id="T6_nkt6_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text layoutX="-26.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE">
+                        <Text fx:id="T6_composite_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="T6_composite_Text" layoutX="-33.0" layoutY="85.0" onMouseEntered="#showCompositeInfoBox" onMouseExited="#hideCompositeInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE">
                            <font>
                               <Font name="Segoe UI Semibold" size="14.0" />
                            </font>
                         </Text>
+                        <TextArea fx:id="T6_composite_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="COMPOSITE&#10;&#10;Do you value being a power coulpe above all else?&#10;&#10;Composite is a merger of PARM, PASRM and LD." visible="false" wrapText="true">
+							<font>
+						      	 	<Font name="Segoe UI Light" size="12.0" />
+					      	 </font>
+					      </TextArea>
                      </children>
                   </Group>
                   <Group layoutX="333.0" layoutY="118.0">
@@ -202,11 +208,16 @@
                         <Arc fx:id="T6_parm_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_parm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARM">
+                        <Text fx:id="T6_parm_Text" layoutX="-14.0" layoutY="85.0" onMouseEntered="#showPARMInfoBox" onMouseExited="#hidePARMInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="PARM">
                            <font>
                               <Font name="Segoe UI Semibold" size="14.0" />
                            </font>
                         </Text>
+                        	  <TextArea fx:id="T6_parm_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="PARM&#10;&#10;If you value a equality in a relationship then the higher this score the more compatible you are!&#10;&#10;Are you and your mate equally popular?" visible="false" wrapText="true">
+                    		     <font>
+						      	 	<Font name="Segoe UI Light" size="12.0" />
+						      	 </font>
+						      </TextArea>
                      </children>
                   </Group>
                   <Group layoutX="574.0" layoutY="118.0">
@@ -215,11 +226,16 @@
                         <Arc fx:id="T6_pasrm_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_pasrm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text layoutX="-17.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PASRM">
+                        <Text fx:id="T6_pasrm_Text" layoutX="-17.0" layoutY="85.0" onMouseEntered="#showPASRMInfoBox" onMouseExited="#hidePASRMInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="PASRM">
                            <font>
                               <Font name="Segoe UI Semibold" size="14.0" />
                            </font>
                         </Text>
+                        	  <TextArea fx:id="T6_pasrm_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="PASRM&#10;&#10;If you value balance over all things then the higher this score the more compatible you are! &#10;&#10;Do you and your mate  have a balance in populairty?" visible="false" wrapText="true">
+                    		     <font>
+						      	 	<Font name="Segoe UI Light" size="12.0" />
+						      	 </font>
+						      </TextArea>
                      </children>
                   </Group>
                   <Group layoutX="802.0" layoutY="118.0">
@@ -228,39 +244,53 @@
                         <Arc fx:id="T6_ld_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
                         <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_ld_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LD">
+                        <Text fx:id="T6_ld_Text" layoutX="-1.0" layoutY="84.0" onMouseEntered="#showLDInfoBox" onMouseExited="#hideLDInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="LD">
                            <font>
-                              <Font name="Segoe UI Semibold" size="14.0" />
+                              <Font name="Segoe UI Semibold" size="12.0" />
                            </font>
                         </Text>
+                        <TextArea fx:id="T6_ld_infobox_TextArea" layoutX="-94.0" layoutY="-106.0" prefHeight="175.0" prefWidth="200.0" text="Levenshtein Distance &#10;&#10;If you love yourself and your own name more then you anything else then the higher this score the more compatible you are!" visible="false" wrapText="true">
+                   		     <font>
+						      	 	<Font name="Segoe UI Light" size="12.0" />
+					      	 </font>
+					      </TextArea>
                      </children>
                   </Group>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="66.0" prefWidth="924.0" GridPane.rowIndex="1">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="46.0" prefWidth="924.0" GridPane.rowIndex="1">
                <children>
-                  <ComboBox fx:id="T6_ranking_algorithm_ComboBox" layoutX="215.0" layoutY="13.0" prefWidth="150.0" />
-                  <Text layoutX="49.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ranking Algorithm">
+                  <ComboBox fx:id="T6_ranking_algorithm_ComboBox" layoutX="175.0" layoutY="11.0" prefWidth="150.0" />
+                  <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ranking Algorithm">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="T6_ranking_resolver_ComboBox" layoutX="526.0" layoutY="15.0" prefWidth="150.0" />
-                  <Text layoutX="396.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rank Resolver">
+                  <ComboBox fx:id="T6_ranking_resolver_ComboBox" layoutX="462.0" layoutY="11.0" prefWidth="150.0" />
+                  <Text layoutX="338.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rank Resolver">
                      <font>
                         <Font name="Segoe UI Light" size="20.0" />
                      </font>
                   </Text>
-                  <Button fx:id="T6_generate_Button" layoutX="742.0" layoutY="11.0" mnemonicParsing="false" onAction="#compatibilityScore" prefHeight="30.0" prefWidth="116.0" text="Generate">
+                  <Button fx:id="T6_generate_Button" layoutX="663.0" layoutY="6.0" mnemonicParsing="false" onAction="#compatibilityScore" prefHeight="30.0" prefWidth="116.0" text="Generate">
                      <font>
                         <Font name="Segoe UI Light" size="16.0" />
                      </font>
                   </Button>
                   <Separator layoutY="-2.0" prefHeight="1.0" prefWidth="924.0" />
+                  <Text fx:id="T6_more_info_Text" layoutX="814.0" layoutY="32.0" onMouseEntered="#showInfoBox" onMouseExited="#hideInfoBox" strokeType="OUTSIDE" strokeWidth="0.0" text="More Info">
+                     <font>
+                        <Font name="Segoe UI Light" size="20.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </children>
       </GridPane>
+      <TextArea fx:id="T6_infobox_TextArea" layoutY="18.0" prefHeight="528.0" prefWidth="793.0" text="This feature generates the compatability of you and your potential make belief partner!&#10;Enter your details and your partners details to generate a compatability score!&#10;&#10;NOTE: preferences will not be shown if there is no overlap between the ranges [Your YoB-5,Your YoB+5] and the years the mate dataset can support&#10;&#10;Ranking Algorithm refers to ranking system adopted:&#10;scr:   Standard Competition Ranking&#10;mcr: Modified Competition Ranking&#10;dr:    Dense Competition Ranking&#10;or:    Ordinal Competition Ranking&#10;read more more here: (https://en.wikipedia.org/wiki/Ranking)&#10;&#10;Ranking Resolver refers to the method in which we resolve the rank of unlisted names:&#10;standard: Gives the use the rank = number of unique names in specified dataset + 1&#10;ld:            Uses Levenshtein distance to find the most similar name in the dataset and adopts his/her rank. If there are multiple names &#10;                with a the same distance to the name of question, then the median ranked name will be adopted. This is particularly good for &#10;                names with deviations from the roman alphabet e.g. norweign names and english names&#10;&#10;Resulant Scores and Descriptions&#10;PARM    : Population Adjusted Rank Matching&#10;    Takes take population size of each year into account so that the most compatible pair of names are the names that have the same     &#10;    population adjusted rank in their respective years.&#10;PASRM  : Population Adjusted Symmetric Rank Matching&#10;    Takes parm and adapts it to take make the rank symmetric around the 50% to be the most compatible&#10;LD          : Levenshtein distance&#10;     Uses and adjusted Levenshtein distance algorithm to evaluated your compatability based on the similarity of your names only.&#10;&#10;A more fun interpretation of these results can be found by hovering over the names e.g PARM, PASRM or LD" visible="false" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="18.0">
+      	 <font>
+      	 	<Font name="Segoe UI Light" size="12.0" />
+      	 </font>
+      </TextArea>
    </children>
 </AnchorPane>
-

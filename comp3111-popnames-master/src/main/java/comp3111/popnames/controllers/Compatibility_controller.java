@@ -317,6 +317,7 @@ public class Compatibility_controller {
             //set to value at the middle of range if -5<=defaultPref<=5 else sett it to "";
             if (defaultPref>=-5&&defaultPref<=5){
                 T6_preferences_ComboBox.setValue(Integer.toString(defaultPref));
+                T6_pref_range_error_Text.setVisible(false);
             }else{
                 //display range error message
                 T6_pref_range_error_Text.setVisible(true);
@@ -518,6 +519,7 @@ public class Compatibility_controller {
         boolean vMate = validateUserInputs();
         boolean vUser = validateMateInputs();
         if (vMate && vUser){
+        	hideAllErrors();
         	//if the inputs are valid then proceed
         	//getting relevant variables
             //user variables

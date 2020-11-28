@@ -72,7 +72,7 @@ public class TrendingNamesControllerTest extends ApplicationTest {
 		type(KeyCode.ENTER);
 		clickOn("#T3_generate_Button");
 		Text error = (Text)s.lookup("#T3_range_error_Text");
-		assertTrue(error.isVisible() && error.getText().contains("<="));//checking if it is the correct error message
+		assertTrue(error.isVisible() && error.getText().contains("<"));//checking if it is the correct error message
 
 	}
 	//start year larger then end year error
@@ -89,7 +89,7 @@ public class TrendingNamesControllerTest extends ApplicationTest {
 		type(KeyCode.ENTER);
 		clickOn("#T3_generate_Button");
 		Text error = (Text)s.lookup("#T3_range_error_Text");
-		assertTrue(error.isVisible() && error.getText().contains("<="));//checking if it is the correct error message
+		assertTrue(error.isVisible() && error.getText().contains("<"));//checking if it is the correct error message
 	}
 	//try get left out
 	//1880 -> 1879
