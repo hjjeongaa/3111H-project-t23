@@ -311,7 +311,7 @@ public class TrendingNames_controller {
 	}
     //output Struct
     /**
-     * Class used to display one row table
+     * Class used as a data structure to represent one row of the table
      * @author Yuxi Sun
      * v 1.0
      */

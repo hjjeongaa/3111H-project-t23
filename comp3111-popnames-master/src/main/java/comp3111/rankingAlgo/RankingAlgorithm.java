@@ -19,6 +19,7 @@ public abstract class RankingAlgorithm {
 	public abstract boolean addEntry(int freq);//User for getting Ranks in Iterators, should be used with getRank()
 	public abstract String getMethodAbbreviated();//get the abbreviated name of the method
 	public abstract String getMethod();//get the full name of the method
+
 	public abstract List<String> getNameFromRank(int rank, String gender, int yob, String type, String country); // for getting the name of a person given the rank.
 	
 	@Override
