@@ -7,7 +7,7 @@
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.PopularityOfName;
-
+import comp3111.popnames.ReportLog;
 //UI
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -130,9 +130,17 @@ public class NamePopularity_controller {
     	final int MIN_YEAR = 1880;
     	
     	//Handle empty name
-    	boolean nameError = name.isBlank();
-    	errorEffect(NamePopularity_name_textField, nameError);
-    	NamePopularity_nameError_label.setText((nameError)? "Please input a name." : "");
+    	boolean nameBlank = name.isBlank();
+    	name = ReportLog.validateName(name);
+    	boolean nameError = name.isEmpty();
+    	errorEffect(NamePopularity_name_textField, nameError || nameBlank);
+    	String nameErrorMessage = "";
+    	if (nameBlank) {
+    		nameErrorMessage = "Please input a name.";
+    	} else if (nameError) {
+    		nameErrorMessage = "Please input a valid name.";
+    	}
+    	NamePopularity_nameError_label.setText(nameErrorMessage);
     	
     	//Handle start year
     	boolean startYearError = false;
@@ -165,7 +173,7 @@ public class NamePopularity_controller {
     	errorEffect(NamePopularity_startYear_textField, startYearError);
     	errorEffect(NamePopularity_endYear_textField, endYearError);
 	    		
-    	if(!(nameError || startYearError || endYearError)) {
+    	if(!(nameError || nameBlank || startYearError || endYearError)) {
     		//Clear tableview from any previous entries
     		this.tableViewList.clear();
     		gender = (NamePopularity_male_radioButton.isSelected())?"M":"F";
