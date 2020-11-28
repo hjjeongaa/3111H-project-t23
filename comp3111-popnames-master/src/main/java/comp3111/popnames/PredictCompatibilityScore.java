@@ -69,9 +69,23 @@ public class PredictCompatibilityScore extends ReportLog{
 		//grabbing template
     	FileResource fr = new FileResource("export/t6htmlTemplate.txt");
     	//substituting values into the template
-		return String.format(fr.asString(), user.getName(),user.getGender(), user.getType(),user.getCountry(),user.getYob(),
-				mate.getName(),mate.getGender(), mate.getType(),mate.getCountry(),mate.getYob(),
-				this.rankAlgo, this.rankResolver);
+		return String.format(fr.asString(),
+				user.getName(),
+				user.getGender(),
+				user.getType(),
+				user.getCountry(),
+				user.getYob(),
+				mate.getName(),
+				mate.getGender(),
+				mate.getType(),
+				mate.getCountry(),
+				mate.getYob(),
+				this.rankAlgo,
+				this.rankResolver,
+				this.oScore.get("composite"),
+				this.oScore.get("parm"),
+				this.oScore.get("pasrm"),
+				this.oScore.get("ld"));
 	};
 	
 	//accessors for Report History
