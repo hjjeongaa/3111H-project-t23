@@ -14,10 +14,14 @@ public abstract class RankingAlgorithm {
 
 	public abstract int getRank(); //getting rank of current Entry
 	public abstract int getSize(); // getting size of population
+
 	public abstract boolean isIterative();//checks which type of object said instance is.
 	public abstract boolean addEntry(int freq);//User for getting Ranks in Iterators, should be used with getRank()
 	public abstract String getMethodAbbreviated();//get the abbreviated name of the method
 	public abstract String getMethod();//get the full name of the method
+
+	public abstract List<String> getNameFromRank(int rank, String gender, int yob, String type, String country); // for getting the name of a person given the rank.
+	
 	@Override
 	/**
 	 * outputs ranking method with the corresponding rank in string form
