@@ -7,6 +7,8 @@
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.RecommendBabyName;
+import comp3111.popnames.ReportLog;
+
 import java.util.*;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -137,13 +139,23 @@ public class BabyNames_controller {
         final int MIN_YEAR = 1880;
         
         //Handle empty names.
-        boolean fatherNameError = fatherName.isBlank();
-        boolean motherNameError = motherName.isBlank();
+        boolean fatherNameBlank = fatherName.isBlank();
+        boolean motherNameBlank = motherName.isBlank();
+        fatherName = ReportLog.validateName(fatherName);
+        motherName = ReportLog.validateName(motherName);
+        boolean fatherNameError = fatherName.isEmpty();
+        boolean motherNameError = motherName.isEmpty();
         //set error effect and error message if needed
-        errorEffect(BabyNames_fatherName_textField, fatherNameError);
-        errorEffect(BabyNames_motherName_textField, motherNameError);
-        BabyNames_fatherNameError_label.setText((fatherNameError)? "Please input a name." : "");
-        BabyNames_motherNameError_label.setText((motherNameError)? "Please input a name." : "");
+        errorEffect(BabyNames_fatherName_textField, fatherNameError || fatherNameBlank);
+        errorEffect(BabyNames_motherName_textField, motherNameError || motherNameBlank);
+        String fatherNameErrorMessage = "";
+        String motherNameErrorMessage = "";
+        if (fatherNameBlank) {fatherNameErrorMessage = "Please input a name.";}
+        else if (fatherNameError) {fatherNameErrorMessage = "Please input a valid name.";}
+        if (motherNameBlank) {motherNameErrorMessage = "Please input a name.";}
+        else if (motherNameError) {motherNameErrorMessage = "Please input a valid name.";}
+        BabyNames_fatherNameError_label.setText(fatherNameErrorMessage);
+        BabyNames_motherNameError_label.setText(motherNameErrorMessage);
         
         //Handle invalid father year
         //Different error messages appear for whether the inputted year is out of range or invalid
@@ -199,7 +211,7 @@ public class BabyNames_controller {
         errorEffect(BabyNames_vintageYear_textField, vintageYearError);
         
         //Without any errors, the baby names can be generated.
-        if(!(fatherNameError || motherNameError || fatherYearError || motherYearError || vintageYearError)) {
+        if(!(fatherNameError || fatherNameBlank || motherNameError || motherNameBlank || fatherYearError || motherYearError || vintageYearError)) {
         	//Clear tableview from previous results
             this.tableViewList.clear();
             String gender = (BabyNames_male_radioButton.isSelected()? "M" : "F");
