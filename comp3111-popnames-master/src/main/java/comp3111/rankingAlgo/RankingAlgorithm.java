@@ -17,6 +17,8 @@ public abstract class RankingAlgorithm {
 	
 	public abstract void addEntry(int freq);//User for getting Ranks in Iterators, should be used with getRank()
 	
+	public abstract List<String> getNameFromRank(int rank, String gender, int yob, String type, String country); // for getting the name of a person given the rank.
+	
 	public abstract String getMethod();
 	@Override
 	/**

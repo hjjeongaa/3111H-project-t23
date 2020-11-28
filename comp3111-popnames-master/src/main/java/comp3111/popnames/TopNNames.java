@@ -20,13 +20,23 @@ public class TopNNames extends Reports {
 	private HashMap<String, Integer> collectionOfYears;
 	private List<String> sortedNames;
 	private int collectionSize;
-	
+	private int numOfNames;
 	
 	/* Constructor */
-	public TopNNames(int startYear, int endYear, String gender, String country, String type){
+	public TopNNames(int startYear, int endYear, String gender, int numNames, String country, String type){
 		//	Call Report constructor.
 		super(null, gender, country, type);
 		collectionOfYears = new HashMap<String,Integer>();
+		this.numOfNames = numNames;
+		
+		/* Stuff for exporting */
+		String expandedGender = "Male";
+		if(gender.equals("F")) expandedGender = "Female";
+		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
+		super.setTask(String.format("Top %d Names", numOfNames));
+		
+		String thisHtml = "<table><tr><th>Year</th><th>Your name's rank</th><th>Total # of names this year</th><th>Percentile</th></tr>";
+		String tableRow = "<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td><tr>";
 		
 		/*
 		 * 		Generate the collection of years.

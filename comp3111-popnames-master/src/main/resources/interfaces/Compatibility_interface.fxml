@@ -190,9 +190,9 @@
                <children>
                   <Group layoutX="108.0" layoutY="118.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_nkt6_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Circle fx:id="nkt" fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3f3f3" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="#ffffff00" strokeType="INSIDE" width="200.0" />
+                        <Arc fx:id="T6_nkt6_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
+                        <Circle fx:id="nkt" fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_nkt6_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-26.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPOSITE" />
                      </children>
@@ -200,27 +200,27 @@
                   <Group layoutX="788.0" layoutY="124.0" />
                   <Group layoutX="333.0" layoutY="118.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_parm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3f3f3" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="#ffffff00" strokeType="INSIDE" width="200.0" />
+                        <Arc fx:id="T6_parm_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
+                        <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_parm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARM" />
                      </children>
                   </Group>
                   <Group layoutX="574.0" layoutY="118.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_pasrm_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3f3f3" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="#ffffff00" strokeType="INSIDE" width="200.0" />
+                        <Arc fx:id="T6_pasrm_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
+                        <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_pasrm_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-17.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PASRM" />
                      </children>
                   </Group>
                   <Group layoutX="802.0" layoutY="118.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                        <Arc fx:id="T6_ld_Arc" fill="DODGERBLUE" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Circle fill="WHITE" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3f3f3" height="200.0" layoutX="-94.0" layoutY="-106.0" stroke="#ffffff00" strokeType="INSIDE" width="200.0" />
+                        <Arc fx:id="T6_ld_Arc" fill="#70c4a3" layoutX="6.0" layoutY="-12.0" radiusX="73.0" radiusY="73.0" startAngle="90.0" stroke="TRANSPARENT" strokeType="INSIDE" type="ROUND" />
+                        <Circle fill="#f3f3f3" layoutX="6.0" layoutY="-12.0" radius="44.0" stroke="#ffffff00" strokeType="INSIDE" />
                         <Text fx:id="T6_ld_score_Text" layoutX="-15.0" layoutY="-9.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text layoutX="-12.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LD" />
                      </children>
