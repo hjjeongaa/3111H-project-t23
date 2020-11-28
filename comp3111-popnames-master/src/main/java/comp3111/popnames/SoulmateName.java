@@ -154,12 +154,6 @@ public class SoulmateName extends ReportLog {
 		return output;
 	}
 	
-	// WOW Factor
-	public void journeyThroughTime(String name, String mates_name) {
-		// TODO:
-	}
-	
-	
 	/* Stuff for Reporting */
 	public String getoReport() {
 		// TODO Auto-generated method stub

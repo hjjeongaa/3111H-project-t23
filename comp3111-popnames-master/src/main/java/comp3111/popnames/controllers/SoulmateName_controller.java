@@ -278,6 +278,10 @@ public class SoulmateName_controller {
     	String soulmateName = getCleanedJTTName();
     	if(inputName.length() == 0 || soulmateName.length() == 0) return;
     	Soulmate_JTTMessage_Label.setText(soulmateName);
+    	
+    	// Now that we have the two names, we have to create the journeyThroughTime object to retrieve relevant information, and then do things here to cast that
+    	// information in an aesthetic manner.
+    	
     }
 
 }

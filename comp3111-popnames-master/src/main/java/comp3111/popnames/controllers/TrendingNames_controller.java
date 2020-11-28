@@ -232,7 +232,7 @@ public class TrendingNames_controller {
     		int start = Integer.parseInt(iStart);
     		int end  = Integer.parseInt(iEnd);
         	if (start>=end) {
-        		T3_range_error_Text.setText("Start year should be <= end year");
+        		T3_range_error_Text.setText("Start year should be < end year");
         		T3_range_error_Text.setVisible(true);
         		valid=false;
         	}else if (start<validStart) {
