@@ -101,16 +101,19 @@ public class ReportHistory {
 		PdfMerger merger = new PdfMerger(outputPdf);
 		
 		for (int i = 0; i < reportHoldersList.size(); ++i) {
-			String reportHtml = reportHoldersList.get(i).getHTML();
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			//wrap in html tag
-			HtmlConverter.convertToPdf("<!DOCTYPE html><html>" + reportHtml + "</html>", outputStream);
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-			//create new pdf document from the converted html
-			PdfDocument pdfToMerge = new PdfDocument(new PdfReader(inputStream));
-			//merge all pages in the pdf to the output file
-			merger.merge(pdfToMerge, 1, pdfToMerge.getNumberOfPages());
-			pdfToMerge.close();
+			if (reportHoldersList.get(i).getSelected()) {
+				String reportHtml = reportHoldersList.get(i).getHTML();
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				//wrap in html tag
+				HtmlConverter.convertToPdf("<!DOCTYPE html><html>" + reportHtml + "</html>", outputStream);
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+				//create new pdf document from the converted html
+				PdfDocument pdfToMerge = new PdfDocument(new PdfReader(inputStream));
+				
+				//merge all pages in the pdf to the output file
+				merger.merge(pdfToMerge, 1, pdfToMerge.getNumberOfPages());
+				pdfToMerge.close();
+			}
 		}
 		//merging finished, close it!
 		outputPdf.close();
