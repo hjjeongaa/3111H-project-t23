@@ -18,7 +18,12 @@ public abstract class ReportLog{
 	public static String validateName(String name) {
 		Matcher validName = Pattern.compile("^\\s*\\S+\\s*$").matcher(name);
 		//Trim name if there are no spaces in the name.
-		return (validName.find()? name.trim() : "");
+		if (validName.find()){
+			String temp = name.trim().toLowerCase();
+			return temp.substring(0, 1).toUpperCase() + temp.substring(1);
+		}else{
+			return "";
+		}
 	}
 	public abstract String getoReport();
 	public abstract String getTask();
