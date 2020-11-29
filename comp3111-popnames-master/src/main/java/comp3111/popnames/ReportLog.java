@@ -21,7 +21,7 @@ public abstract class ReportLog{
 		if (validName.find()){
 			String temp = name.trim().toLowerCase();
 			return temp.substring(0, 1).toUpperCase() + temp.substring(1);
-		}{
+		}else{
 			return "";
 		}
 	}
