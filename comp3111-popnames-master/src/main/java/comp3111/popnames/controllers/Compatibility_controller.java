@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 
 import comp3111.popnames.DatasetHandler;
 import comp3111.popnames.PredictCompatibilityScore;
+import comp3111.popnames.ReportLog;
 import comp3111.rankingAlgo.RankingAlgorithmFactory;
 import comp3111.rankingAlgo.rankResolver;
 import java.util.*;
@@ -354,7 +355,7 @@ public class Compatibility_controller {
         //hide all previous error messages
         //load users variables
         String yob = T6_user_yob_ComboBox.getValue();
-        String type = T6_user_type_ComboBox.getValue();
+//        String type = T6_user_type_ComboBox.getValue();
         String country = T6_user_country_ComboBox.getValue();
         
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
@@ -375,7 +376,7 @@ public class Compatibility_controller {
 //        }
         //load all variables
         String countryMate = T6_mate_country_ComboBox.getValue();
-        String typeMate = T6_mate_type_ComboBox.getValue();
+//        String typeMate = T6_mate_type_ComboBox.getValue();
         //At this point we assume that all input fields are either empty strings "" or valid. due to the way the UI is set up
         //validate mate
         if(isComboBoxEmpty(countryMate)){
@@ -417,18 +418,24 @@ public class Compatibility_controller {
     boolean validateUserInputs(){
         //load all variables
         String iName = T6_user_name_TextField.getText();
-        String iGender = (T6_user_male_RadioButton.isSelected())?"M":"F";
+//        String iGender = (T6_user_male_RadioButton.isSelected())?"M":"F";
         String yob = T6_user_yob_ComboBox.getValue();
-        String type = T6_user_type_ComboBox.getValue();
+//        String type = T6_user_type_ComboBox.getValue();
         String country = T6_user_country_ComboBox.getValue();
         
-        //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
+
+        //At this point we assume that all input fields are either empty strings "" or valid. due to the way the UI is set up
         //validation of input
+        iName = ReportLog.validateName(iName);//clean the name
+        boolean iNameError = iName.isEmpty();
         boolean valid = true;
-        if(isComboBoxEmpty(iName)){
+        if(iNameError){
             //if iName is empty
             valid = false;
             T6_user_name_error_Text.setVisible(true);
+        }else {
+//        	update text format
+        	T6_user_name_TextField.setText(iName);
         }
 //      //Will not occur with current UI setup
 //        if(isComboBoxEmpty(iGender)){
@@ -462,17 +469,22 @@ public class Compatibility_controller {
     boolean validateMateInputs(){
         //load all variables
         String iNameMate = T6_mate_name_TextField.getText();
-        String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
+//        String iGenderMate = (T6_mate_male_RadioButton.isSelected())?"M":"F";
         String preference = T6_preferences_ComboBox.getValue();
         String countryMate = T6_mate_country_ComboBox.getValue();
-        String typeMate = T6_mate_type_ComboBox.getValue();
+//        String typeMate = T6_mate_type_ComboBox.getValue();
         //At this point we assume that all input fields are either empty strings "" or valid. due tot he way the UI is set up
         //validate mate
         boolean valid = true;
-        if(isComboBoxEmpty(iNameMate)){
+        iNameMate = ReportLog.validateName(iNameMate);//clean the name
+        boolean iNameMateError = iNameMate.isEmpty();
+        if(iNameMateError){
             //if iNameMate is empty
             valid = false;
             T6_mate_name_error_Text.setVisible(true);
+        }else {
+//        	update text format
+        	T6_mate_name_TextField.setText(iNameMate);
         }
 //        //Will not occur with current UI setup
 //        if(isComboBoxEmpty(iGenderMate)){
