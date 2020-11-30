@@ -1,5 +1,6 @@
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.GlobalSettings;
 import comp3111.popnames.TopNNames;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TopNNames_controller {
@@ -36,7 +38,7 @@ public class TopNNames_controller {
 	
 	
 	/* Elements */
-    @FXML
+	@FXML
     private TextField TopNNames_startYear_TextField;
 
     @FXML
@@ -44,6 +46,9 @@ public class TopNNames_controller {
 
     @FXML
     private RadioButton TopNNames_isMale_RadioButton;
+
+    @FXML
+    private ToggleGroup TopNNames_getGender;
 
     @FXML
     private RadioButton TopNNames_isFemale_RadioButton;
@@ -87,15 +92,15 @@ public class TopNNames_controller {
     /* Table Initialization */
     @FXML
     void initialize() {
-    	//Link each table column with the correct variable inside the data model for the tableview.
+    	// Link each table column with the correct variable inside the data model for the tableview.
     	TopNNames_rankColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TopNNamesDataModel,String>("rank"));
     	TopNNames_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TopNNamesDataModel,String>("name"));
     	TopNNames_frequencyColumn_TableColumn.setCellValueFactory(new PropertyValueFactory<TopNNamesDataModel,String>("frequency"));
     	
-    	//Create an array of data models and link this array with the tableview.
+    	// Create an array of data models and link this array with the tableview.
     	this.tableViewList = FXCollections.<TopNNamesDataModel>observableArrayList();
     	TopNNames_outputTable_TableView.setItems(this.tableViewList);
-    }
+    	}
     
     /* Methods */
     
@@ -117,8 +122,10 @@ public class TopNNames_controller {
     	} catch(NumberFormatException e) {
     		// the year is not a valid integer.
     		TopNNames_invalidStart_Label.setVisible(true);
+    		return res;
     	}
     	if(res < lowerBound || res > upperBound ) {
+    		TopNNames_startRangeError_Label.setText(String.format("Year Range %d-%d",lowerBound, upperBound));
     		TopNNames_startRangeError_Label.setVisible(true);
     		res = -1;
     	} 
@@ -132,12 +139,10 @@ public class TopNNames_controller {
     	} catch(NumberFormatException e) {
     		// the year is not a valid integer.
     		TopNNames_invalidEnd_Label.setVisible(true);
+    		return res;
     	}
-    	if( res < lowerBound ) {
-    		TopNNames_endRangeError_Label.setVisible(true);
-    		res = -1;
-    	} else if(res > upperBound) {
-    		TopNNames_endRangeError_Label.setText("End Year Out of Range");
+    	if( res < lowerBound || res > upperBound ) {
+    		TopNNames_endRangeError_Label.setText(String.format("Year Range %d-%d", lowerBound, upperBound));
     		TopNNames_endRangeError_Label.setVisible(true);
     		res = -1;
     	}
@@ -167,7 +172,7 @@ public class TopNNames_controller {
     	// Input sanitation.
     	int numberOfNames = getCleanedNumberOfNames();
     	
-    	int startYear = getCleanedStartYear(1880, 2019); // these values are hard coded for now.
+    	int startYear = getCleanedStartYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound()); // these values are hard coded for now.
     	if(startYear == -1) return;
     	int endYear = getCleanedEndYear(startYear, 2019);
     	if(endYear == -1) return;
@@ -177,7 +182,7 @@ public class TopNNames_controller {
     	
     	// Do work on the inputs now that everything is good.
     	tableViewList.clear();
-    	TopNNames source = new TopNNames(startYear, endYear, gender, numberOfNames ,"usa", "human");
+    	TopNNames source = new TopNNames(startYear, endYear, gender, numberOfNames ,GlobalSettings.getCountry(), "human");
     	for(int rank = 0; rank < numberOfNames; ++rank) {
     		String s_rank = Integer.toString(rank + 1);
     		String name = source.getNameFromIndex(rank);
