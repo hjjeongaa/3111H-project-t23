@@ -14,6 +14,8 @@ package comp3111.popnames;
 import java.util.*;
 import org.apache.commons.csv.CSVRecord;
 
+import comp3111.export.ReportHistory;
+
 public class TopNNames extends Reports {
 	
 	/* Private Variables */
@@ -21,6 +23,9 @@ public class TopNNames extends Reports {
 	private List<String> sortedNames;
 	private int collectionSize;
 	private int numOfNames;
+	private int startYear;
+	private int endYear;
+	String expandedGender;
 	
 	/* Constructor */
 	public TopNNames(int startYear, int endYear, String gender, int numNames, String country, String type){
@@ -28,15 +33,14 @@ public class TopNNames extends Reports {
 		super(null, gender, country, type);
 		collectionOfYears = new HashMap<String,Integer>();
 		this.numOfNames = numNames;
+		this.startYear = startYear;
+		this.endYear = endYear;
 		
 		/* Stuff for exporting */
-		String expandedGender = "Male";
+		expandedGender = "Male";
 		if(gender.equals("F")) expandedGender = "Female";
 		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
-		super.setTask(String.format("Top %d Names", numOfNames));
-		
-		String thisHtml = "<table><tr><th>Year</th><th>Your name's rank</th><th>Total # of names this year</th><th>Percentile</th></tr>";
-		String tableRow = "<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td><tr>";
+		super.setTask(String.format("Top %d Names in %s", numOfNames, country));
 		
 		/*
 		 * 		Generate the collection of years.
@@ -44,7 +48,7 @@ public class TopNNames extends Reports {
 		
 		// For every year in the range
 		for(int year = startYear; year <= endYear; ++year) {
-			for(CSVRecord rec : AnalyzeNames.getFileParser(year)) {
+			for(CSVRecord rec : AnalyzeNames.getFileParser(year, type, country)) {
 				// We are only interested in Names who belong to the gender of interest.
 				if(rec.get(1).equals(gender)) {
 					String name = rec.get(0);
@@ -79,6 +83,21 @@ public class TopNNames extends Reports {
 		});
 		
 		collectionSize = sortedNames.size();
+		updateReportLog();
+	}
+	
+	/* Report Functions */
+	private void updateReportLog() {
+		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Top %d %s Names From %d to %d</h3>", numOfNames, expandedGender, startYear, endYear); 
+		thisHtml += "<table><tr><th>Rank</th><th>Name</th><th>Frequency</th></tr>";
+		String tableRow = "<tr><td>%d</td><td>%s</td><td>%d</td><tr>";
+		for(int rank = 0; rank < this.numOfNames; ++rank) {
+			thisHtml += String.format(tableRow,rank+1, getNameFromIndex(rank), getFrequencyFromIndex(rank));
+		}
+		thisHtml += "</table>";
+		thisHtml = "<div>" + thisHtml + "</div>";
+		super.setHTML(thisHtml);
+		ReportHistory.addReportLog(this);
 	}
 	
 	/* Interface Functions */
