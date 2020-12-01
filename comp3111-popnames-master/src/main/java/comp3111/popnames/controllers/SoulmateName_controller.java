@@ -1,7 +1,10 @@
 package comp3111.popnames.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.JourneyThroughTime;
 import comp3111.popnames.SoulmateName;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -192,6 +195,7 @@ public class SoulmateName_controller {
     		Soulmate_errorYear_Label.setVisible(true);
     	}
     	if(res < lowerBound || res > upperBound ) {
+    		Soulmate_errorYear_Label.setText(String.format("Valid Years: %d-%d", lowerBound, upperBound));
     		Soulmate_errorYear_Label.setVisible(true);
     		res = -1;
     	} 
@@ -209,7 +213,7 @@ public class SoulmateName_controller {
     	clearScreen();
     	/* Get Variables */
     	String name = getCleanedName();
-    	int YOB = getCleanedYear(1880,2019);
+    	int YOB = getCleanedYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound());
     	if(YOB == -1 || name.length() == 0) return;
     	String inputGender = (Soulmate_inputIsMale_RadioButton.isSelected())?"M":"F";
     	String preferenceGender = (Soulmate_preferenceIsMale_Button.isSelected())?"M":"F";
@@ -277,7 +281,8 @@ public class SoulmateName_controller {
     	String inputName = getCleanedName();
     	String soulmateName = getCleanedJTTName();
     	if(inputName.length() == 0 || soulmateName.length() == 0) return;
-    	Soulmate_JTTMessage_Label.setText(soulmateName);
+    	List<String> facts = JourneyThroughTime.getFacts(1901);
+    	Soulmate_JTTMessage_Label.setText(facts.get(1));
     	
     	// Now that we have the two names, we have to create the journeyThroughTime object to retrieve relevant information, and then do things here to cast that
     	// information in an aesthetic manner.
