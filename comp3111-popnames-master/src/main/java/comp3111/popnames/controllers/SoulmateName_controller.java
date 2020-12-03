@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -155,6 +156,18 @@ public class SoulmateName_controller {
     private TableColumn<SoulmateDataModel, String> Soulmate_chanceCol_TableColumn;
     
     @FXML
+    private Pane Soulmate_infoPane_Pane;
+
+    @FXML
+    private Label Soulmate_infoPaneTitle_Label;
+
+    @FXML
+    private Label Soulmate_infoPaneDescription_Label;
+
+    @FXML
+    private Button Soulmate_infoPaneExit_Button;
+    
+    @FXML
     void initialize() {
     	//Link each table column with the correct variable inside the data model for the tableview.
     	Soulmate_NKcol_TableColumn.setCellValueFactory(new PropertyValueFactory<SoulmateDataModel,String>("name"));
@@ -201,6 +214,8 @@ public class SoulmateName_controller {
     	Soulmate_JTTMessage_Label.setText("Select a name from below when available, and press 'Journey Through Time' for a brief history of your two names.");
     	Soulmate_JTTMessage_Label.setTextFill(Color.BLACK);
     	Soulmate_JTT_Button.setDisable(true);
+    	
+    	Soulmate_infoPane_Pane.setVisible(false);
     }
     
     private int getCleanedYear(int lowerBound, int upperBound) {
@@ -331,5 +346,46 @@ public class SoulmateName_controller {
     	});
     	
     	timeline.play();
+    }
+
+
+    @FXML
+    void closeInfo() {
+    	Soulmate_infoPane_Pane.setVisible(false);
+    }
+
+    private void updateInfo(String algo, String description) {
+    	Soulmate_infoPaneTitle_Label.setText(algo);
+    	Soulmate_infoPaneDescription_Label.setText(description);
+    	
+    	Soulmate_infoPane_Pane.setVisible(true);
+    }
+    
+    @FXML
+    void nkShow() {
+    	String algo = "NK-T5";
+    	String desc = "    The NK-T5 is described on canvas too. What this algorithm does is it gets the rank of your name in your year of birth. And determines the year of birth of your mate, and returns the name of the person of the desired gender with equal rank.";
+    	updateInfo(algo, desc);
+    }
+    
+    @FXML
+    void ldShow() {
+    	String algo = "Closest Name";
+    	String desc = "    This algorithm returns the person with the closes name to you in the year before, on, or after the year you were born based off of your preference. Who knows, maybe you'll get along swell with someone with almost the same name as you?";
+    	updateInfo(algo, desc);
+    }
+
+    @FXML
+    void pycShow() {
+    	String algo = "Probably Your Classmate";
+    	String desc = "    The people listed here were likely names of your classmates! A great source of soulmates! The way this algorithm works is it gets the most popular names of the desired gender from the years around your birth year.";
+    	updateInfo(algo, desc);
+    }
+    
+    @FXML
+    void chanceShow() {
+    	String algo = "Chance Enounter";
+    	String desc = "    Maybe you meet your soulmate in a completely random fashion? On a bus? On the train? What this algorithm does is it chooses a name randomly where the probability of choosing that name is equal to the frequency of that name divided by the number of members of your desired gender in that year. This algorithm selects two names for good measure and good luck!";
+    	updateInfo(algo, desc);
     }
 }

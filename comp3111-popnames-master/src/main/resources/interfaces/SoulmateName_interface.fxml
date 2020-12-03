@@ -8,10 +8,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -177,11 +181,20 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label contentDisplay="CENTER" text="NK-T5 Algorithm">
-                           <font>
-                              <Font name="Segoe UI Semibold" size="14.0" />
-                           </font>
-                        </Label>
+                        <HBox onMouseClicked="#nkShow" prefHeight="19.0" prefWidth="239.0">
+                           <children>
+                              <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@tooltip.png" />
+                                 </image>
+                              </ImageView>
+                              <Label contentDisplay="CENTER" onMouseClicked="#nkShow" prefHeight="20.0" prefWidth="113.0" text="NK-T5 Algorithm">
+                                 <font>
+                                    <Font name="Segoe UI Semibold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="239.0" spacing="5.0">
                            <children>
                               <Label prefHeight="19.0" prefWidth="105.0" text="Ranking System">
@@ -206,11 +219,23 @@
                      <children>
                         <VBox prefHeight="66.0" prefWidth="239.0">
                            <children>
-                              <Label text="Closest Name">
-                                 <font>
-                                    <Font name="Segoe UI Semibold" size="14.0" />
-                                 </font>
-                              </Label>
+                              <HBox onMouseClicked="#ldShow" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@tooltip.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label onMouseClicked="#ldShow" text="Closest Name">
+                                       <font>
+                                          <Font name="Segoe UI Semibold" size="14.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Empty Tooltip" />
+                                       </tooltip>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                         <TableView fx:id="Soulmate_closestName_TableView" prefHeight="88.0" prefWidth="239.0">
@@ -225,11 +250,23 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Probably Your Classmate">
-                           <font>
-                              <Font name="Segoe UI Semibold" size="14.0" />
-                           </font>
-                        </Label>
+                        <HBox onMouseClicked="#pycShow" prefHeight="34.0" prefWidth="239.0">
+                           <children>
+                              <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@tooltip.png" />
+                                 </image>
+                              </ImageView>
+                              <Label onMouseClicked="#pycShow" text="Probably Your Classmate">
+                                 <font>
+                                    <Font name="Segoe UI Semibold" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <TableView fx:id="Soulmate_pyc_TableView" prefHeight="200.0" prefWidth="200.0">
                           <columns>
                             <TableColumn fx:id="Soulmate_pycCol_TableColumn" prefWidth="238.40000648498534" text="Name" />
@@ -242,11 +279,23 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Chance Encounter">
-                           <font>
-                              <Font name="Segoe UI Semibold" size="14.0" />
-                           </font>
-                        </Label>
+                        <HBox onMouseClicked="#chanceShow" prefHeight="30.0" prefWidth="239.0">
+                           <children>
+                              <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@tooltip.png" />
+                                 </image>
+                              </ImageView>
+                              <Label onMouseClicked="#chanceShow" text="Chance Encounter">
+                                 <font>
+                                    <Font name="Segoe UI Semibold" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <TableView fx:id="Soulmate_chance_TableView" prefHeight="200.0" prefWidth="200.0">
                           <columns>
                             <TableColumn fx:id="Soulmate_chanceCol_TableColumn" prefWidth="238.40003050565718" text="Name" />
@@ -259,6 +308,30 @@
                   </VBox>
                </children>
             </GridPane>
+            <Label layoutX="43.0" layoutY="545.0" text="Please click the title of the algorithm to learn more about it.">
+               <font>
+                  <Font name="Segoe UI Light" size="15.0" />
+               </font>
+            </Label>
+            <Pane fx:id="Soulmate_infoPane_Pane" layoutX="509.0" layoutY="14.0" prefHeight="543.0" prefWidth="402.0" style="-fx-background-color: #f4f4f4;" visible="false">
+               <children>
+                  <Label fx:id="Soulmate_infoPaneTitle_Label" layoutX="14.0" layoutY="14.0" text="[Algo]">
+                     <font>
+                        <Font name="Segoe UI Light" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="Soulmate_infoPaneDescription_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="59.0" prefHeight="474.0" prefWidth="374.0" text="blah blah blah" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Light" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Soulmate_infoPaneExit_Button" layoutX="323.0" layoutY="16.0" mnemonicParsing="false" onAction="#closeInfo" text="Close">
+                     <font>
+                        <Font name="Segoe UI Light" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>
