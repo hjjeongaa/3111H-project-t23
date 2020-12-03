@@ -1,12 +1,23 @@
 package comp3111.popnames.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.JourneyThroughTime;
 import comp3111.popnames.SoulmateName;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -16,7 +27,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class SoulmateName_controller {
 	/* Stuff for tables and buttons */
@@ -49,6 +64,12 @@ public class SoulmateName_controller {
 	}
 	
 	/* Elements */
+	
+	@FXML
+    private StackPane Soulmate_host_StackPane;
+	
+	@FXML
+    private AnchorPane Soulmate_vanilla_AnchorPane;
 	
 	@FXML
     private RadioButton Soulmate_inputIsMale_RadioButton;
@@ -135,6 +156,18 @@ public class SoulmateName_controller {
     private TableColumn<SoulmateDataModel, String> Soulmate_chanceCol_TableColumn;
     
     @FXML
+    private Pane Soulmate_infoPane_Pane;
+
+    @FXML
+    private Label Soulmate_infoPaneTitle_Label;
+
+    @FXML
+    private Label Soulmate_infoPaneDescription_Label;
+
+    @FXML
+    private Button Soulmate_infoPaneExit_Button;
+    
+    @FXML
     void initialize() {
     	//Link each table column with the correct variable inside the data model for the tableview.
     	Soulmate_NKcol_TableColumn.setCellValueFactory(new PropertyValueFactory<SoulmateDataModel,String>("name"));
@@ -181,6 +214,8 @@ public class SoulmateName_controller {
     	Soulmate_JTTMessage_Label.setText("Select a name from below when available, and press 'Journey Through Time' for a brief history of your two names.");
     	Soulmate_JTTMessage_Label.setTextFill(Color.BLACK);
     	Soulmate_JTT_Button.setDisable(true);
+    	
+    	Soulmate_infoPane_Pane.setVisible(false);
     }
     
     private int getCleanedYear(int lowerBound, int upperBound) {
@@ -192,6 +227,7 @@ public class SoulmateName_controller {
     		Soulmate_errorYear_Label.setVisible(true);
     	}
     	if(res < lowerBound || res > upperBound ) {
+    		Soulmate_errorYear_Label.setText(String.format("Valid Years: %d-%d", lowerBound, upperBound));
     		Soulmate_errorYear_Label.setVisible(true);
     		res = -1;
     	} 
@@ -209,7 +245,7 @@ public class SoulmateName_controller {
     	clearScreen();
     	/* Get Variables */
     	String name = getCleanedName();
-    	int YOB = getCleanedYear(1880,2019);
+    	int YOB = getCleanedYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound());
     	if(YOB == -1 || name.length() == 0) return;
     	String inputGender = (Soulmate_inputIsMale_RadioButton.isSelected())?"M":"F";
     	String preferenceGender = (Soulmate_preferenceIsMale_Button.isSelected())?"M":"F";
@@ -277,11 +313,79 @@ public class SoulmateName_controller {
     	String inputName = getCleanedName();
     	String soulmateName = getCleanedJTTName();
     	if(inputName.length() == 0 || soulmateName.length() == 0) return;
-    	Soulmate_JTTMessage_Label.setText(soulmateName);
-    	
+    	String inputGender = (Soulmate_inputIsMale_RadioButton.isSelected())?"M":"F";
+    	String soulmateGender = (Soulmate_preferenceIsMale_Button.isSelected())?"M":"F";
+    	int YOB = getCleanedYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound());
+    	if(YOB == -1) return;
     	// Now that we have the two names, we have to create the journeyThroughTime object to retrieve relevant information, and then do things here to cast that
     	// information in an aesthetic manner.
     	
+    	JourneyThroughTime.setValues(inputName, soulmateName, inputGender, soulmateGender, YOB, GlobalSettings.getCountry(), "human");
+    	
+    	// Now to begin the transition into the next scene
+    	
+    	Parent root = null;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/interfaces/Scene1_interface.fxml"));
+		} catch (IOException e) {
+			System.out.println("I FAILED...");
+			return;
+		}
+    	
+    	Scene scene = Soulmate_JTT_Button.getScene();
+    	
+    	root.translateYProperty().set(scene.getHeight());
+    	Soulmate_host_StackPane.getChildren().add(root);
+    	
+    	Timeline timeline = new Timeline();
+    	KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.EASE_IN);
+    	KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
+    	timeline.getKeyFrames().add(kf);
+    	timeline.setOnFinished(event->{
+    		Soulmate_host_StackPane.getChildren().remove(Soulmate_vanilla_AnchorPane);
+    	});
+    	
+    	timeline.play();
     }
 
+
+    @FXML
+    void closeInfo() {
+    	Soulmate_infoPane_Pane.setVisible(false);
+    }
+
+    private void updateInfo(String algo, String description) {
+    	Soulmate_infoPaneTitle_Label.setText(algo);
+    	Soulmate_infoPaneDescription_Label.setText(description);
+    	
+    	Soulmate_infoPane_Pane.setVisible(true);
+    }
+    
+    @FXML
+    void nkShow() {
+    	String algo = "NK-T5";
+    	String desc = "    The NK-T5 is described on canvas too. What this algorithm does is it gets the rank of your name in your year of birth. And determines the year of birth of your mate, and returns the name of the person of the desired gender with equal rank.";
+    	updateInfo(algo, desc);
+    }
+    
+    @FXML
+    void ldShow() {
+    	String algo = "Closest Name";
+    	String desc = "    This algorithm returns the person with the closes name to you in the year before, on, or after the year you were born based off of your preference. Who knows, maybe you'll get along swell with someone with almost the same name as you?";
+    	updateInfo(algo, desc);
+    }
+
+    @FXML
+    void pycShow() {
+    	String algo = "Probably Your Classmate";
+    	String desc = "    The people listed here were likely names of your classmates! A great source of soulmates! The way this algorithm works is it gets the most popular names of the desired gender from the years around your birth year.";
+    	updateInfo(algo, desc);
+    }
+    
+    @FXML
+    void chanceShow() {
+    	String algo = "Chance Enounter";
+    	String desc = "    Maybe you meet your soulmate in a completely random fashion? On a bus? On the train? What this algorithm does is it chooses a name randomly where the probability of choosing that name is equal to the frequency of that name divided by the number of members of your desired gender in that year. This algorithm selects two names for good measure and good luck!";
+    	updateInfo(algo, desc);
+    }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<StackPane fx:id="JTT1_stack_StackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.JTT.Scene1_controller">
+   <children>
+      <AnchorPane fx:id="JTT1_source_AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" style="-fx-background-color: #282828;">
+         <children>
+            <Pane prefHeight="570.0" prefWidth="462.0">
+               <children>
+                  <Button fx:id="JTT1_seePartner_Button" layoutX="190.0" layoutY="496.0" mnemonicParsing="false" onAction="#seePartner" style="-fx-background-color: #282828; -fx-border-color: #ebdbb2; -fx-border-width: 2; -fx-border-radius: 25;" text="Next" textFill="#ebdbb2">
+                     <font>
+                        <Font name="Rockwell" size="22.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="JTT1_userDescription2_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="182.0" prefHeight="153.0" prefWidth="420.0" text="In that year, [ Fact 1 ]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_userDescription1_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="84.0" prefHeight="98.0" prefWidth="420.0" text="The name [ XXX ] First appears in [country] in [YYYY]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_userDescription3_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="335.0" prefHeight="153.0" prefWidth="420.0" text="On top of that, [ Fact 2 ]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_userTitle_Label" layoutX="14.0" layoutY="14.0" text="[ Your Name ]" textFill="#ebdbb2">
+                     <font>
+                        <Font name="Rockwell" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="462.0" prefHeight="570.0" prefWidth="462.0">
+               <children>
+                  <Button fx:id="JTT1_nextScene_Button" layoutX="249.0" layoutY="497.0" mnemonicParsing="false" onAction="#nextScene" style="-fx-background-color: #282828; -fx-border-color: #ebdbb2; -fx-border-width: 2; -fx-border-radius: 25;" text="Next" textFill="#ebdbb2">
+                     <font>
+                        <Font name="Rockwell" size="22.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="JTT1_soulmateDescription2_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="182.0" prefHeight="153.0" prefWidth="420.0" text="In that year, [ Fact 1 ]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_soulmateDescription1_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="84.0" prefHeight="98.0" prefWidth="420.0" text="The name [ XXX ] First appears in [country] in [YYYY]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_soulmateDescription3_Label" alignment="TOP_LEFT" layoutX="14.0" layoutY="335.0" prefHeight="153.0" prefWidth="420.0" text="On top of that, [ Fact 2 ]." textFill="#ebdbb2" wrapText="true">
+                     <font>
+                        <Font name="Rockwell" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JTT1_soulmateTitle_Label" layoutX="14.0" layoutY="14.0" text="[ Soulmate's Name ]" textFill="#ebdbb2">
+                     <font>
+                        <Font name="Rockwell" size="40.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="JTT1_seeUser_Button" layoutX="120.0" layoutY="497.0" mnemonicParsing="false" onAction="#seeUser" style="-fx-background-color: #282828; -fx-border-color: #ebdbb2; -fx-border-width: 2; -fx-border-radius: 25;" text="Back" textFill="#ebdbb2">
+                     <font>
+                        <Font name="Rockwell" size="22.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <VBox fx:id="Scene1_imageHolder_VBox" alignment="CENTER" layoutX="462.0" prefHeight="570.0" prefWidth="462.0" style="-fx-background-color: #282828;">
+               <children>
+                  <Pane prefHeight="570.0" prefWidth="462.0">
+                     <children>
+                        <ImageView fx:id="JTT_soulmateImage_ImageView" fitHeight="570.0" fitWidth="462.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="JTT_userImage_ImageView" fitHeight="570.0" fitWidth="462.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

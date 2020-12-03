@@ -1,6 +1,7 @@
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.DatasetHandler;
+import comp3111.popnames.GlobalSettings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,7 +25,7 @@ public class Settings_controller {
     
     @FXML
     void updateSettings() {
-
+    	GlobalSettings.setCountry(Settings_countryChoice_ComboBox.getValue());
     }
 
 }

@@ -12,10 +12,11 @@ import java.util.*;
 
 import org.apache.commons.csv.CSVRecord;
 
+import comp3111.export.ReportHistory;
 import comp3111.rankingAlgo.LD;
 import comp3111.rankingAlgo.RankingAlgorithmFactory;
 
-public class SoulmateName extends ReportLog {
+public class SoulmateName extends Reports {
 	private LocalDateTime time;
 	private String inputName;
 	private String inputGender;
@@ -36,6 +37,10 @@ public class SoulmateName extends ReportLog {
 	 * */
 	
 	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo,String country, String type) {
+		super(name, myGender, country, type);
+		super.setoReport("Potential Soulmates of " + name);
+		super.setTask("Soulmates of " + name);
+		
 		this.inputName = name;
 		this.inputGender = myGender;
 		this.inputYOB = YOB;
@@ -136,6 +141,29 @@ public class SoulmateName extends ReportLog {
 		soulmateNames.put("chance", oNames);
 		for(String recommended : oNames) finalNames.add(recommended);
 		
+		updateReportLog();
+		
+	}
+	
+	/* Report Functions */
+	private void updateReportLog() {
+		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Potential Soulmates of %s</h3>", this.inputName); 
+		thisHtml += "<table><tr><th>NK-T5</th><th>Similar Name</th><th>Probably Your Classmate</th><th>Chance Encounter</th></tr>";
+		String tableRow = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><tr>";
+		int depth = 0;
+		while(true) {
+			String nkName = (getSoulmateNamesSize("nkt5") <= depth )?"":getSoulmateNames("nkt5").get(depth);
+			String ldName = (getSoulmateNamesSize("ld") <= depth )?"":getSoulmateNames("ld").get(depth);
+			String pycName = (getSoulmateNamesSize("pyc") <= depth )?"":getSoulmateNames("pyc").get(depth);
+			String chanceName = (getSoulmateNamesSize("chance") <= depth )?"":getSoulmateNames("chance").get(depth);
+			if(nkName.length() + ldName.length() + pycName.length() + chanceName.length() == 0) break;
+			thisHtml += String.format(tableRow, nkName, ldName, pycName, chanceName);
+			depth++;
+		}
+		thisHtml += "</table>";
+		thisHtml = "<div>" + thisHtml + "</div>";
+		super.setHTML(thisHtml);
+		ReportHistory.addReportLog(this);
 	}
 	
 	// Getters
@@ -152,27 +180,6 @@ public class SoulmateName extends ReportLog {
 		List<String> output = new ArrayList<String>();
 		for(String name : finalNames) output.add(name);
 		return output;
-	}
-	
-	/* Stuff for Reporting */
-	public String getoReport() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getTask() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public LocalDateTime getTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getHTML() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
