@@ -7,6 +7,8 @@
 
 package comp3111.popnames;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import edu.duke.*;
+import javafx.scene.image.Image;
 
 public class JourneyThroughTime extends Reports {
 	// Singleton Stuff
@@ -51,14 +54,14 @@ public class JourneyThroughTime extends Reports {
 	
 	// These methods here are guaranteed to be called after all of the values have been set.
 	
-	public static int getFirstAppearance(String name) {
+	public static int getFirstAppearance(String name, String gender) {
 		int res = -1;
 		int startYear = GlobalSettings.getLowerBound();
 		int endYear = GlobalSettings.getUpperBound();
 		String country = GlobalSettings.getCountry();
 		for(int year = startYear; year <= endYear; ++year) {
 			for(CSVRecord rec : AnalyzeNames.getFileParser(year, JourneyThroughTime.type, country)){
-				if(rec.get(1).equals(JourneyThroughTime.soulmateGender)) {
+				if(rec.get(1).equals(gender)) {
 					if(rec.get(0).equals(name)) return year;
 				}
 			}
@@ -79,4 +82,49 @@ public class JourneyThroughTime extends Reports {
 		}
 		return facts;
 	}
+	
+	public static Image getImage(int year) throws FileNotFoundException {
+		return new Image(String.format("/JTTImagesAndFacts/images/%d.jpg", year));
+	}
+	
+	public static List<Integer> getPopulationOf(String name, String gender, int lifeExpectancy){
+		List<Integer> output = new ArrayList<Integer>();
+		List<Integer> track = new ArrayList<Integer>();
+		int startYear = GlobalSettings.getLowerBound();
+		int endYear = GlobalSettings.getUpperBound();
+		String country = GlobalSettings.getCountry();
+		int sum = 0;
+		for(int year = startYear; year <= endYear; ++year) {
+			boolean found = false;
+			for(CSVRecord rec : AnalyzeNames.getFileParser(year, "human", country)) {
+				if(rec.get(1).equals(gender) && rec.get(0).equals(name)) {
+					sum += Integer.parseInt(rec.get(2));
+					track.add(Integer.parseInt(rec.get(2)));
+					output.add(sum);
+					found = true;
+					break;
+				}
+			}
+			if(found == false) {
+				output.add(0);
+				track.add(0);
+			}
+		}
+		for(int popYear = 0; popYear < track.size(); ++popYear ) {
+			for(int year = popYear + lifeExpectancy; year < track.size(); ++year) {
+				int newPop = output.get(year) - track.get(popYear);
+				output.set(year, newPop);
+			}
+		}
+		return output;
+	}
+	
+	/* Getters */
+	public static String getUserName() { return JourneyThroughTime.inputName;}
+	public static String getSoulmateName(){return JourneyThroughTime.SoulmateName;}
+	public static String getUserGender() {return JourneyThroughTime.inputGender;}
+	public static String getSoulmateGender(){return JourneyThroughTime.soulmateGender;}
+	public static int getYOB(){return JourneyThroughTime.YOB;}
+	public static String getCountry(){return JourneyThroughTime.country;}
+	public static String getType(){return JourneyThroughTime.type;}
 }

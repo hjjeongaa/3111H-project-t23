@@ -1,15 +1,23 @@
 package comp3111.popnames.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import comp3111.popnames.GlobalSettings;
 import comp3111.popnames.JourneyThroughTime;
 import comp3111.popnames.SoulmateName;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,7 +27,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class SoulmateName_controller {
 	/* Stuff for tables and buttons */
@@ -52,6 +63,12 @@ public class SoulmateName_controller {
 	}
 	
 	/* Elements */
+	
+	@FXML
+    private StackPane Soulmate_host_StackPane;
+	
+	@FXML
+    private AnchorPane Soulmate_vanilla_AnchorPane;
 	
 	@FXML
     private RadioButton Soulmate_inputIsMale_RadioButton;
@@ -281,12 +298,38 @@ public class SoulmateName_controller {
     	String inputName = getCleanedName();
     	String soulmateName = getCleanedJTTName();
     	if(inputName.length() == 0 || soulmateName.length() == 0) return;
-    	List<String> facts = JourneyThroughTime.getFacts(1901);
-    	Soulmate_JTTMessage_Label.setText(facts.get(1));
-    	
+    	String inputGender = (Soulmate_inputIsMale_RadioButton.isSelected())?"M":"F";
+    	String soulmateGender = (Soulmate_preferenceIsMale_Button.isSelected())?"M":"F";
+    	int YOB = getCleanedYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound());
+    	if(YOB == -1) return;
     	// Now that we have the two names, we have to create the journeyThroughTime object to retrieve relevant information, and then do things here to cast that
     	// information in an aesthetic manner.
     	
+    	JourneyThroughTime.setValues(inputName, soulmateName, inputGender, soulmateGender, YOB, GlobalSettings.getCountry(), "human");
+    	
+    	// Now to begin the transition into the next scene
+    	
+    	Parent root = null;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/interfaces/Scene1_interface.fxml"));
+		} catch (IOException e) {
+			System.out.println("I FAILED...");
+			return;
+		}
+    	
+    	Scene scene = Soulmate_JTT_Button.getScene();
+    	
+    	root.translateYProperty().set(scene.getHeight());
+    	Soulmate_host_StackPane.getChildren().add(root);
+    	
+    	Timeline timeline = new Timeline();
+    	KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.EASE_IN);
+    	KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
+    	timeline.getKeyFrames().add(kf);
+    	timeline.setOnFinished(event->{
+    		Soulmate_host_StackPane.getChildren().remove(Soulmate_vanilla_AnchorPane);
+    	});
+    	
+    	timeline.play();
     }
-
 }

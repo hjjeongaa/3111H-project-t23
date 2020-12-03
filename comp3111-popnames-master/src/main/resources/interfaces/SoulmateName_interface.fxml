@@ -17,10 +17,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.SoulmateName_controller">
+<StackPane fx:id="Soulmate_host_StackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.SoulmateName_controller">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0">
+      <AnchorPane fx:id="Soulmate_vanilla_AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="924.0" style="-fx-background-color: #f4f4f4;">
          <children>
             <GridPane layoutX="14.0" layoutY="14.0" prefHeight="152.0" prefWidth="655.0">
               <columnConstraints>
