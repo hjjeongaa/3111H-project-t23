@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.chart.XYChart;
@@ -28,7 +30,7 @@ import javafx.util.Duration;
 
 public class Scene2_controller {
 
-    @FXML
+	@FXML
     private StackPane JTT2_stack_StackPane;
 
     @FXML
@@ -36,15 +38,6 @@ public class Scene2_controller {
 
     @FXML
     private Label JTT2_titleLabel_Label;
-
-    @FXML
-    private StackedAreaChart<Integer, Integer> JTT2_mainGraph_StackedAreaChart;
-
-    @FXML
-    private NumberAxis JTT2_xAxis_NumberAxis;
-
-    @FXML
-    private NumberAxis JTT2_yAxis_NumberAxis;
 
     @FXML
     private Button JTT2_nextScene_Button;
@@ -57,6 +50,16 @@ public class Scene2_controller {
 
     @FXML
     private Label JTT2_lifeExpectancy_Label;
+    
+    @FXML
+    private AreaChart<Integer, Integer> JTT2_chart_AreaChart;
+
+    @FXML
+    private NumberAxis JTT2_xAxis_NumberAxis;
+
+    @FXML
+    private NumberAxis JTT2_yAxis_NumberAxis;
+    
 
     /* Methods */
     
@@ -92,7 +95,7 @@ public class Scene2_controller {
     	}
     	
     	// Draw to graph
-    	JTT2_mainGraph_StackedAreaChart.getData().addAll(seriesUser, seriesSoulmate);
+    	JTT2_chart_AreaChart.getData().addAll(seriesUser, seriesSoulmate);
 	}
     
 	private int getCleanedLifeExpectancy() {
@@ -116,7 +119,7 @@ public class Scene2_controller {
     	JTT2_lifeExpectancy_Label.setText("Life Expectancy");
     	int lifeExpectancy = getCleanedLifeExpectancy();
     	if(lifeExpectancy == -1) return;
-    	JTT2_mainGraph_StackedAreaChart.getData().clear();
+    	JTT2_chart_AreaChart.getData().clear();
     	renderGraph(lifeExpectancy);
     }
 

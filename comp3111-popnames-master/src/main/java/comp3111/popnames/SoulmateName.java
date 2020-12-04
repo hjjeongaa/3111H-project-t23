@@ -36,6 +36,11 @@ public class SoulmateName extends Reports {
 	 * 
 	 * */
 	
+	private boolean in(String source, List<String> table) {
+		for(String comp : table) if(source.equals(comp)) return true;
+		return false;
+	}
+	
 	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo,String country, String type) {
 		super(name, myGender, country, type);
 		super.setoReport("Potential Soulmates of " + name);
@@ -48,6 +53,8 @@ public class SoulmateName extends Reports {
 		this.agePreference = preference;
 		this.time = LocalDateTime.now();
 		
+		List<String> availableAlgos = List.of("or", "dr", "mcr", "scr");
+		if(!in(algo, availableAlgos)) algo = "or";
 		this.algorithm = algo;
 		
 		this.soulmateNames = new HashMap<String,List<String>>();
@@ -57,6 +64,8 @@ public class SoulmateName extends Reports {
 		// Systematically go through algorithms to populate the list soulmateNames.
 		// Things that will be used across algorithms:
 		int oYOB = this.inputYOB - preference;
+		if(oYOB == GlobalSettings.getLowerBound()-1) oYOB++;
+		if(oYOB == GlobalSettings.getUpperBound()+1) oYOB--;
 		
 		// First algorithm: NK-T5
 		// get inputs rank based on their selected algorithm. If it can't find your name, it returns the rank of the person with
@@ -87,27 +96,31 @@ public class SoulmateName extends Reports {
 		oNames =  new ArrayList<String>();
 		Set<String> collectNames = new HashSet<String>();
 		int count = 0;
-		for(CSVRecord rec : AnalyzeNames.getFileParser(YOB - 1, type, country)){
-			if(rec.get(1).equals(m_gender)) {
-				if(count == 2) break;
-				collectNames.add(rec.get(0));
-				count++;
+		if(YOB != GlobalSettings.getLowerBound()) {
+			for(CSVRecord rec : AnalyzeNames.getFileParser(YOB - 1, type, country)){
+				if(rec.get(1).equals(m_gender)) {
+					if(count == 2) break;
+					collectNames.add(rec.get(0).replaceAll( "[^-a-zA-Z0-9]", ""));
+					count++;
+				}
 			}
 		}
 		count = 0;
 		for(CSVRecord rec : AnalyzeNames.getFileParser(YOB, type, country)){
 			if(rec.get(1).equals(m_gender)) {
 				if(count == 2) break;
-				collectNames.add(rec.get(0));
+				collectNames.add(rec.get(0).replaceAll( "[^-a-zA-Z0-9]", ""));
 				count++;
 			}
 		}
 		count = 0;
-		for(CSVRecord rec : AnalyzeNames.getFileParser(YOB + 1, type, country)){
-			if(rec.get(1).equals(m_gender)) {
-				if(count == 2) break;
-				collectNames.add(rec.get(0));
-				count++;
+		if(YOB != GlobalSettings.getUpperBound()) {
+			for(CSVRecord rec : AnalyzeNames.getFileParser(YOB + 1, type, country)){
+				if(rec.get(1).equals(m_gender)) {
+					if(count == 2) break;
+					collectNames.add(rec.get(0).replaceAll( "[^-a-zA-Z0-9]", ""));
+					count++;
+				}
 			}
 		}
 		for(String collected : collectNames) oNames.add(collected);

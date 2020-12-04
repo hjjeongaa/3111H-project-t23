@@ -31,6 +31,7 @@ public class GlobalSettings {
 	public static void setCountry(String countryName) {
 		Pair<String, String> countryRange = DatasetHandler.getValidRange("human", countryName);
 		GlobalSettings.country = countryName;
+		if(countryRange == null) return;
 		GlobalSettings.lowerBound = Integer.parseInt(countryRange.getKey());
 		GlobalSettings.upperBound = Integer.parseInt(countryRange.getValue());
 	}
