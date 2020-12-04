@@ -31,6 +31,7 @@ public class BabyNamesControllerTest extends ApplicationTest{
 	private Label mYobErrorLabel;
 	private Label fYobErrorLabel;
 	private Label vYearErrorLabel;
+	private Label wcErrorLabel;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -53,6 +54,7 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		mYobErrorLabel = (Label)s.lookup("#BabyNames_motherYearError_label");
 		fYobErrorLabel = (Label)s.lookup("#BabyNames_fatherYearError_label");
 		vYearErrorLabel = (Label)s.lookup("#BabyNames_vintageYearError_label");
+		wcErrorLabel = (Label)s.lookup("#BabyNames_wordCloudError_label");
 	}
 
 	@Test
@@ -89,7 +91,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().isEmpty()
 				&& fYobErrorLabel.getText().isEmpty()
-				&& vYearErrorLabel.getText().isEmpty());
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
 	}
 	@Test
 	public void ageVariationTest() {
@@ -126,7 +129,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().isEmpty()
 				&& fYobErrorLabel.getText().isEmpty()
-				&& vYearErrorLabel.getText().isEmpty());
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
 
 		mNameTf.setText("Michaela");
 		fNameTf.setText("Michael");
@@ -161,7 +165,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().isEmpty()
 				&& fYobErrorLabel.getText().isEmpty()
-				&& vYearErrorLabel.getText().isEmpty());
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
 	}
 	@Test
 	public void yearErrorTest() {
@@ -176,7 +181,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().contains("Mother's YOB is out of range")
 				&& fYobErrorLabel.getText().contains("Father's YOB is out of range")
-				&& vYearErrorLabel.getText().contains("Vintage year is out of range"));
+				&& vYearErrorLabel.getText().contains("Vintage year is out of range")
+				&& wcErrorLabel.getText().isEmpty());
 		
 		mYobTf.setText("???");
 		fYobTf.setText("garbage");
@@ -186,7 +192,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().contains("Mother's YOB is invalid")
 				&& fYobErrorLabel.getText().contains("Father's YOB is invalid")
-				&& vYearErrorLabel.getText().contains("Vintage year is invalid"));
+				&& vYearErrorLabel.getText().contains("Vintage year is invalid")
+				&& wcErrorLabel.getText().isEmpty());
 		
 		mYobTf.setText("");
 		fYobTf.setText("");
@@ -196,7 +203,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& fNameErrorLabel.getText().isEmpty()
 				&& mYobErrorLabel.getText().contains("Mother's YOB is invalid")
 				&& fYobErrorLabel.getText().contains("Father's YOB is invalid")
-				&& vYearErrorLabel.getText().contains(""));
+				&& vYearErrorLabel.getText().contains("")
+				&& wcErrorLabel.getText().isEmpty());
 		
 	}
 }

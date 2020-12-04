@@ -1,6 +1,9 @@
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.GlobalSettings;
 import java.time.format.DateTimeFormatter;
+
+import comp3111.popnames.ReportLog;
 
 import comp3111.popnames.AnalyzeNames;
 
@@ -34,6 +37,9 @@ public class DataReporting_controller {
 
     @FXML
     private RadioButton DataReporting_isFemale_RadioButton;
+
+    @FXML
+    private RadioButton DataReporting_isMale_RadioButton;
 
     @FXML
     private ToggleGroup DataReport_genderSelect_ToggleGroup;
@@ -82,7 +88,8 @@ public class DataReporting_controller {
     
     private String getCleanedName() {
     	String o = DataReporting_nameField_TextField.getText();
-    	if(o.length() == 0) {
+    	o = ReportLog.validateName(o);
+    	if(o.isEmpty()) {
     		DataReporting_errorName_Label.setVisible(true);
     	}
     	return o;
@@ -92,6 +99,7 @@ public class DataReporting_controller {
     	int y = -1;
     	try {
     		y = Integer.parseInt(DataReporting_yearField_TextField.getText());
+    		if (!(y >= GlobalSettings.getLowerBound() && y <= GlobalSettings.getUpperBound())) {y=-1; DataReporting_errorYear_Label.setVisible(true);}
     	} catch(NumberFormatException e) {
     		// the year is not a valid integer.
     		DataReporting_errorYear_Label.setVisible(true);
@@ -119,6 +127,7 @@ public class DataReporting_controller {
     	int year = getCleanedYear();
     	String gender;
     	boolean anyErrors = false;
+    	
     	
     	if( name.length() == 0 || year == -1) anyErrors = true;
     	

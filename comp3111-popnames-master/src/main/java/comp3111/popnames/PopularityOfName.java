@@ -10,17 +10,24 @@ package comp3111.popnames;
 import java.text.DecimalFormat;
 import java.util.*;
 import org.apache.commons.csv.*;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import comp3111.export.ReportHistory;
 
 public class PopularityOfName extends Reports {
+	/**
+	 * PopularityOfName
+	 * 
+	 * For task 2. Outputs a report on the popularity of a name and gender within a year range.
+	 * @author Hyun Joon Jeong
+	 */
 	//The inputs provided to generate the report.
 	private int startYear;
 	private int endYear;
 	
-	//RanksInEachYear: A list of 3-tuples, each tuple containing the statistics of the name in a certain year.
-	//The left item contains the user's rank in the year, middle item contains the total number of unique names in the year, and right item contains the percentile of the name's rank compared against all names in the year.
-	private List<Triple<Integer,Integer,Double>> ranksInEachYear;
+	//RanksInEachYear: A list of 4-tuples, each tuple containing a statistic of the name in a certain year.
+	//The left item contains the user's rank in the year, middle item contains the name's frequency in the year, and right item contains a pair; inside of which contains the percentage of the name from all names in the year, and the total population of the year.
+	private List<Triple<Integer,Integer,Pair<Integer,Double>>> ranksInEachYear;
 	/**
 	 * Constructor for PopularityOfName
 	 * Computes all the ranks of the given name for each year between startYear and endYear, as well as the total number of names in each year, and puts it into an array.
@@ -37,21 +44,25 @@ public class PopularityOfName extends Reports {
 		super.setoReport(name+" ("+gender+"), "+startYear+"~"+endYear);
 		super.setTask("Popularity of Name");
 		//For HTML generation. It will be generated on the fly while we iterate through the CSV.
-		String thisHtml = "<table><tr><th>Year</th><th>Your name's rank</th><th>Total # of names this year</th><th>Percentile</th></tr>";
+		String thisHtml = "<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head>";
+		thisHtml +=  String.format("<h3>Popularity of %s between %d and %d</h3>", name,startYear,endYear);
+		thisHtml += "<table><tr><th>Year</th><th>Your name's rank</th><th>Frequency of name</th><th>Percentage</th></tr>";
 		String tableRow = "<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td><tr>";
 		
 		this.startYear = startYear;
 		this.endYear = endYear;
 		//Initialize ranksInEachYear
-		this.ranksInEachYear = new ArrayList<Triple<Integer,Integer,Double>>();
+		this.ranksInEachYear = new ArrayList<Triple<Integer,Integer,Pair<Integer,Double>>>();
 		//Iterate through all years within the start & end year.
 		for (int thisYear = startYear; thisYear <= endYear; ++thisYear) {
 			//To improve speed, we stop comparing names once the name we are looking for is found.
 			boolean nameFound = false;
 			//This will store the rank at which the name was found for this year.
 			int thisYearRank = 0;
-			//Will store the total length of the year, used to calculate the percentile.
-			int thisYearRecordsLength = 0;
+			//Will store the total population of the year for this gender, used to calculate the percentage.
+			int thisYearPopulation = 0;
+			//Will store the frequency of the name.
+			int thisYearFrequency = 0;
 			//Counter for the current rank of the name being processed right now.
 			int rankCounter = 0;
 			//Go through all the names
@@ -59,28 +70,28 @@ public class PopularityOfName extends Reports {
 				//Check gender matches.
 				if (gender.equals(rec.get(1))) {
 					//If we find another name with the same gender, the rank increases. We also increase the total number of names found.
-					++thisYearRecordsLength;
+					thisYearPopulation += Integer.parseInt(rec.get(2));
 					++rankCounter;
 					//Compare names if the name hasn't been found yet
 					if (!nameFound) {
 						String thisRecName = rec.get(0);
 						//Check name matches.
 						if (name.equals(thisRecName)) {
+							//Update the rank and frequency of the name we want to find.
 							nameFound = true;
 							thisYearRank = rankCounter;
+							thisYearFrequency = Integer.parseInt(rec.get(2));
 						}
 					}
 				}
 			}
-			//Calculate percentile of the name's rank (1- (name Rank / total number of ranks) * 100)
-			Double rank = (double)thisYearRank;
-			int total = thisYearRecordsLength;
-			Double thisRankPercentage = 100*(1-((rank-1)/total));
-			Triple<Integer,Integer,Double> rankAndYearSize = Triple.of(thisYearRank,thisYearRecordsLength,thisRankPercentage);
+			//Calculate percentage
+			Double thisNamePercentage = (double) ((100.0*thisYearFrequency)/thisYearPopulation);
+			Triple<Integer,Integer,Pair<Integer,Double>> rankAndYearSize = Triple.of(thisYearRank,thisYearFrequency,Pair.of(thisYearPopulation,thisNamePercentage));
 			this.ranksInEachYear.add(rankAndYearSize);
 			//Html table should have the percentage truncated.
 			DecimalFormat df = new DecimalFormat("#.##");
-			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearRecordsLength, df.format(thisRankPercentage)+"%");
+			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearFrequency, df.format(thisNamePercentage)+"%");
 		}
 
 		thisHtml += "</table>";
@@ -92,9 +103,9 @@ public class PopularityOfName extends Reports {
 	
 	/**
 	 * Returns the List object with the results. Used to fill the tableview in the output UI.
-	 * @return the list of triples that stores all the results from generation
+	 * @return the four tuple that stores all the results from generation
 	 */
-	public List<Triple<Integer,Integer,Double>> getPopularityList() {
+	public List<Triple<Integer,Integer,Pair<Integer,Double>>> getPopularityList() {
 		return this.ranksInEachYear;
 	}
 }

@@ -26,6 +26,8 @@ import javafx.collections.ObservableList;
 
 import java.text.DecimalFormat;
 import java.util.*;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 public class NamePopularity_controller {
@@ -33,7 +35,7 @@ public class NamePopularity_controller {
 	private ObservableList<NamePopularityTableDataModel> tableViewList;
 	/**
 	 * Data model for the table view which will store all results.
-	 * Table view's columns consist of the name's year, rank, total # of names in the year, and the name's rank's percentile.
+	 * Table view's columns consist of the name's year, rank, name's frequency, and the name's percentage.
 	 */
 	public class NamePopularityTableDataModel {
 		private final SimpleStringProperty year;
@@ -77,6 +79,9 @@ public class NamePopularity_controller {
     @FXML
     private Button NamePopularity_generate_button;
 
+    @FXML
+    private Label NamePopularity_summary_label;
+    
     @FXML
     private TableView<NamePopularityTableDataModel> NamePopularity_tableView;
 
@@ -180,34 +185,72 @@ public class NamePopularity_controller {
     		gender = (NamePopularity_male_radioButton.isSelected())?"M":"F";
     		//Generate the report.
     		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,GlobalSettings.getCountry(), "human");
-    		List<Triple<Integer,Integer,Double>> namePopularityList = namePopularity.getPopularityList();
+    		List<Triple<Integer,Integer,Pair<Integer,Double>>> namePopularityList = namePopularity.getPopularityList();
     		//Using the list of results obtained from PopularityOfName, fill the tableview by converting each entry in the List to the data model for the table.
+    		int mostPopularYear = -1;
+    		int bestRank = 0;
+    		int bestFreq = 0;
+    		int bestTotal = 0;
+    		String bestPercentage = "0%";
     		for (int i = 0; i < endYear - startYear + 1; ++i) {
-    			Triple<Integer,Integer,Double> yearlyStatistics = namePopularityList.get(i);
+    			Triple<Integer,Integer,Pair<Integer,Double>> yearlyStatistics = namePopularityList.get(i);
     			
     			String formattedYear = Integer.toString(i+startYear);
     			String formattedRank = "Not found";
-    			String formattedTotal = "Empty";
+    			String formattedFreq = "0";
     			String formattedPercentile = "0%";
     			
     			int rank = yearlyStatistics.getLeft();
-    			int total = yearlyStatistics.getMiddle();
-    			Double percentile = yearlyStatistics.getRight();
+    			int freq = yearlyStatistics.getMiddle();
+    			Double percentile = yearlyStatistics.getRight().getRight();
+    			int total = yearlyStatistics.getRight().getLeft();
+    			
     			
     			//Format year and percentile
     			if (rank != 0) {
     				formattedRank = Integer.toString(yearlyStatistics.getLeft());
     				DecimalFormat df = new DecimalFormat("#.##");
     				formattedPercentile = df.format(percentile)+"%";
+    				if (freq > bestFreq) {
+        				bestRank = rank;
+        				mostPopularYear = i+startYear;
+        				bestFreq = freq;
+        				bestTotal = total;
+        				bestPercentage = formattedPercentile;
+        			}
     			}
     			//Format total
-    			if (total != 0) {
-    				formattedTotal = Integer.toString(yearlyStatistics.getMiddle());
+    			if (freq != 0) {
+    				formattedFreq = Integer.toString(yearlyStatistics.getMiddle());
     			}
     			
-    			NamePopularityTableDataModel row = new NamePopularityTableDataModel(formattedYear, formattedRank, formattedTotal, formattedPercentile);
+    			NamePopularityTableDataModel row = new NamePopularityTableDataModel(formattedYear, formattedRank, formattedFreq, formattedPercentile);
     			this.tableViewList.add(row);
     		}
+    		Integer latestFreq = namePopularityList.get(endYear-startYear).getMiddle();
+    		DecimalFormat df = new DecimalFormat("#.##");
+    		Double latestPercentage = namePopularityList.get(endYear-startYear).getRight().getRight();
+    		int latestTotal = namePopularityList.get(endYear-startYear).getRight().getLeft();
+    		//Update the summary text.
+    		String summary;
+    		if (latestFreq == 0) {
+    			if (mostPopularYear == -1) {
+    				summary = String.format("In the year %d, there were no births with name %s.\n",endYear,name)
+        		    		+ String.format("The name was never found in any other years.\n");
+    			} else {
+    				summary = String.format("In the year %d, there were no births with name %s.\n",endYear,name)
+        		    		+ String.format("However, it was most popular in %d.\n", mostPopularYear);
+    			}
+    		} else {
+    			summary = String.format("In the year %d, the number of births with name %s\n",endYear,name)
+    		    		+ String.format("is %d, which represents %s of total %s births in %d.\n",latestFreq, df.format(latestPercentage)+"%",latestTotal,endYear)
+    		    		+ String.format("The year when the name %s was most popular is\n",name)
+    		    		+ String.format("%d. In that year, the number of births is %d, which\n", mostPopularYear, bestFreq)
+    		    		+ String.format("represents %s of the total %d births in %d.",bestPercentage,bestTotal,mostPopularYear);
+    		}
+    		
+    				
+    		NamePopularity_summary_label.setText(summary);
     	}
     }
 }

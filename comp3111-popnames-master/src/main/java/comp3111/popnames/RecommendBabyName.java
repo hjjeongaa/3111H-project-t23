@@ -28,6 +28,12 @@ import org.apache.commons.csv.*;
 
 
 public class RecommendBabyName extends ReportLog {
+	/**
+	 * RecommendBabyName
+	 * 
+	 * For task 4. Outputs a list of recommended baby names, given a pair of parents' names, their YOBs, the baby's gender, and an optional vintageYear (the year the baby should be born in, default 2019)
+	 * @author Hyun Joon Jeong
+	 */
 	private LocalDateTime time;
 	private String fatherName;
 	private String motherName;
@@ -187,6 +193,8 @@ public class RecommendBabyName extends ReportLog {
 		int i = 0;
 		if (babyNamesList.size() > 20)
 			generateWordCloudImageBytes();
+		else
+			wordCloudImageBytes = null;
 		ReportHistory.addReportLog(this);
 	}
 	/**
@@ -304,14 +312,32 @@ public class RecommendBabyName extends ReportLog {
 		return wordCloudImageBytes;
 	}
 	public String getHTML() {
-		String html = "<table><tr><th>Name</th><th>Score</th></tr>";
-		String tableRow = "<tr><td>%s</td><td>%s</td><tr>";
-		for (int i = 0; i < babyNamesList.size(); ++i) {
-			html += String.format(tableRow, babyNamesList.get(i).getLeft(), babyNamesList.get(i).getRight());
+		String html = "<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head>";
+		html +=  String.format("<h3>Recommended Baby Names for %s and %s</h3>", motherName,fatherName);
+		html += "<table><tr><th>Name</th><th>Score</th><th>Name</th><th>Score</th><th>Name</th><th>Score</th><th>Name</th><th>Score</th></tr>";
+		String tableRow = "<td>%s</td><td>%s</td>";
+		String[][] rows = new String[4][25];
+		//System.out.println(babyNamesList.size());
+		for (int i = 0; i < babyNamesList.size(); i++) {
+			rows[i/25][i%25] = String.format(tableRow, babyNamesList.get(i).getLeft(), babyNamesList.get(i).getRight());
 		}
+		for (int i = 0; i < 25; ++i) {
+			html += "<tr>";
+			for (int j = 0; j < 4; ++j) {
+				if (i+j*25 >= babyNamesList.size()) {
+					html += "<td>_</td><td>_</td>";
+				} else
+					html += rows[j][i];
+			}
+			html += "</tr>";
+				
+		}
+		//30 rows
 		html += "</table>";
-        String base64image = "data:image/png;base64,"+Base64.encodeBase64String(wordCloudImageBytes);
-		html += "<img width='500' height='220' src='" + base64image + "'>";
+		if (wordCloudImageBytes != null) {
+			String base64image = "data:image/png;base64,"+Base64.encodeBase64String(wordCloudImageBytes);
+			html += "<img width='500' height='220' src='" + base64image + "'>";
+		}
 		html = "<div>" + html + "</div>";
 		return html;
 	}

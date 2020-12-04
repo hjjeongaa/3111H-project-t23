@@ -114,21 +114,22 @@ public class Export_controller {
         	try {
 				ReportHistory.exportSelected(outputFile);
 			} catch (FileNotFoundException e) {
+				Export_nothingSelectedError_label.setText("Error writing to path.");
+				/*
 				Alert alert = new Alert(AlertType.ERROR);
 	    		alert.setTitle("Error");
 	    		alert.setHeaderText("I/O Error");
 	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
 	    		alert.showAndWait();
-				e.printStackTrace();
-				
-				e.printStackTrace();
+				e.printStackTrace();*/
 			} catch (IOException e) {
-	    		Alert alert = new Alert(AlertType.ERROR);
+				Export_nothingSelectedError_label.setText("Error writing to path.");
+	    		/*Alert alert = new Alert(AlertType.ERROR);
 	    		alert.setTitle("Error");
 	    		alert.setHeaderText("I/O Error");
 	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
 	    		alert.showAndWait();
-				e.printStackTrace();
+				e.printStackTrace();*/
 			}
     	} else {
     		Export_nothingSelectedError_label.setText("Nothing selected.");

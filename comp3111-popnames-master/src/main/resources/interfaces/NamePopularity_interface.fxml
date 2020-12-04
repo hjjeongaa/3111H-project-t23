@@ -133,14 +133,22 @@
                         <Font name="Segoe UI Light" size="17.0" />
                      </font>
                   </Button>
+                  <Label fx:id="NamePopularity_summary_label">
+                     <font>
+                        <Font name="Segoe UI Light" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
             </VBox>
             <TableView fx:id="NamePopularity_tableView" prefHeight="285.0" prefWidth="1170.0">
               <columns>
                 <TableColumn fx:id="NamePopularity_tableView_year_tableColumn" prefWidth="40.0" text="Year" />
                 <TableColumn fx:id="NamePopularity_tableView_rank_tableColumn" prefWidth="108.0" text="Your name's rank" />
-                  <TableColumn fx:id="NamePopularity_tableView_total_tableColumn" prefWidth="152.0" text="Total # of names this year" />
-                  <TableColumn fx:id="NamePopularity_tableView_percentile_tableColumn" minWidth="0.0" prefWidth="66.0" text="Percentile" />
+                  <TableColumn fx:id="NamePopularity_tableView_total_tableColumn" prefWidth="143.0" text="Frequency of name" />
+                  <TableColumn fx:id="NamePopularity_tableView_percentile_tableColumn" minWidth="0.0" prefWidth="75.0" text="Percentage" />
               </columns>
             </TableView>
          </children>

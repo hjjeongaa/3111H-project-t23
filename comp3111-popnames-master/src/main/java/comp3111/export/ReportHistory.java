@@ -38,7 +38,7 @@ public class ReportHistory {
 	}
 	/**
 	 * Used to fill the tableView in the export UI.
-	 * @return
+	 * @return the list of report holders that will be referenced by the TableView.
 	 */
 	public static ObservableList<ReportHolder> getReportHoldersList() {
 		return reportHoldersList;
