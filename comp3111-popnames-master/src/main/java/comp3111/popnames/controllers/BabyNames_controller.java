@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -50,6 +51,17 @@ public class BabyNames_controller {
 		public String getName() {return this.name.get();}
 		public String getPercentageScore() {return this.percentageScore.get();}
 	}
+	@FXML
+	private Label BabyNames_title_label;
+
+	@FXML
+	private Label BabyNames_information_label;
+	
+	@FXML
+	private Button BabyNames_information_button;
+	
+	@FXML
+	private GridPane BabyNames_inputGrid_gridpane;
 	
     @FXML
     private TextField BabyNames_motherName_textField;
@@ -231,7 +243,7 @@ public class BabyNames_controller {
                 BabyNamesTableDataModel row = new BabyNamesTableDataModel(babyName.getLeft(), formattedPercentageScore);
                 this.tableViewList.add(row);
             }
-            if (babyNamesList.size() > 20) {
+            if (babyNamesList.size() > 20 && babyNames.getWordCloudImageBytes() != null) {
             	BabyNames_wordCloudError_label.setText("");
             	InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());
                 Image image = new Image(input);
@@ -241,4 +253,52 @@ public class BabyNames_controller {
             }
         }
     }
+    private boolean informationShown = false;
+    @FXML
+    void toggleInformation() {
+    	if (!informationShown) {
+    		BabyNames_title_label.setText("How do I work?");
+    		BabyNames_inputGrid_gridpane.setVisible(false);
+    		BabyNames_generate_button.setVisible(false);
+    		BabyNames_wordCloud_imageView.setVisible(false);
+        	
+        	BabyNames_information_label.setVisible(true);
+        	BabyNames_information_label.setText(
+        			"This algorithm works by finding a name which has the greatest similarity between "
+        			+ "both of the parents.\n"
+        			+ "It does this by using an algorithm called the 'Levenshtein distance', which calculates "
+        			+ "how many characters\n"
+        			+ "must be inserted, deleted, or substituted for two names to be the same.\n"
+        			+ "To generate a baby's name, we firstly load all of the names from the vintage year that is specified. (The\n"
+        			+ "vintage year represents the year that the baby is supposed to be born, so it is appopriate for us to\n"
+        			+ "generate a baby name that is from the vintage year.)\n" + 
+        			"Then, we create two lists; one will contain the list of names that are sorted by similarity to the father's\n"
+        			+ "name, and one for similarity to the mother's name. The algorithm determines whether a baby name is similar\n"
+        			+ "to a parent name by looking for names with a Levenshtein distance of approximately half the length of the\n"
+        			+ "parent's name. This way, we can try and obtain names that are neither too similar, nor too different, to\n"
+        			+ "the parent's name.\n"
+        			+ "Along with this, we store the difference between the Levenshtein distance to the father's name, and the\n"
+        			+ "Levenshtein distance to the mother's name - the lower this is, the better. For example, if the difference\n"
+        			+ "in the Levenshtein distances is 0, then both the father and the mother have the same Levenshtein distance\n"
+        			+ "to the baby's name, meaning there is an equal mix of both the father and mother's name in the baby name.\n"
+        			+ "Now that we have a list of 'candidate' names from both the father and mother's name, it's time to combine\n"
+        			+ "these lists. But this algorithm won't just combine them equally!"
+        			+ "\nA parent with a year of birth closer to the baby's year of birth will likely have a more 'appropriate'\n"
+        			+ "name for the baby's name to be similar to. This means, for example, if the mother were born 20 years before\n"
+        			+ "the baby's year of birth, and the father were born 60 years before, then more names from the mother's\n"
+        			+ "candidate names will be included in the final list of candidate names.\nFinally, we also consider whether\n"
+        			+ "a baby boy or girl's name is being generated. The parent with the same gender as the baby name being\n"
+        			+ "generated will likely have a more appropriate name for the baby's name to be similar to.");
+        	BabyNames_information_button.setText("Back");
+        } else {
+        	BabyNames_title_label.setText("Here, you can generate baby names from a mother and father's information.");
+    		BabyNames_inputGrid_gridpane.setVisible(true);
+    		BabyNames_generate_button.setVisible(true);
+    		BabyNames_wordCloud_imageView.setVisible(true);
+        	
+        	BabyNames_information_label.setVisible(false);
+        	BabyNames_information_button.setText("How do I work?");
+        }
+    	informationShown = !informationShown;
+	}
 }
