@@ -109,7 +109,7 @@ public class TopNNames extends Reports {
 	 * @return	The name at that index.
 	 */
 	public String getNameFromIndex(int index) {
-		if(index < collectionSize){
+		if(index < collectionSize && index >= 0){
 			return sortedNames.get(index);
 		} else {
 			return "-1";
@@ -123,7 +123,7 @@ public class TopNNames extends Reports {
 	 * @return	The frequency at that index.
 	 */
 	public int getFrequencyFromIndex(int index) {
-		if(index < collectionSize){
+		if(index < collectionSize && index >= 0){
 			return collectionOfYears.get(sortedNames.get(index));
 		} else {
 			return -1;

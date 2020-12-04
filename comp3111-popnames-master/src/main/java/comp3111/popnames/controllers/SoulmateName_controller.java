@@ -249,10 +249,10 @@ public class SoulmateName_controller {
     	if(YOB == -1 || name.length() == 0) return;
     	String inputGender = (Soulmate_inputIsMale_RadioButton.isSelected())?"M":"F";
     	String preferenceGender = (Soulmate_preferenceIsMale_Button.isSelected())?"M":"F";
-    	int agePreference;
+    	int agePreference = 0;
     	if(Soulmate_isYounger_Button.isSelected()) agePreference = -1;
-    	else if(Soulmate_isSame_Button.isSelected()) agePreference = 0;
-    	else agePreference = 1;
+    	if(Soulmate_isSame_Button.isSelected()) agePreference = 0;
+    	if(Soulmate_isOlder_Button.isSelected()) agePreference = 1;
     	
     	HashMap<String, String> algoMap = new HashMap<String, String>();
     	algoMap.put("Standard Competition", "scr");
@@ -262,7 +262,7 @@ public class SoulmateName_controller {
     	String nkAlgo = algoMap.get(Soulmate_nkAlgo_ComboBox.getValue());
     	
     	// Now that all inputs are good, time to calculate and render.
-    	SoulmateName source = new SoulmateName(name, inputGender, YOB, preferenceGender, agePreference, nkAlgo, "usa", "human");
+    	SoulmateName source = new SoulmateName(name, inputGender, YOB, preferenceGender, agePreference, nkAlgo, GlobalSettings.getCountry(), "human");
     	
     	// Now to populate the tables.
     	// NK-T5:

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedAreaChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-
 
 <StackPane fx:id="JTT2_stack_StackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.JTT.Scene2_controller">
    <children>
@@ -19,22 +18,6 @@
                   <Font name="Rockwell" size="40.0" />
                </font>
             </Label>
-            <StackedAreaChart fx:id="JTT2_mainGraph_StackedAreaChart" layoutX="188.0" layoutY="105.0" prefHeight="400.0" prefWidth="666.0" style="-fx-background-color: #282828;">
-              <xAxis>
-                <NumberAxis fx:id="JTT2_xAxis_NumberAxis" autoRanging="false" lowerBound="1880.0" side="BOTTOM" tickLabelFill="#ebdbb2" upperBound="2019.0">
-                     <tickLabelFont>
-                        <Font name="Rockwell" size="15.0" />
-                     </tickLabelFont>
-                  </NumberAxis>
-              </xAxis>
-              <yAxis>
-                <NumberAxis fx:id="JTT2_yAxis_NumberAxis" lowerBound="1880.0" side="LEFT" tickLabelFill="#ebdbb2" upperBound="2019.0">
-                     <tickLabelFont>
-                        <Font name="Rockwell" size="14.0" />
-                     </tickLabelFont>
-                  </NumberAxis>
-              </yAxis>
-            </StackedAreaChart>
             <Button fx:id="JTT2_nextScene_Button" layoutX="80.0" layoutY="447.0" mnemonicParsing="false" onAction="#nextScene" style="-fx-background-color: #282828; -fx-border-width: 2; -fx-border-color: ebdbb2; -fx-border-radius: 25;" text="Next" textFill="#ebdbb2">
                <font>
                   <Font name="Rockwell" size="20.0" />
@@ -55,6 +38,20 @@
                   <Font name="Rockwell" size="20.0" />
                </font>
             </Label>
+            <AreaChart fx:id="JTT2_chart_AreaChart" layoutX="201.0" layoutY="105.0" prefHeight="422.0" prefWidth="702.0">
+              <xAxis>
+                <NumberAxis fx:id="JTT2_xAxis_NumberAxis" autoRanging="false" forceZeroInRange="false" lowerBound="1880.0" minorTickCount="1" side="BOTTOM" tickLabelFill="#ebdbb2" upperBound="2019.0">
+                     <tickLabelFont>
+                        <Font name="Rockwell" size="11.0" />
+                     </tickLabelFont></NumberAxis>
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="JTT2_yAxis_NumberAxis" side="LEFT" tickLabelFill="#ebdbb2">
+                     <tickLabelFont>
+                        <Font name="Rockwell" size="11.0" />
+                     </tickLabelFont></NumberAxis>
+              </yAxis>
+            </AreaChart>
          </children>
       </AnchorPane>
    </children>
