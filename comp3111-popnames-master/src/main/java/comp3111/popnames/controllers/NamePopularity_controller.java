@@ -6,6 +6,7 @@
 
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.GlobalSettings;
 import comp3111.popnames.PopularityOfName;
 import comp3111.popnames.ReportLog;
 //UI
@@ -126,8 +127,8 @@ public class NamePopularity_controller {
     	int endYear = -1;
     	String gender;
     	
-    	final int MAX_YEAR = 2019;
-    	final int MIN_YEAR = 1880;
+    	final int MAX_YEAR = GlobalSettings.getUpperBound();
+    	final int MIN_YEAR = GlobalSettings.getLowerBound();
     	
     	//Handle empty name
     	boolean nameBlank = name.isBlank();
@@ -178,7 +179,7 @@ public class NamePopularity_controller {
     		this.tableViewList.clear();
     		gender = (NamePopularity_male_radioButton.isSelected())?"M":"F";
     		//Generate the report.
-    		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,"usa", "human");
+    		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,GlobalSettings.getCountry(), "human");
     		List<Triple<Integer,Integer,Double>> namePopularityList = namePopularity.getPopularityList();
     		//Using the list of results obtained from PopularityOfName, fill the tableview by converting each entry in the List to the data model for the table.
     		for (int i = 0; i < endYear - startYear + 1; ++i) {
