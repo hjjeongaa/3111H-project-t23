@@ -62,7 +62,7 @@ public class TopNNamesControllerTest extends ApplicationTest{
 	}
 	
 	@Test
-	public void normalTest() {
+	public void normalTest1() {
 		startYear.setText("1975");
 		endYear.setText("2001");
 		nInput.setText("50");
@@ -88,16 +88,17 @@ public class TopNNamesControllerTest extends ApplicationTest{
 	}
 	
 	@Test
-	public void testEdgeCaseLower() {
-		startYear.setText("1880");
-		endYear.setText("1950");
-		nInput.setText("20");
+	public void normalTest2() {
+		startYear.setText("1900");
+		endYear.setText("1920");
+		nInput.setText("35");
+		clickOn("#TopNNames_isFemale_RadioButton");
 		clickOn("#TopNNames_generate_Button");
 		String [][] sample = {
-				{"1", "Michael", "68457"},
-				{"2", "Jason", "52199"},
-				{"3", "Christopher", "46587"},
-				{"4", "James", "39595"}};
+				{"1", "Mary", "16707"},
+				{"2", "Helen", "6343"},
+				{"3", "Anna", "6114"},
+				{"4", "Margaret", "5306"}};
 		boolean noErrors = true;
 		TableView table = (TableView)mainscene.lookup("#TopNNames_outputTable_TableView");
 		for (int i = 0; i < 4;++i) {
@@ -111,6 +112,178 @@ public class TopNNamesControllerTest extends ApplicationTest{
 			}
 		}
 		assertTrue(noErrors && noError());
+	}
+	
+	@Test
+	public void testEdgeCaseLower() {
+		startYear.setText("1880");
+		endYear.setText("1950");
+		nInput.setText("20");
+		clickOn("#TopNNames_generate_Button");
+		String [][] sample = {
+				{"1", "John", "9655"},
+				{"2", "William", "9532"},
+				{"3", "James", "5927"},
+				{"4", "Charles", "5348"}};
+		boolean noErrors = true;
+		TableView table = (TableView)mainscene.lookup("#TopNNames_outputTable_TableView");
+		for (int i = 0; i < 4;++i) {
+			for (int j = 0; j < 3;++j) {
+			    TableColumn col = (TableColumn) table.getColumns().get(j);//get jth cols data
+			    String data = (String) col.getCellObservableValue(table.getItems().get(i)).getValue();
+			    if (!data.strip().equals(sample[i][j].strip())) {
+			    	System.out.println(i+" "+j);
+			    	noErrors = false;
+			    }
+			}
+		}
+		assertTrue(noErrors && noError());
+	}
+	
+	@Test
+	public void testEdgeCaseUpper() {
+		startYear.setText("2019");
+		endYear.setText("2019");
+		nInput.setText("20");
+		clickOn("#TopNNames_generate_Button");
+		String [][] sample = {
+				{"1", "Liam", "20502"},
+				{"2", "Noah", "19048"},
+				{"3", "Oliver", "13891"},
+				{"4", "William", "13542"}};
+		boolean noErrors = true;
+		TableView table = (TableView)mainscene.lookup("#TopNNames_outputTable_TableView");
+		for (int i = 0; i < 4;++i) {
+			for (int j = 0; j < 3;++j) {
+			    TableColumn col = (TableColumn) table.getColumns().get(j);//get jth cols data
+			    String data = (String) col.getCellObservableValue(table.getItems().get(i)).getValue();
+			    if (!data.strip().equals(sample[i][j].strip())) {
+			    	System.out.println(i+" "+j);
+			    	noErrors = false;
+			    }
+			}
+		}
+		assertTrue(noErrors && noError());
+	}
+	
+	@Test
+	public void testInvalidStart() {
+		startYear.setText("apple");
+		endYear.setText("2019");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidEnd() {
+		startYear.setText("1880");
+		endYear.setText("Soap");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidN() {
+		startYear.setText("1880");
+		endYear.setText("1920");
+		nInput.setText("What");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidStartRange1() {
+		startYear.setText("1776");
+		endYear.setText("1920");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidStartRange2() {
+		startYear.setText("2042");
+		endYear.setText("1920");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidEndRange1() {
+		startYear.setText("2000");
+		endYear.setText("2042");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidEndRange2() {
+		startYear.setText("2000");
+		endYear.setText("1999");
+		nInput.setText("15");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(invalidEndRange.isVisible());
+		assertTrue(!invalidNError1.isVisible());
+		assertTrue(!invalidNError2.isVisible());
+	}
+	
+	@Test
+	public void testInvalidNRange() {
+		startYear.setText("2000");
+		endYear.setText("2010");
+		nInput.setText("-1337");
+		clickOn("#TopNNames_generate_Button");
+		
+		assertTrue(!invalidStart.isVisible());
+		assertTrue(!invalidEnd.isVisible());
+		assertTrue(!invalidStartRange.isVisible());
+		assertTrue(!invalidEndRange.isVisible());
+		assertTrue(invalidNError1.isVisible());
+		assertTrue(invalidNError2.isVisible());
 	}
 	
 }

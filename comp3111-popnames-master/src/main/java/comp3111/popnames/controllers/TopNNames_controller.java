@@ -291,22 +291,9 @@ public class TopNNames_controller {
     	TopNNames_yearselector_Slider.setValue(startYear);
     	
     	updateTable();
-    	String analysis = "";
     	List<String> tops = modeName(this.src);
     	List<Integer> topF = modeFreq(this.src);
-    	if(tops.get(0).equals("-1") && tops.get(1).equals("-1")) {
-    		// Both changed every year
-    		analysis = String.format("WOW!, what a dynamic range of years! Between %d and %d no single name managed to stay on top for at least two years, not even the second most popular name managed to do that either!", startYear, endYear);
-    	} else if(tops.get(0).equals("-1")) {
-    		// First place changed every year but not second place
-    		analysis = String.format("Between %d and %d, it appears that the most popular name never could manage to stay consistent, but second place did with the most consistently second place name being %s appearing %d time in second place.", startYear, endYear, tops.get(1), topF.get(1));
-    	} else if(tops.get(1).equals("-1")) {
-    		// Second place changed every year but not first place
-    		analysis = String.format("Between %d and %d, the most cosistently popular name was %s apprearing a total of %d time in first place. It appears that the second most consistently popular kept on changing in the range of years, neat!", startYear, endYear, tops.get(0), topF.get(0));
-    	} else {
-    		// Both have a top name
-    		analysis = String.format("Between %d and %d, the most consistently popular name was %s, appearing %d times in first. And the second most consistently popular name was %s, appearing %d times in second.", startYear, endYear, tops.get(0), topF.get(0), tops.get(1), topF.get(1));
-    	}
+    	String analysis  = String.format("Between %d and %d, the most consistently popular name was %s, appearing %d times in first. And the second most consistently popular name was %s, appearing %d times in second.", startYear, endYear, tops.get(0), topF.get(0), tops.get(1), topF.get(1));
     	
     	TopNNames_description_Label.setText(analysis);
     }
