@@ -37,6 +37,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
+test {
+	maxHeapSize = "1024m"
+}
+
 jacocoTestReport {
 	reports {
 		xml.enabled false
