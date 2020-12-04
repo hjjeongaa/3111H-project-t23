@@ -19,9 +19,8 @@ import comp3111.export.ReportHistory;
 public class TopNNames extends Reports {
 	
 	/* Private Variables */
-	private HashMap<String, Integer> collectionOfYears;
-	private List<String> sortedNames;
-	private int collectionSize;
+	private HashMap<Integer, List<String>> collectionOfYears;
+	private HashMap<Integer, List<Integer>> collectionOfFreqs;
 	private int numOfNames;
 	private int startYear;
 	private int endYear;
@@ -31,16 +30,17 @@ public class TopNNames extends Reports {
 	public TopNNames(int startYear, int endYear, String gender, int numNames, String country, String type){
 		//	Call Report constructor.
 		super(null, gender, country, type);
-		collectionOfYears = new HashMap<String,Integer>();
+		collectionOfYears = new HashMap<Integer, List<String>>();
+		collectionOfFreqs = new HashMap<Integer, List<Integer>>();
 		this.numOfNames = numNames;
 		this.startYear = startYear;
 		this.endYear = endYear;
 		
 		/* Stuff for exporting */
-		expandedGender = "Male";
-		if(gender.equals("F")) expandedGender = "Female";
-		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
-		super.setTask(String.format("Top %d Names in %s", numOfNames, country));
+//		expandedGender = "Male";
+//		if(gender.equals("F")) expandedGender = "Female";
+//		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
+//		super.setTask(String.format("Top %d Names in %s", numOfNames, country));
 		
 		/*
 		 * 		Generate the collection of years.
@@ -48,96 +48,60 @@ public class TopNNames extends Reports {
 		
 		// For every year in the range
 		for(int year = startYear; year <= endYear; ++year) {
+			int count = 0;
+			List<String> topNNames = new ArrayList<String>();
+			List<Integer> topNFreqs = new ArrayList<Integer>();
 			for(CSVRecord rec : AnalyzeNames.getFileParser(year, type, country)) {
 				// We are only interested in Names who belong to the gender of interest.
 				if(rec.get(1).equals(gender)) {
+					if(count == numOfNames) break;
 					String name = rec.get(0);
-					int frequency = Integer.parseInt(rec.get(2));
-					if(collectionOfYears.containsKey(name)) {
-						// The name exists in the map, then we just need to update the value.
-						int updatedValue = collectionOfYears.get(name) + frequency;
-						collectionOfYears.put(name, updatedValue);
-					} else {
-						// The name does not exist in the map, thus, we need to put it in.
-						collectionOfYears.put(name, frequency);
-					}
+					topNNames.add(name);
+					topNFreqs.add(Integer.parseInt(rec.get(2)));
+					++count;
 				}
 			}
+			if(count < numOfNames) {
+				for(int i = 0; i < numOfNames-count; ++i) {
+					topNNames.add(" ");
+					topNFreqs.add(-1);
+				}
+			}
+			collectionOfYears.put(year, topNNames);
+			collectionOfFreqs.put(year, topNFreqs);
 		}
 		
-		/*
-		 * 		Generate the list of the top N names.
-		 * 		
-		 * 	Inspiration and code taken from:
-		 * 	https://stackoverflow.com/questions/18971849/best-way-to-get-top-n-keyssorted-by-values-in-a-hashmap
-		 */
-		
-		// Convert the collection of names into a list.
-		sortedNames = new ArrayList<String>(collectionOfYears.keySet());
-		// Sort those names.
-		sortedNames.sort(new Comparator<String>() {
-			@Override
-			public int compare(String s1, String s2) {
-			     return Integer.compare(collectionOfYears.get(s2), collectionOfYears.get(s1));
-			 }
-		});
-		
-		collectionSize = sortedNames.size();
-		updateReportLog();
+		//updateReportLog();
 	}
 	
+	//TODO
 	/* Report Functions */
-	private void updateReportLog() {
-		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Top %d %s Names From %d to %d</h3>", numOfNames, expandedGender, startYear, endYear); 
-		thisHtml += "<table><tr><th>Rank</th><th>Name</th><th>Frequency</th></tr>";
-		String tableRow = "<tr><td>%d</td><td>%s</td><td>%d</td><tr>";
-		for(int rank = 0; rank < this.numOfNames; ++rank) {
-			thisHtml += String.format(tableRow,rank+1, getNameFromIndex(rank), getFrequencyFromIndex(rank));
-		}
-		thisHtml += "</table>";
-		thisHtml = "<div>" + thisHtml + "</div>";
-		super.setHTML(thisHtml);
-		ReportHistory.addReportLog(this);
-	}
+//	private void updateReportLog() {
+//		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Top %d %s Names From %d to %d</h3>", numOfNames, expandedGender, startYear, endYear); 
+//		thisHtml += "<table><tr><th>Rank</th><th>Name</th><th>Frequency</th></tr>";
+//		String tableRow = "<tr><td>%d</td><td>%s</td><td>%d</td><tr>";
+//		for(int rank = 0; rank < this.numOfNames; ++rank) {
+//			thisHtml += String.format(tableRow,rank+1, getNameFromIndex(rank), getFrequencyFromIndex(rank));
+//		}
+//		thisHtml += "</table>";
+//		thisHtml = "<div>" + thisHtml + "</div>";
+//		super.setHTML(thisHtml);
+//		ReportHistory.addReportLog(this);
+//	}
 	
 	/* Interface Functions */
 	
-	/**
-	 * Given the list of all names and frequencies in a year span, this function takes an index of that list and returns
-	 * the name at that index.
-	 * @param index	The index of the name which will be retrieved.
-	 * @return	The name at that index.
-	 */
-	public String getNameFromIndex(int index) {
-		if(index < collectionSize && index >= 0){
-			return sortedNames.get(index);
-		} else {
-			return "-1";
-		}
-				
+	public List<String> getListOfNamesFromYear(int year){
+		if(year < startYear || year > endYear) return null;
+		return collectionOfYears.get(year);
 	}
 	
-	/**
-	 * Given the list of all names and frequencies in a year span, this function takes an index of that list and returns the frequency at that index.
-	 * @param index	The index of the frequency which will be retrieved.
-	 * @return	The frequency at that index.
-	 */
-	public int getFrequencyFromIndex(int index) {
-		if(index < collectionSize && index >= 0){
-			return collectionOfYears.get(sortedNames.get(index));
-		} else {
-			return -1;
-		}
-		
+	public List<Integer> getListOfFrequenciesFromYear(int year){
+		if(year < startYear || year > endYear) return null;
+		return collectionOfFreqs.get(year);
 	}
 	
-	
-	/**
-	 * Given the list of all names and frequencies in a year span, this function takes a name and returns the index of that name. If it does not exist, it returns -1.
-	 * @param name	The index of this name will be retrieved.
-	 * @return	The index of the given name. If the name does not exist in the list, -1 will be returned.
-	 */
-	public int getNameIndex(String name) {
-		return sortedNames.indexOf(name);
-	}
+	// getters
+	public int getStartYear() {return this.startYear;}
+	public int getEndYear() {return this.endYear;}
 }
