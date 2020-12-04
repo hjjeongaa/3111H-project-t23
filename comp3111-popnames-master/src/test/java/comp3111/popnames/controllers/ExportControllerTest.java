@@ -72,7 +72,6 @@ public class ExportControllerTest extends ApplicationTest{
 			}
 		}
 		assertTrue(noneTicked);
-		clickOn("#Export_selectAll_button");
 		
 		clickOn("#Export_invertSelection_button");
 		allTicked = true;
