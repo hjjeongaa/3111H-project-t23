@@ -25,6 +25,7 @@ public class NamePopularityControllerTest extends ApplicationTest{
 	private TextField eYearTf;
 	private Label nameErrorLabel;
 	private Label yearErrorLabel;
+	private Label summaryLabel;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -41,6 +42,7 @@ public class NamePopularityControllerTest extends ApplicationTest{
    		eYearTf = (TextField)s.lookup("#NamePopularity_endYear_textField");
    		nameErrorLabel = (Label)s.lookup("#NamePopularity_nameError_label");
    		yearErrorLabel = (Label)s.lookup("#NamePopularity_yearError_label");
+   		summaryLabel = (Label)s.lookup("#NamePopularity_summary_label");
 	}
 	
 	@Test
@@ -48,12 +50,13 @@ public class NamePopularityControllerTest extends ApplicationTest{
 		nameTf.setText("Alexander");
 		clickOn("#NamePopularity_generate_button");
 		String [][] sample = {
-				{"1995", "21", "10326","99.81%"},
-				{"1996", "22", "10530", "99.8%"}
+				{"1995", "21", "19446","1.02%"},
+				{"1996", "22", "17959", "0.95%"},
+				{"1997", "22", "17110", "0.91%"},
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#NamePopularity_tableView");
-		for (int i = 0; i < 2;++i) {//row
+		for (int i = 0; i < 3;++i) {//row
 			for (int j = 0; j < 4;++j) {//col
 			    TableColumn col = (TableColumn) table.getColumns().get(j);//get jth cols data
 			    String data = (String) col.getCellObservableValue(table.getItems().get(i)).getValue();
@@ -66,6 +69,13 @@ public class NamePopularityControllerTest extends ApplicationTest{
 		assertTrue(noErrors
 				&& nameErrorLabel.getText().isEmpty()
 				&& yearErrorLabel.getText().isEmpty());
+		/*
+		 * 
+				&& summaryLabel.getText().contains("is 8418")
+				&& summaryLabel.getText().contains("0.44% of total 1893471 births in 2016")
+				&& summaryLabel.getText().contains("number of births is 8685")
+				&& summaryLabel.getText().contains("0.46% of the total 1901376 births in 2014")
+		 */
 	}
 	
 	@Test
@@ -75,7 +85,7 @@ public class NamePopularityControllerTest extends ApplicationTest{
 		eYearTf.setText("1880");
 		clickOn("#NamePopularity_generate_button");
 		String [][] sample = {
-				{"1880", "73", "1058","93.19%"}
+				{"1880", "73", "211","0.19%"}
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#NamePopularity_tableView");
@@ -99,7 +109,7 @@ public class NamePopularityControllerTest extends ApplicationTest{
 		clickOn("#NamePopularity_female_radioButton");
 		clickOn("#NamePopularity_generate_button");
 		String [][] sample2 = {
-				{"2019", "203", "17905","98.87%"}
+				{"2019", "203", "1471","0.09%"}
 				};
 		noErrors = true;
 		//TableView table = (TableView)s.lookup("#NamePopularity_tableView");

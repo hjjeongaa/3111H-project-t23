@@ -28,6 +28,12 @@ import org.apache.commons.csv.*;
 
 
 public class RecommendBabyName extends ReportLog {
+	/**
+	 * RecommendBabyName
+	 * 
+	 * For task 4. Outputs a list of recommended baby names, given a pair of parents' names, their YOBs, the baby's gender, and an optional vintageYear (the year the baby should be born in, default 2019)
+	 * @author Hyun Joon Jeong
+	 */
 	private LocalDateTime time;
 	private String fatherName;
 	private String motherName;

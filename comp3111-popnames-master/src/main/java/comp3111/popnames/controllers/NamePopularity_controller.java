@@ -35,7 +35,7 @@ public class NamePopularity_controller {
 	private ObservableList<NamePopularityTableDataModel> tableViewList;
 	/**
 	 * Data model for the table view which will store all results.
-	 * Table view's columns consist of the name's year, rank, total # of names in the year, and the name's rank's percentile.
+	 * Table view's columns consist of the name's year, rank, name's frequency, and the name's percentage.
 	 */
 	public class NamePopularityTableDataModel {
 		private final SimpleStringProperty year;
@@ -232,11 +232,23 @@ public class NamePopularity_controller {
     		Double latestPercentage = namePopularityList.get(endYear-startYear).getRight().getRight();
     		int latestTotal = namePopularityList.get(endYear-startYear).getRight().getLeft();
     		//Update the summary text.
-    		String summary = String.format("In the year %d, the number of births with name %s\n",endYear,name)
-    		+ String.format("is %d, which represents %s of total %s births in %d.\n",latestFreq, df.format(latestPercentage)+"%",latestTotal,endYear)
-    		+ String.format("The year when the name %s was most popular is\n",name)
-    		+ String.format("%d. In that year, the number of births is %d, which\n", mostPopularYear, bestFreq)
-    		+ String.format("represents %s of the total %d births in %d.",bestPercentage,bestTotal,mostPopularYear);
+    		String summary;
+    		if (latestFreq == 0) {
+    			if (mostPopularYear == -1) {
+    				summary = String.format("In the year %d, there were no births with name %s.\n",endYear,name)
+        		    		+ String.format("The name was never found in any other years.\n");
+    			} else {
+    				summary = String.format("In the year %d, there were no births with name %s.\n",endYear,name)
+        		    		+ String.format("However, it was most popular in %d.\n", mostPopularYear);
+    			}
+    		} else {
+    			summary = String.format("In the year %d, the number of births with name %s\n",endYear,name)
+    		    		+ String.format("is %d, which represents %s of total %s births in %d.\n",latestFreq, df.format(latestPercentage)+"%",latestTotal,endYear)
+    		    		+ String.format("The year when the name %s was most popular is\n",name)
+    		    		+ String.format("%d. In that year, the number of births is %d, which\n", mostPopularYear, bestFreq)
+    		    		+ String.format("represents %s of the total %d births in %d.",bestPercentage,bestTotal,mostPopularYear);
+    		}
+    		
     				
     		NamePopularity_summary_label.setText(summary);
     	}

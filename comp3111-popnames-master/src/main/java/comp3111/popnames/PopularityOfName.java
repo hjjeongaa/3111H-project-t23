@@ -15,12 +15,18 @@ import org.apache.commons.lang3.tuple.Triple;
 import comp3111.export.ReportHistory;
 
 public class PopularityOfName extends Reports {
+	/**
+	 * PopularityOfName
+	 * 
+	 * For task 2. Outputs a report on the popularity of a name and gender within a year range.
+	 * @author Hyun Joon Jeong
+	 */
 	//The inputs provided to generate the report.
 	private int startYear;
 	private int endYear;
 	
-	//RanksInEachYear: A list of 3-tuples, each tuple containing the statistics of the name in a certain year.
-	//The left item contains the user's rank in the year, middle item contains the total number of unique names in the year, and right item contains the percentile of the name's rank compared against all names in the year.
+	//RanksInEachYear: A list of 4-tuples, each tuple containing a statistic of the name in a certain year.
+	//The left item contains the user's rank in the year, middle item contains the name's frequency in the year, and right item contains a pair; inside of which contains the percentage of the name from all names in the year, and the total population of the year.
 	private List<Triple<Integer,Integer,Pair<Integer,Double>>> ranksInEachYear;
 	/**
 	 * Constructor for PopularityOfName
@@ -71,6 +77,7 @@ public class PopularityOfName extends Reports {
 						String thisRecName = rec.get(0);
 						//Check name matches.
 						if (name.equals(thisRecName)) {
+							//Update the rank and frequency of the name we want to find.
 							nameFound = true;
 							thisYearRank = rankCounter;
 							thisYearFrequency = Integer.parseInt(rec.get(2));
@@ -78,6 +85,7 @@ public class PopularityOfName extends Reports {
 					}
 				}
 			}
+			//Calculate percentage
 			Double thisNamePercentage = (double) ((100.0*thisYearFrequency)/thisYearPopulation);
 			Triple<Integer,Integer,Pair<Integer,Double>> rankAndYearSize = Triple.of(thisYearRank,thisYearFrequency,Pair.of(thisYearPopulation,thisNamePercentage));
 			this.ranksInEachYear.add(rankAndYearSize);
@@ -95,7 +103,7 @@ public class PopularityOfName extends Reports {
 	
 	/**
 	 * Returns the List object with the results. Used to fill the tableview in the output UI.
-	 * @return the list of triples that stores all the results from generation
+	 * @return the four tuple that stores all the results from generation
 	 */
 	public List<Triple<Integer,Integer,Pair<Integer,Double>>> getPopularityList() {
 		return this.ranksInEachYear;
