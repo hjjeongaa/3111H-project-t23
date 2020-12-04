@@ -82,6 +82,9 @@ public class BabyNames_controller {
     private Label BabyNames_vintageYearError_label;
     
     @FXML
+    private Label BabyNames_wordCloudError_label;
+    
+    @FXML
     private RadioButton BabyNames_male_radioButton;
 
     @FXML
@@ -112,7 +115,7 @@ public class BabyNames_controller {
     	BabyNames_tableView_percentageScore_tableColumn.setCellValueFactory(new PropertyValueFactory<BabyNamesTableDataModel,String>("percentageScore"));
     	this.tableViewList = FXCollections.<BabyNamesTableDataModel>observableArrayList();
     	BabyNames_tableView.setItems(this.tableViewList);
-    	BabyNames_tableView.setPlaceholder(new Label("You haven't generated anything yet."));
+    	BabyNames_tableView.setPlaceholder(new Label("Empty"));
     }
     /**
      * Helper function to create a red highlight around text fields with an error.
@@ -229,11 +232,12 @@ public class BabyNames_controller {
                 this.tableViewList.add(row);
             }
             if (babyNamesList.size() > 20) {
+            	BabyNames_wordCloudError_label.setText("");
             	InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());
                 Image image = new Image(input);
                 BabyNames_wordCloud_imageView.setImage(image);
             } else {
-            	System.out.println("Sorry, we couldn't generate enough names for you!");
+            	BabyNames_wordCloudError_label.setText("Word cloud too small.");
             }
         }
     }
