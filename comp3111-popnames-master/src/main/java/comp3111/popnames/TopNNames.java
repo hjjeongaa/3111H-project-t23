@@ -2,7 +2,7 @@
 * TopNNames.java
 * 
 * Basis of Task 1.
-* This class is used to do any form of reporting on a collection of years. This is done by collecting all the CSVs and mapping each name to a value. If a name is seen more than once, then the value in the map is updated. The keys of the map are stored in a separate List object and then sorted.
+* 
 * 
 * @author Ryder Khoi Daniel
 * @version 1.0
@@ -32,15 +32,15 @@ public class TopNNames extends Reports {
 		super(null, gender, country, type);
 		collectionOfYears = new HashMap<Integer, List<String>>();
 		collectionOfFreqs = new HashMap<Integer, List<Integer>>();
-		this.numOfNames = numNames;
-		this.startYear = startYear;
-		this.endYear = endYear;
+		this.numOfNames = Math.max(0,numNames);
+		this.startYear = Math.max(startYear, GlobalSettings.getLowerBound());
+		this.endYear = Math.min(endYear, GlobalSettings.getUpperBound());
 		
 		/* Stuff for exporting */
-//		expandedGender = "Male";
-//		if(gender.equals("F")) expandedGender = "Female";
-//		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
-//		super.setTask(String.format("Top %d Names in %s", numOfNames, country));
+		expandedGender = "Male";
+		if(gender.equals("F")) expandedGender = "Female";
+		super.setoReport("Top "+ expandedGender +" Names From "+startYear+" to "+endYear);
+		super.setTask(String.format("Top %d Names in %s", numOfNames, country));
 		
 		/*
 		 * 		Generate the collection of years.
@@ -71,23 +71,25 @@ public class TopNNames extends Reports {
 			collectionOfFreqs.put(year, topNFreqs);
 		}
 		
-		//updateReportLog();
+		updateReportLog();
 	}
 	
-	//TODO
 	/* Report Functions */
-//	private void updateReportLog() {
-//		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Top %d %s Names From %d to %d</h3>", numOfNames, expandedGender, startYear, endYear); 
-//		thisHtml += "<table><tr><th>Rank</th><th>Name</th><th>Frequency</th></tr>";
-//		String tableRow = "<tr><td>%d</td><td>%s</td><td>%d</td><tr>";
-//		for(int rank = 0; rank < this.numOfNames; ++rank) {
-//			thisHtml += String.format(tableRow,rank+1, getNameFromIndex(rank), getFrequencyFromIndex(rank));
-//		}
-//		thisHtml += "</table>";
-//		thisHtml = "<div>" + thisHtml + "</div>";
-//		super.setHTML(thisHtml);
-//		ReportHistory.addReportLog(this);
-//	}
+	private void updateReportLog() {
+		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Top %d %s Names From %d to %d</h3>", numOfNames, expandedGender, startYear, endYear); 
+		String tableRow = "<tr><td>%d</td><td>%s</td><td>%d</td><tr>";
+		for(int year = startYear; year <= endYear; ++year) {
+			thisHtml += "<h4>" + String.format("%d", year) + "</h4>";
+			thisHtml += "<table><tr><th>Rank</th><th>Name</th><th>Frequency</th></tr>";
+			for(int rank = 0; rank < this.numOfNames; ++rank) {
+				thisHtml += String.format(tableRow,rank+1, collectionOfYears.get(year).get(rank), collectionOfFreqs.get(year).get(rank));
+			}
+			thisHtml += "</table>";
+		}
+		thisHtml = "<div>" + thisHtml + "</div>";
+		super.setHTML(thisHtml);
+		ReportHistory.addReportLog(this);
+	}
 	
 	/* Interface Functions */
 	
