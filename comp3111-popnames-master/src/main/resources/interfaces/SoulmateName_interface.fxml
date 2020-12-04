@@ -181,7 +181,7 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox onMouseClicked="#nkShow" prefHeight="19.0" prefWidth="239.0">
+                        <HBox fx:id="Soulmate_nk_HBox" onMouseClicked="#nkShow" prefHeight="19.0" prefWidth="239.0">
                            <children>
                               <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -219,7 +219,7 @@
                      <children>
                         <VBox prefHeight="66.0" prefWidth="239.0">
                            <children>
-                              <HBox onMouseClicked="#ldShow" prefHeight="100.0" prefWidth="200.0">
+                              <HBox fx:id="Soulmate_ld_HBox" onMouseClicked="#ldShow" prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -250,7 +250,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
-                        <HBox onMouseClicked="#pycShow" prefHeight="34.0" prefWidth="239.0">
+                        <HBox fx:id="Soulmate_pyc_HBox" onMouseClicked="#pycShow" prefHeight="34.0" prefWidth="239.0">
                            <children>
                               <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -279,7 +279,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <HBox onMouseClicked="#chanceShow" prefHeight="30.0" prefWidth="239.0">
+                        <HBox fx:id="Soulmate_chance_HBox" onMouseClicked="#chanceShow" prefHeight="30.0" prefWidth="239.0">
                            <children>
                               <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

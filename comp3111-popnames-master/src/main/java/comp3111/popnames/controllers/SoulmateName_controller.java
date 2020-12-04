@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -47,16 +48,6 @@ public class SoulmateName_controller {
 		private final SimpleStringProperty name;
 		
 		public SoulmateDataModel(String Name) {
-			this.name = new SimpleStringProperty(Name);
-		}
-		//Each table column will use this method to retrieve the values of each cell.
-		public String getName() {return this.name.get();}
-	}
-	
-	public class JTTDataModel {
-		private final SimpleStringProperty name;
-		
-		public JTTDataModel(String Name) {
 			this.name = new SimpleStringProperty(Name);
 		}
 		//Each table column will use this method to retrieve the values of each cell.
@@ -166,6 +157,18 @@ public class SoulmateName_controller {
 
     @FXML
     private Button Soulmate_infoPaneExit_Button;
+    
+    @FXML
+    private HBox Soulmate_nk_HBox;
+    
+    @FXML
+    private HBox Soulmate_ld_HBox;
+    
+    @FXML
+    private HBox Soulmate_pyc_HBox;
+    
+    @FXML
+    private HBox Soulmate_chance_HBox;
     
     @FXML
     void initialize() {

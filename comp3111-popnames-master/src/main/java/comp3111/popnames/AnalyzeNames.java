@@ -100,48 +100,5 @@ public class AnalyzeNames {
         else
             return "information on the name at the specified rank is not available";
     }
-    
-    /*	
-     * 		Author: Ryder Khoi Daniel
-     * 
-     * 		Description:
-     *			This function returns the frequency of a name in a given year, based on rank or name.
-     *		Year and Gender will always be the first two parameters, followed by an int if you 
-     *		want the frequency based on rank, or followed by a String if you want the frequency
-     *		based on name.
-     *		
-     *		Parameters:		( Mandatory ones )
-     *			year		-		An integer representing the year of interest.
-     *			gender		-		'M' or 'F'
-     *
-     *		Return value:
-     *			Returns the frequency of the item in a given year. If the item does not exit in
-     *		that year (name doesn't exist, or rank is larger than the entire set), then the function
-     *		will return -1.
-     */
-    public static int getFrequency(int year, String gender, int rank) {
-    	// Return frequency based on rank.
-    	int currentRank = 0;
-    	int frequency = -1;
-    	for(CSVRecord rec: getFileParser(year)) {
-    		if (rec.get(1).equals(gender)) {
-                currentRank++;
-                if (currentRank == rank) 
-                	frequency = Integer.parseInt(rec.get(2));
-            }
-    	}
-    	return frequency;
-    }
-    
-    public static int getFrequency(int year, String gender, String name) {
-    	// Return frequency based on rank.
-    	int frequency = -1;
-    	for(CSVRecord rec: getFileParser(year)) {
-    		if (rec.get(1).equals(gender) && rec.get(0).equals(name)) 
-                	frequency = Integer.parseInt(rec.get(2));
-    	}
-    	return frequency;
-    }
-    
 
 }
