@@ -167,14 +167,26 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </GridPane>
-                  <Button fx:id="BabyNames_generate_button" mnemonicParsing="false" onAction="#generateBabyNames" text="Generate">
-                     <font>
-                        <Font name="Segoe UI Light" size="17.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="200.0" top="20.0" />
-                     </VBox.margin>
-                  </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="BabyNames_generate_button" mnemonicParsing="false" onAction="#generateBabyNames" text="Generate">
+                           <font>
+                              <Font name="Segoe UI Light" size="17.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="200.0" top="40.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label fx:id="BabyNames_wordCloudError_label" textFill="#ff4c4c">
+                           <HBox.margin>
+                              <Insets left="50.0" top="50.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                   <ImageView fx:id="BabyNames_wordCloud_imageView" fitHeight="220.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
                      <VBox.margin>
                         <Insets left="50.0" top="20.0" />
