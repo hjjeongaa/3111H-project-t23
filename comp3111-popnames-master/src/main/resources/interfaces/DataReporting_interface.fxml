@@ -55,7 +55,7 @@
                         <ToggleGroup fx:id="DataReport_genderSelect_ToggleGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Male" toggleGroup="$DataReport_genderSelect_ToggleGroup">
+                  <RadioButton fx:id="DataReporting_isMale_RadioButton" mnemonicParsing="false" text="Male" toggleGroup="$DataReport_genderSelect_ToggleGroup">
                      <font>
                         <Font name="Segoe UI Light" size="15.0" />
                      </font>
