@@ -232,4 +232,24 @@ public class SoulmateNameControllerTest extends ApplicationTest{
 		
 		clickOn("#Soulmate_JTT_Button");
 	}
+	
+	@Test
+	public void JTTTest3() {
+		name.setText("qwertyuiop");
+		YOB.setText("1901");
+		
+		clickOn("#Soulmate_inputisFemale_RadioButton");
+		clickOn("#Soulmate_preferenceIsMale_Button");
+		clickOn("#Soulmate_isOlder_Button");
+		
+		clickOn("#Soulmate_findSoulmate_Button");
+		
+		clickOn("#Soulmate_JTTNameSelection_TableView");
+		type(KeyCode.DOWN);
+		
+		Button JTTButton = (Button)mainscene.lookup("#Soulmate_JTT_Button");
+		assertTrue(!JTTButton.isDisabled());
+		
+		clickOn("#Soulmate_JTT_Button");
+	}
 }
