@@ -36,6 +36,11 @@ public class SoulmateName extends Reports {
 	 * 
 	 * */
 	
+	private boolean in(String source, List<String> table) {
+		for(String comp : table) if(source.equals(comp)) return true;
+		return false;
+	}
+	
 	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo,String country, String type) {
 		super(name, myGender, country, type);
 		super.setoReport("Potential Soulmates of " + name);
@@ -48,6 +53,8 @@ public class SoulmateName extends Reports {
 		this.agePreference = preference;
 		this.time = LocalDateTime.now();
 		
+		List<String> availableAlgos = List.of("or", "dr", "mcr", "scr");
+		if(!in(algo, availableAlgos)) algo = "or";
 		this.algorithm = algo;
 		
 		this.soulmateNames = new HashMap<String,List<String>>();

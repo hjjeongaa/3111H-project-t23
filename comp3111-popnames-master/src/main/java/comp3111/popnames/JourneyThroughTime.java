@@ -84,6 +84,7 @@ public class JourneyThroughTime extends Reports {
 	}
 	
 	public static Image getImage(int year) throws FileNotFoundException {
+		if(year < GlobalSettings.getLowerBound() || year > GlobalSettings.getUpperBound()) return null;
 		return new Image(String.format("/JTTImagesAndFacts/images/%d.jpg", year));
 	}
 	
@@ -106,7 +107,7 @@ public class JourneyThroughTime extends Reports {
 				}
 			}
 			if(found == false) {
-				output.add(0);
+				output.add(sum);
 				track.add(0);
 			}
 		}
