@@ -6,6 +6,7 @@
 
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.GlobalSettings;
 import comp3111.popnames.RecommendBabyName;
 import comp3111.popnames.ReportLog;
 
@@ -135,8 +136,8 @@ public class BabyNames_controller {
         int fatherYear = -1;
         int motherYear = -1;
         int vintageYear = -1;
-        final int MAX_YEAR = 2019;
-        final int MIN_YEAR = 1880;
+        final int MAX_YEAR = GlobalSettings.getUpperBound();
+        final int MIN_YEAR = GlobalSettings.getLowerBound();
         
         //Handle empty names.
         boolean fatherNameBlank = fatherName.isBlank();
@@ -202,7 +203,7 @@ public class BabyNames_controller {
                 BabyNames_vintageYearError_label.setText("Vintage year is invalid.");
         	} else {
         		BabyNames_vintageYearError_label.setText("");
-        		vintageYear = 2019;
+        		vintageYear = GlobalSettings.getUpperBound();
         	}
         }
         //Set error effects for year text fields if needed
@@ -216,7 +217,7 @@ public class BabyNames_controller {
             this.tableViewList.clear();
             String gender = (BabyNames_male_radioButton.isSelected()? "M" : "F");
             //Generate baby names
-            RecommendBabyName babyNames = new RecommendBabyName(fatherName, motherName, fatherYear, motherYear, vintageYear, gender,"usa", "human");
+            RecommendBabyName babyNames = new RecommendBabyName(fatherName, motherName, fatherYear, motherYear, vintageYear, gender,GlobalSettings.getCountry(), "human");
             List<Triple<String,Integer,Integer>> babyNamesList = babyNames.getBabyNamesList();
             //Assign each baby name a table data model and add it to the tableViewList.
             for (int i = 0; i < babyNamesList.size(); ++i) {
@@ -227,10 +228,13 @@ public class BabyNames_controller {
                 BabyNamesTableDataModel row = new BabyNamesTableDataModel(babyName.getLeft(), formattedPercentageScore);
                 this.tableViewList.add(row);
             }
-            InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());
-            Image image = new Image(input);
-            BabyNames_wordCloud_imageView.setImage(image);
-            
+            if (babyNamesList.size() > 20) {
+            	InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());
+                Image image = new Image(input);
+                BabyNames_wordCloud_imageView.setImage(image);
+            } else {
+            	System.out.println("Sorry, we couldn't generate enough names for you!");
+            }
         }
     }
 }
