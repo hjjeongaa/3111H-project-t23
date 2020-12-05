@@ -94,7 +94,7 @@ public class JourneyThroughTime extends Reports {
 		int endYear = GlobalSettings.getUpperBound();
 		String country = GlobalSettings.getCountry();
 		for(int year = startYear; year <= endYear; ++year) {
-			for(CSVRecord rec : AnalyzeNames.getFileParser(year, JourneyThroughTime.type, country)){
+			for(CSVRecord rec : AnalyzeNames.getFileParser(year, "human", country)){
 				if(rec.get(1).equals(gender)) {
 					if(rec.get(0).equals(name)) return year;
 				}

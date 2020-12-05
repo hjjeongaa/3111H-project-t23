@@ -2,6 +2,8 @@ package comp3111.rankingAlgo;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,6 +87,14 @@ public class ORTest {
 	public void orGetSizeFoundNametestFemale() {
 		OR algo = new OR("Jabez","F",2000,"usa","human","standard");
 		assertTrue(algo.getSize() == 17652);
+	}
+	
+	@Test
+	public void testGetNameFromRank() {
+		OR testHolder = new OR("Jabez","F",2000,"usa","human","standard");
+		List<String> tester = testHolder.getNameFromRank(12, "F", 1956, "human", "usa");
+		assertTrue(tester.size() == 1);
+		assertTrue(tester.get(0).equals("Pamela"));
 	}
 
 }

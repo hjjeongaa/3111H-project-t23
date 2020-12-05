@@ -2,6 +2,8 @@ package comp3111.rankingAlgo;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,5 +53,13 @@ public class MCRTest {
 	public void mcrAddEntryFalseTest() {
 		MCR algo = new MCR("Jabez","F",2000,"usa","human","standard");
 		assertFalse(algo.addEntry(-1));
+	}
+	
+	@Test
+	public void testGetNameFromRank() {
+		MCR testHolder = new MCR("Jabez","F",2000,"usa","human","standard");
+		List<String> tester = testHolder.getNameFromRank(5, "F", 1880, "human", "usa");
+		assertTrue(tester.size() == 1);
+		assertTrue(tester.get(0).equals("Minnie"));
 	}
 }
