@@ -59,6 +59,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 
 	@Test
 	public void normalTest() {
+		clickOn("#BabyNames_information_button");
+		clickOn("#BabyNames_information_button");
 		mNameTf.setText("Julia");
 		fNameTf.setText("Winston");
 		mYobTf.setText("1984");
@@ -169,6 +171,27 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& wcErrorLabel.getText().isEmpty());
 	}
 	@Test
+	public void nameErrorTest() {
+		mNameTf.setText("");
+		fNameTf.setText("");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().contains("Please input a name")
+				&& fNameErrorLabel.getText().contains("Please input a name")
+				&& mYobErrorLabel.getText().isEmpty()
+				&& fYobErrorLabel.getText().isEmpty()
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
+		mNameTf.setText("n aa m");
+		fNameTf.setText("m aa n");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().contains("Please input a valid name")
+				&& fNameErrorLabel.getText().contains("Please input a valid name")
+				&& mYobErrorLabel.getText().isEmpty()
+				&& fYobErrorLabel.getText().isEmpty()
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
+	}
+	@Test
 	public void yearErrorTest() {
 		mNameTf.setText("Jessica");
 		fNameTf.setText("Alex");
@@ -176,6 +199,17 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		mYobTf.setText("223");
 		fYobTf.setText("22000");
 		vYearTf.setText("103");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().isEmpty()
+				&& fNameErrorLabel.getText().isEmpty()
+				&& mYobErrorLabel.getText().contains("Mother's YOB is out of range")
+				&& fYobErrorLabel.getText().contains("Father's YOB is out of range")
+				&& vYearErrorLabel.getText().contains("Vintage year is out of range")
+				&& wcErrorLabel.getText().isEmpty());
+		
+		mYobTf.setText("22000");
+		fYobTf.setText("222");
+		vYearTf.setText("22220");
 		clickOn("#BabyNames_generate_button");
 		assertTrue(mNameErrorLabel.getText().isEmpty()
 				&& fNameErrorLabel.getText().isEmpty()
