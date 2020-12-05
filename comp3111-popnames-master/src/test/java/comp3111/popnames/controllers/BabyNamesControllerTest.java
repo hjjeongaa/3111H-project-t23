@@ -46,8 +46,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
    		
    		mNameTf = (TextField)s.lookup("#BabyNames_motherName_textField");
 		fNameTf = (TextField)s.lookup("#BabyNames_fatherName_textField");
-		mYobTf = (TextField)s.lookup("#BabyNames_fatherYear_textField");
-		fYobTf = (TextField)s.lookup("#BabyNames_motherYear_textField");
+		mYobTf = (TextField)s.lookup("#BabyNames_motherYear_textField");
+		fYobTf = (TextField)s.lookup("#BabyNames_fatherYear_textField");
 		vYearTf = (TextField)s.lookup("#BabyNames_vintageYear_textField");
 		mNameErrorLabel = (Label)s.lookup("#BabyNames_motherNameError_label");
 		fNameErrorLabel = (Label)s.lookup("#BabyNames_fatherNameError_label");
@@ -68,11 +68,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample = {
-				{"Austin", "4"},
-				{"Jason", "5"},
-				{"Dustin", "6"},
-				{"Judson", "7"},
-				{"Fulton", "8"},
+				{"Austin", "96.58%"},
+				{"Jason", "95.73%"},
+				{"Dustin", "94.87%"},
+				{"Judson", "94.02%"},
+				{"Fulton", "93.16%"},
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#BabyNames_tableView");
@@ -106,11 +106,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample = {
-				{"Aimee", "3"},
-				{"Ailyn", "4"},
-				{"Iman", "5"},
-				{"Samya", "6"},
-				{"Siya", "7"},
+				{"Aimee", "97.3%"},
+				{"Ailyn", "96.4%"},
+				{"Iman", "95.5%"},
+				{"Samya", "94.59%"},
+				{"Siya", "93.69%"},
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#BabyNames_tableView");
@@ -142,11 +142,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample2 = {
-				{"Mitchell", "3"},
-				{"Michaiah", "4"},
-				{"Mikaele", "5"},
-				{"Mihailo", "6"},
-				{"Micaiah", "8"},
+				{"Mitchell", "97.2%"},
+				{"Michaiah", "96.26%"},
+				{"Mikaele", "95.33%"},
+				{"Mihailo", "94.39%"},
+				{"Micaiah", "92.52%"},
 				};
 		noErrors = true;
 		table = (TableView)s.lookup("#BabyNames_tableView");
