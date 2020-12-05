@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Scene1_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers.JTT</a> &gt; <span class="el_source">Scene1_controller.java</span></div><h1>Scene1_controller.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers.JTT;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import comp3111.popnames.JourneyThroughTime;
+import comp3111.popnames.controllers.SoulmateName_controller;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+
+<span class="fc" id="L30">public class Scene1_controller {</span>
+
+	@FXML
+    private StackPane JTT1_stack_StackPane;
+	
+	@FXML
+    private AnchorPane JTT1_source_AnchorPane;
+	
+    @FXML
+    private Button JTT1_seePartner_Button;
+
+    @FXML
+    private Label JTT1_userDescription2_Label;
+
+    @FXML
+    private Label JTT1_userDescription1_Label;
+
+    @FXML
+    private Label JTT1_userDescription3_Label;
+
+    @FXML
+    private Label JTT1_userTitle_Label;
+
+    @FXML
+    private Button JTT1_nextScene_Button;
+
+    @FXML
+    private Label JTT1_soulmateDescription2_Label;
+
+    @FXML
+    private Label JTT1_soulmateDescription1_Label;
+
+    @FXML
+    private Label JTT1_soulmateDescription3_Label;
+
+    @FXML
+    private Label JTT1_soulmateTitle_Label;
+
+    @FXML
+    private Button JTT1_seeUser_Button;
+
+    @FXML
+    private VBox Scene1_imageHolder_VBox;
+
+    @FXML
+    private ImageView JTT_soulmateImage_ImageView;
+
+    @FXML
+    private ImageView JTT_userImage_ImageView;
+
+    /* Methods */
+    @FXML
+    /**
+     * Initialize all the elements on the interface like Images.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void initialize() throws FileNotFoundException{
+<span class="fc" id="L88">    	String userName = JourneyThroughTime.getUserName();</span>
+<span class="fc" id="L89">    	String soulmateName = JourneyThroughTime.getSoulmateName();</span>
+<span class="fc" id="L90">    	String country = JourneyThroughTime.getCountry();</span>
+<span class="fc" id="L91">    	String userGender = JourneyThroughTime.getUserGender();</span>
+<span class="fc" id="L92">    	String soulmateGender = JourneyThroughTime.getSoulmateGender();</span>
+    	
+<span class="fc" id="L94">    	JTT1_userTitle_Label.setText(&quot;[ &quot; + userName + &quot; ]&quot;);</span>
+<span class="fc" id="L95">    	JTT1_soulmateTitle_Label.setText(&quot;[ &quot; + soulmateName + &quot; ]&quot;);</span>
+    	
+    	// Note the soulmate's name is Guaranteed to be found in the set.
+<span class="fc" id="L98">    	int usersFirstYear = JourneyThroughTime.getFirstAppearance(userName, userGender);</span>
+<span class="fc" id="L99">    	int soulmatesFirstYear = JourneyThroughTime.getFirstAppearance(soulmateName, soulmateGender);</span>
+    	
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    	if(usersFirstYear == -1) {</span>
+<span class="fc" id="L102">    		JTT1_userDescription1_Label.setText(&quot;WOW! You sure have a unique name!&quot;);</span>
+<span class="fc" id="L103">    		JTT1_userDescription2_Label.setText(&quot;Though the name oracle hasnt seen this name in &quot; + country + &quot;, the oracle is sure you will find something interesting here.&quot;);</span>
+<span class="fc" id="L104">    		JTT1_userDescription3_Label.setText(&quot;&quot;);</span>
+<span class="fc" id="L105">    		Random rand = new Random();</span>
+<span class="fc" id="L106">    		usersFirstYear = 1880 + rand.nextInt(140);</span>
+<span class="fc" id="L107">    	} else {</span>
+<span class="fc" id="L108">    		List&lt;String&gt; usersFacts = JourneyThroughTime.getFacts(usersFirstYear);</span>
+<span class="fc" id="L109">    		JTT1_userDescription1_Label.setText(&quot;The name &quot; + userName + &quot; First appears in &quot; + country + &quot; in &quot; + String.format(&quot;%d&quot;, usersFirstYear) + &quot;.&quot;);</span>
+<span class="fc" id="L110">    		JTT1_userDescription2_Label.setText(&quot;In that year, &quot; + usersFacts.get(0) + &quot;.&quot;);</span>
+<span class="fc" id="L111">    		JTT1_userDescription3_Label.setText(&quot;On top of that, &quot; + usersFacts.get(1) + &quot;.&quot;);</span>
+    	}
+    	
+<span class="fc" id="L114">    	List&lt;String&gt; soulmatesFacts = JourneyThroughTime.getFacts(soulmatesFirstYear);</span>
+<span class="fc" id="L115">    	JTT1_soulmateDescription1_Label.setText(&quot;The name &quot; + soulmateName + &quot; First appears in &quot; + country + &quot; in &quot; + String.format(&quot;%d&quot;, soulmatesFirstYear) + &quot;.&quot;);</span>
+<span class="fc" id="L116">    	JTT1_soulmateDescription2_Label.setText(&quot;In that year, &quot; + soulmatesFacts.get(0) + &quot;.&quot;);</span>
+<span class="fc" id="L117">		JTT1_soulmateDescription3_Label.setText(&quot;On top of that, &quot; + soulmatesFacts.get(1) + &quot;.&quot;);</span>
+		
+		// Setting Images.
+<span class="fc" id="L120">		JTT_soulmateImage_ImageView.setImage(JourneyThroughTime.getImage(soulmatesFirstYear));</span>
+<span class="fc" id="L121">		JTT_userImage_ImageView.setImage(JourneyThroughTime.getImage(usersFirstYear));</span>
+		
+		// Setting visibility
+<span class="fc" id="L124">		JTT_soulmateImage_ImageView.setVisible(false);</span>
+		
+<span class="fc" id="L126">    }</span>
+    
+    @FXML
+    /**
+     * Used to start an animation to see information about your partner.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void seePartner() {
+    	// Assumed state: 	JTT_soulmateImage_ImageView -&gt; invisible
+    	//					JTT_userImage_ImageView		-&gt; visible
+<span class="nc" id="L137">    	TranslateTransition translation = new TranslateTransition(Duration.seconds(1.2), Scene1_imageHolder_VBox);</span>
+<span class="nc" id="L138">    	translation.setToX(-462);</span>
+    	
+<span class="nc" id="L140">    	FadeTransition userFade = new FadeTransition(Duration.seconds(1.2), JTT_userImage_ImageView);</span>
+<span class="nc" id="L141">    	userFade.setFromValue(1.0);</span>
+<span class="nc" id="L142">    	userFade.setToValue(0.0);</span>
+    	
+<span class="nc" id="L144">    	FadeTransition soulFade = new FadeTransition(Duration.seconds(1.2), JTT_soulmateImage_ImageView);</span>
+<span class="nc" id="L145">    	soulFade.setFromValue(0.0);</span>
+<span class="nc" id="L146">    	soulFade.setToValue(1.0);</span>
+    	
+<span class="nc" id="L148">    	JTT_soulmateImage_ImageView.setVisible(true);</span>
+<span class="nc" id="L149">    	ParallelTransition slideAndFade = new ParallelTransition(translation, userFade, soulFade);</span>
+<span class="nc" id="L150">    	slideAndFade.play();</span>
+<span class="nc" id="L151">    }</span>
+
+    @FXML
+    /**
+     * Used to go back to the original view of seeing the users data.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void seeUser() {
+    	// Assumed state: 	JTT_soulmateImage_ImageView -&gt; visible
+    	//					JTT_userImage_ImageView		-&gt; invisible
+<span class="nc" id="L162">    	TranslateTransition translation = new TranslateTransition(Duration.seconds(1.2), Scene1_imageHolder_VBox);</span>
+<span class="nc" id="L163">    	translation.setToX(0);</span>
+    	
+<span class="nc" id="L165">    	FadeTransition userFade = new FadeTransition(Duration.seconds(1.2), JTT_soulmateImage_ImageView);</span>
+<span class="nc" id="L166">    	userFade.setFromValue(1.0);</span>
+<span class="nc" id="L167">    	userFade.setToValue(0.0);</span>
+    	
+<span class="nc" id="L169">    	FadeTransition soulFade = new FadeTransition(Duration.seconds(1.2), JTT_userImage_ImageView);</span>
+<span class="nc" id="L170">    	soulFade.setFromValue(0.0);</span>
+<span class="nc" id="L171">    	soulFade.setToValue(1.0);</span>
+    	
+<span class="nc" id="L173">    	ParallelTransition slideAndFade = new ParallelTransition(translation, userFade, soulFade);</span>
+<span class="nc" id="L174">    	slideAndFade.play();</span>
+<span class="nc" id="L175">    }</span>
+    
+    @FXML
+    /**
+     * Used to jump to the next scene in the journey through time.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void nextScene() {
+<span class="nc" id="L184">    	Parent root = null;</span>
+		try {
+<span class="nc" id="L186">			root = FXMLLoader.load(getClass().getResource(&quot;/interfaces/Scene2_interface.fxml&quot;));</span>
+<span class="nc" id="L187">		} catch (IOException e) {</span>
+<span class="nc" id="L188">			System.out.println(&quot;I FAILED...&quot;);</span>
+<span class="nc" id="L189">			System.out.println(e);</span>
+<span class="nc" id="L190">			return;</span>
+<span class="nc" id="L191">		}</span>
+    	
+<span class="nc" id="L193">    	Scene scene = JTT1_nextScene_Button.getScene();</span>
+<span class="nc" id="L194">    	root.translateYProperty().set(scene.getHeight());</span>
+    	
+<span class="nc" id="L196">    	JTT1_stack_StackPane.getChildren().add(root);</span>
+    	
+<span class="nc" id="L198">    	Timeline timeline = new Timeline();</span>
+<span class="nc" id="L199">    	KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.EASE_IN);</span>
+<span class="nc" id="L200">    	KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);</span>
+<span class="nc" id="L201">    	timeline.getKeyFrames().add(kf);</span>
+<span class="nc" id="L202">    	timeline.setOnFinished(event-&gt;{</span>
+<span class="nc" id="L203">    		JTT1_stack_StackPane.getChildren().remove(JTT1_source_AnchorPane);</span>
+<span class="nc" id="L204">    	});</span>
+    	
+<span class="nc" id="L206">    	timeline.play();</span>
+<span class="nc" id="L207">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

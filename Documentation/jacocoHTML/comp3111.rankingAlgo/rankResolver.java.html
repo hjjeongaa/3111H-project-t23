@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>rankResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.rankingAlgo</a> &gt; <span class="el_source">rankResolver.java</span></div><h1>rankResolver.java</h1><pre class="source lang-java linenums">package comp3111.rankingAlgo;
+
+import comp3111.popnames.AnalyzeNames;
+import comp3111.popnames.Person;
+import org.apache.commons.csv.*;
+import edu.duke.*;
+import java.util.*;
+/**
+ * Class holds different methods of resolving not found name in rank
+ * 
+ * @author Yuxi Sun
+ * v 1.0
+ */
+public class rankResolver {
+	private int rank;
+	/**
+	 * 
+	 * @return a Vector of Strings of the resolution options
+	 */
+	public static Vector&lt;String&gt; getResolutionMethods() {
+<span class="fc" id="L21">		Vector&lt;String&gt; methods = new Vector&lt;String&gt;();</span>
+<span class="fc" id="L22">		methods.add(&quot;standard&quot;);</span>
+<span class="fc" id="L23">		methods.add(&quot;ld&quot;);</span>
+<span class="fc" id="L24">		return methods;</span>
+	}
+<span class="fc" id="L26">	public int getRank() {return this.rank;};</span>
+	/**
+	 * 
+	 * @param rankingMethod the method in which to perform ranking, call RankingAlgorithmFactory.getRankAlgorithm(name,gender,year,country,type) to find out about the supported methods
+	 * @param name name of person that cannot be found in data set
+	 * @param gender gender affiliation of name
+	 * @param yob year of birth of name
+	 * @param country country of name
+	 * @param type type of name (human or pet)
+	 * @param size number of unique names in current data set.
+	 * @param resolution means of resolution [&quot;standard&quot; giving the name size of data set + 1, &quot;ld&quot;: uses class LD to find a ranked name with the least difference with current name and adopts said names rank]
+	 * @author Yuxi Sun
+	 */
+<span class="fc" id="L39">	public rankResolver(String rankingMethod, String name, String gender, int yob, String country, String type, int size, String resolution) {</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		if(resolution.equals(&quot;standard&quot;)) { // using standard rank resolution</span>
+<span class="fc" id="L41">			this.rank = size+1;</span>
+		}else 
+
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">		if (resolution.equals(&quot;ld&quot;)){ //Using LD for rank resolution</span>
+			/**
+			 * We iterate through the entire data set and match the given name with the most similar name found according to the LD function and take that names rank.
+			 * This method is good for resolving variant spellings of names that may not appear on in the records and especially applies to the Norse data sets where special characters
+			 * exist within their names.
+			 */
+			//iterates through iYOB's data
+<span class="fc" id="L51">			int threshold = Integer.MAX_VALUE;//name.length()/5;//threshold is currently set to be at least 20% similar to the original name</span>
+<span class="fc" id="L52">			int minDiff = Integer.MAX_VALUE;// initialized to max value as it is not expect that another name will require that many changes.</span>
+<span class="fc" id="L53">			Vector&lt;String&gt; similarNames = new Vector&lt;String&gt;();//stores list of minDiff names or similar names</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">				if (!rec.get(1).equals(gender)){</span>
+<span class="fc" id="L56">					continue; //if the name is not of specified gender then skip</span>
+				}
+<span class="fc" id="L58">				String currName = rec.get(0);</span>
+<span class="fc" id="L59">				int currDiff = LD.calculate(name,currName); // using LD (Levenshtein distance) to evaluate the how different the names are</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">				if (currDiff == minDiff){</span>
+					//name of same LD difference as similarNames found so far e.g. jon has the same difference with jun and jan
+<span class="fc" id="L62">					similarNames.add(currName);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">				}else if(currDiff &lt; minDiff){</span>
+					//new more similar name found
+<span class="fc" id="L65">					similarNames.clear();</span>
+<span class="fc" id="L66">					similarNames.add(currName);</span>
+<span class="fc" id="L67">					minDiff = currDiff;</span>
+				}
+<span class="fc" id="L69">			}</span>
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">			if(similarNames.size() &lt;= 0 || minDiff &gt;= threshold){</span>
+				//if none found or the minDiff is larger then the acceptable threshold limits (coded into the system) then default to standard ranking
+<span class="nc" id="L72">				this.rank = size+1;</span>
+			}else{
+				//The name that is going to be selected (if there are multiple names found with the same minDiff) is either the middle 
+				//or middle left ranking number in terms ranking in similarNames ordered from highest rank to lowest ranking.
+<span class="fc" id="L76">				String selectedName = similarNames.get((int)(similarNames.size()/2));</span>
+				//getting the rank of the name that is going to be adopted.
+<span class="fc" id="L78">				this.rank =  RankingAlgorithmFactory.getRankAlgorithm(rankingMethod, selectedName, gender, yob, country, type, resolution).getRank();// this call should not result in another call of this function (rankResolveR) method since name should be found.</span>
+			}
+		}
+<span class="fc" id="L81">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

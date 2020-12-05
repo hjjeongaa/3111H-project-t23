@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NamePopularity_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">NamePopularity_controller.java</span></div><h1>NamePopularity_controller.java</h1><pre class="source lang-java linenums">/**
+ * NamePopularity_controller
+ * UI controller for task 2's tab
+ * @author Hyun Joon Jeong
+ */
+
+package comp3111.popnames.controllers;
+
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.PopularityOfName;
+import comp3111.popnames.ReportLog;
+//UI
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.text.DecimalFormat;
+import java.util.*;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
+
+<span class="fc" id="L33">public class NamePopularity_controller {</span>
+	//will hold data model of each row in the table view
+	private ObservableList&lt;NamePopularityTableDataModel&gt; tableViewList;
+	/**
+	 * Data model for the table view which will store all results.
+	 * Table view's columns consist of the name's year, rank, name's frequency, and the name's percentage.
+	 */
+	public class NamePopularityTableDataModel {
+		private final SimpleStringProperty year;
+		private final SimpleStringProperty rank;
+		private final SimpleStringProperty total;
+		private final SimpleStringProperty percentile;
+		
+<span class="fc" id="L46">		public NamePopularityTableDataModel(String year, String rank, String total, String percentile) {</span>
+<span class="fc" id="L47">			this.year = new SimpleStringProperty(year);</span>
+<span class="fc" id="L48">			this.rank = new SimpleStringProperty(rank);</span>
+<span class="fc" id="L49">			this.total = new SimpleStringProperty(total);</span>
+<span class="fc" id="L50">			this.percentile = new SimpleStringProperty(percentile);</span>
+<span class="fc" id="L51">		}</span>
+<span class="fc" id="L52">		public String getYear() {return this.year.get();}</span>
+<span class="fc" id="L53">		public String getRank() {return this.rank.get();}</span>
+<span class="fc" id="L54">		public String getTotal() {return this.total.get();}</span>
+<span class="fc" id="L55">		public String getPercentile() {return this.percentile.get();}</span>
+	}
+	
+    @FXML
+    private TextField NamePopularity_name_textField;
+
+    @FXML
+    private Label NamePopularity_nameError_label;
+    
+    @FXML
+    private RadioButton NamePopularity_male_radioButton;
+
+    @FXML
+    private RadioButton NamePopularity_female_radioButton;
+
+    @FXML
+    private TextField NamePopularity_startYear_textField;
+
+    @FXML
+    private TextField NamePopularity_endYear_textField;
+
+    @FXML
+    private Label NamePopularity_yearError_label;
+    
+    @FXML
+    private Button NamePopularity_generate_button;
+
+    @FXML
+    private Label NamePopularity_summary_label;
+    
+    @FXML
+    private TableView&lt;NamePopularityTableDataModel&gt; NamePopularity_tableView;
+
+    @FXML
+    private TableColumn&lt;NamePopularityTableDataModel, String&gt; NamePopularity_tableView_year_tableColumn;
+
+    @FXML
+    private TableColumn&lt;NamePopularityTableDataModel, String&gt; NamePopularity_tableView_rank_tableColumn;
+    
+    @FXML
+    private TableColumn&lt;NamePopularityTableDataModel, String&gt; NamePopularity_tableView_total_tableColumn;
+
+    @FXML
+    private TableColumn&lt;NamePopularityTableDataModel, String&gt; NamePopularity_tableView_percentile_tableColumn;
+    /**
+     * initialize: called once when the UI is initialized
+     * Bind the table view's columns to the data model, and link tableViewList with the table view.
+     */
+    @FXML
+    void initialize() {
+<span class="fc" id="L105">    	NamePopularity_tableView_year_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;NamePopularityTableDataModel,String&gt;(&quot;year&quot;));</span>
+<span class="fc" id="L106">    	NamePopularity_tableView_rank_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;NamePopularityTableDataModel,String&gt;(&quot;rank&quot;));</span>
+<span class="fc" id="L107">    	NamePopularity_tableView_total_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;NamePopularityTableDataModel,String&gt;(&quot;total&quot;));</span>
+<span class="fc" id="L108">    	NamePopularity_tableView_percentile_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;NamePopularityTableDataModel,String&gt;(&quot;percentile&quot;));</span>
+<span class="fc" id="L109">    	this.tableViewList = FXCollections.&lt;NamePopularityTableDataModel&gt;observableArrayList();</span>
+<span class="fc" id="L110">    	NamePopularity_tableView.setItems(this.tableViewList);</span>
+<span class="fc" id="L111">    	NamePopularity_tableView.setPlaceholder(new Label(&quot;You haven't generated anything yet.&quot;));</span>
+<span class="fc" id="L112">    }</span>
+    /**
+     * Helper function to create a red highlight around text fields with an error.
+     * @param errorField the text field to highlight
+     * @param on whether the error highlight should be on or not
+     */
+    private void errorEffect(TextField errorField, boolean on) {
+<span class="fc" id="L119">    	DropShadow errorShadow = (DropShadow) (errorField.getEffect());</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		errorShadow.setColor(Color.color(1,0,0,(on? 1 : 0)));</span>
+<span class="fc" id="L121">		errorField.setEffect(errorShadow);</span>
+<span class="fc" id="L122">    }</span>
+    /**
+     * Called when the generate button is pressed.
+     * Performs input checking on all the inputs, and handles error UI. If none of the inputs have errors, the PopularityOfName object is called and a report is generated. The resultant List from the object is used to fill the table view in the UI.
+     */
+    @FXML
+    void generatePopularityOfName() {
+    	//variables needed to generate report
+<span class="fc" id="L130">    	String name = NamePopularity_name_textField.getText();</span>
+<span class="fc" id="L131">    	int startYear = -1;</span>
+<span class="fc" id="L132">    	int endYear = -1;</span>
+    	String gender;
+    	
+<span class="fc" id="L135">    	final int MAX_YEAR = GlobalSettings.getUpperBound();</span>
+<span class="fc" id="L136">    	final int MIN_YEAR = GlobalSettings.getLowerBound();</span>
+    	
+    	//Handle empty name
+<span class="fc" id="L139">    	boolean nameBlank = name.isBlank();</span>
+<span class="fc" id="L140">    	name = ReportLog.validateName(name);</span>
+<span class="fc" id="L141">    	boolean nameError = name.isEmpty();</span>
+<span class="pc bpc" id="L142" title="1 of 4 branches missed.">    	errorEffect(NamePopularity_name_textField, nameError || nameBlank);</span>
+<span class="fc" id="L143">    	String nameErrorMessage = &quot;&quot;;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">    	if (nameBlank) {</span>
+<span class="fc" id="L145">    		nameErrorMessage = &quot;Please input a name.&quot;;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">    	} else if (nameError) {</span>
+<span class="fc" id="L147">    		nameErrorMessage = &quot;Please input a valid name.&quot;;</span>
+    	}
+<span class="fc" id="L149">    	NamePopularity_nameError_label.setText(nameErrorMessage);</span>
+    	
+    	//Handle start year
+<span class="fc" id="L152">    	boolean startYearError = false;</span>
+<span class="fc" id="L153">    	boolean endYearError = false;</span>
+    	try {
+<span class="fc" id="L155">    		startYear = Integer.parseInt(NamePopularity_startYear_textField.getText());</span>
+<span class="fc bfc" id="L156" title="All 4 branches covered.">    		if(startYear &gt; MAX_YEAR || startYear &lt; MIN_YEAR) {</span>
+<span class="fc" id="L157">    			startYearError = true;</span>
+<span class="fc" id="L158">    			NamePopularity_yearError_label.setText(&quot;Your start year is out of range.&quot;);</span>
+    		} else {
+<span class="fc" id="L160">    			errorEffect(NamePopularity_startYear_textField, false);</span>
+    			//Handle end year. Try/catch must be nested because the error message depends on whether both the start year and end year having errors
+    			try {
+<span class="fc" id="L163">	        		endYear = Integer.parseInt(NamePopularity_endYear_textField.getText());</span>
+<span class="fc bfc" id="L164" title="All 4 branches covered.">	        		if(endYear &gt; MAX_YEAR || endYear &lt; startYear) {</span>
+<span class="fc" id="L165">	        			endYearError = true;</span>
+<span class="fc" id="L166">	        			NamePopularity_yearError_label.setText(&quot;Your end year is out of range.&quot;);</span>
+	        		} else {
+<span class="fc" id="L168">	        			NamePopularity_yearError_label.setText(&quot;&quot;);</span>
+	        		}
+<span class="fc" id="L170">	        	} catch(NumberFormatException e) {</span>
+<span class="fc" id="L171">	        		endYearError = true;</span>
+<span class="fc" id="L172">	        		NamePopularity_yearError_label.setText(&quot;Your end year is invalid.&quot;);</span>
+<span class="fc" id="L173">	        	}</span>
+    		}
+<span class="fc" id="L175">    	} catch(NumberFormatException e) {</span>
+<span class="fc" id="L176">    		startYearError = true;</span>
+<span class="fc" id="L177">    		NamePopularity_yearError_label.setText(&quot;Your start year is invalid.&quot;);</span>
+<span class="fc" id="L178">    	}</span>
+<span class="fc" id="L179">    	errorEffect(NamePopularity_startYear_textField, startYearError);</span>
+<span class="fc" id="L180">    	errorEffect(NamePopularity_endYear_textField, endYearError);</span>
+	    		
+<span class="pc bpc" id="L182" title="1 of 8 branches missed.">    	if(!(nameError || nameBlank || startYearError || endYearError)) {</span>
+    		//Clear tableview from any previous entries
+<span class="fc" id="L184">    		this.tableViewList.clear();</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">    		gender = (NamePopularity_male_radioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;</span>
+    		//Generate the report.
+<span class="fc" id="L187">    		PopularityOfName namePopularity = new PopularityOfName(startYear, endYear, name, gender,GlobalSettings.getCountry(), &quot;human&quot;);</span>
+<span class="fc" id="L188">    		List&lt;Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt;&gt; namePopularityList = namePopularity.getPopularityList();</span>
+    		//Using the list of results obtained from PopularityOfName, fill the tableview by converting each entry in the List to the data model for the table.
+<span class="fc" id="L190">    		int mostPopularYear = -1;</span>
+<span class="fc" id="L191">    		int bestRank = 0;</span>
+<span class="fc" id="L192">    		int bestFreq = 0;</span>
+<span class="fc" id="L193">    		int bestTotal = 0;</span>
+<span class="fc" id="L194">    		String bestPercentage = &quot;0%&quot;;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">    		for (int i = 0; i &lt; endYear - startYear + 1; ++i) {</span>
+<span class="fc" id="L196">    			Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt; yearlyStatistics = namePopularityList.get(i);</span>
+    			
+<span class="fc" id="L198">    			String formattedYear = Integer.toString(i+startYear);</span>
+<span class="fc" id="L199">    			String formattedRank = &quot;Not found&quot;;</span>
+<span class="fc" id="L200">    			String formattedFreq = &quot;0&quot;;</span>
+<span class="fc" id="L201">    			String formattedPercentile = &quot;0%&quot;;</span>
+    			
+<span class="fc" id="L203">    			int rank = yearlyStatistics.getLeft();</span>
+<span class="fc" id="L204">    			int freq = yearlyStatistics.getMiddle();</span>
+<span class="fc" id="L205">    			Double percentile = yearlyStatistics.getRight().getRight();</span>
+<span class="fc" id="L206">    			int total = yearlyStatistics.getRight().getLeft();</span>
+    			
+    			
+    			//Format year and percentile
+<span class="fc bfc" id="L210" title="All 2 branches covered.">    			if (rank != 0) {</span>
+<span class="fc" id="L211">    				formattedRank = Integer.toString(yearlyStatistics.getLeft());</span>
+<span class="fc" id="L212">    				DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc" id="L213">    				formattedPercentile = df.format(percentile)+&quot;%&quot;;</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">    				if (freq &gt; bestFreq) {</span>
+<span class="fc" id="L215">        				bestRank = rank;</span>
+<span class="fc" id="L216">        				mostPopularYear = i+startYear;</span>
+<span class="fc" id="L217">        				bestFreq = freq;</span>
+<span class="fc" id="L218">        				bestTotal = total;</span>
+<span class="fc" id="L219">        				bestPercentage = formattedPercentile;</span>
+        			}
+    			}
+    			//Format total
+<span class="fc bfc" id="L223" title="All 2 branches covered.">    			if (freq != 0) {</span>
+<span class="fc" id="L224">    				formattedFreq = Integer.toString(yearlyStatistics.getMiddle());</span>
+    			}
+    			
+<span class="fc" id="L227">    			NamePopularityTableDataModel row = new NamePopularityTableDataModel(formattedYear, formattedRank, formattedFreq, formattedPercentile);</span>
+<span class="fc" id="L228">    			this.tableViewList.add(row);</span>
+    		}
+<span class="fc" id="L230">    		Integer latestFreq = namePopularityList.get(endYear-startYear).getMiddle();</span>
+<span class="fc" id="L231">    		DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc" id="L232">    		Double latestPercentage = namePopularityList.get(endYear-startYear).getRight().getRight();</span>
+<span class="fc" id="L233">    		int latestTotal = namePopularityList.get(endYear-startYear).getRight().getLeft();</span>
+    		//Update the summary text.
+    		String summary;
+<span class="fc bfc" id="L236" title="All 2 branches covered.">    		if (latestFreq == 0) {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">    			if (mostPopularYear == -1) {</span>
+<span class="fc" id="L238">    				summary = String.format(&quot;In the year %d, there were no births with name %s.\n&quot;,endYear,name)</span>
+<span class="fc" id="L239">        		    		+ String.format(&quot;The name was never found in any other years.\n&quot;);</span>
+    			} else {
+<span class="nc" id="L241">    				summary = String.format(&quot;In the year %d, there were no births with name %s.\n&quot;,endYear,name)</span>
+<span class="nc" id="L242">        		    		+ String.format(&quot;However, it was most popular in %d.\n&quot;, mostPopularYear);</span>
+    			}
+    		} else {
+<span class="fc" id="L245">    			summary = String.format(&quot;In the year %d, the number of births with name %s\n&quot;,endYear,name)</span>
+<span class="fc" id="L246">    		    		+ String.format(&quot;is %d, which represents %s of total %s births in %d.\n&quot;,latestFreq, df.format(latestPercentage)+&quot;%&quot;,latestTotal,endYear)</span>
+<span class="fc" id="L247">    		    		+ String.format(&quot;The year when the name %s was most popular is\n&quot;,name)</span>
+<span class="fc" id="L248">    		    		+ String.format(&quot;%d. In that year, the number of births is %d, which\n&quot;, mostPopularYear, bestFreq)</span>
+<span class="fc" id="L249">    		    		+ String.format(&quot;represents %s of the total %d births in %d.&quot;,bestPercentage,bestTotal,mostPopularYear);</span>
+    		}
+    		
+    				
+<span class="fc" id="L253">    		NamePopularity_summary_label.setText(summary);</span>
+    	}
+<span class="fc" id="L255">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

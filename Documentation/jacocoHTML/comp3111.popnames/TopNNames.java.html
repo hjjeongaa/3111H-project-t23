@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopNNames.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">TopNNames.java</span></div><h1>TopNNames.java</h1><pre class="source lang-java linenums">/**
+* TopNNames.java
+* 
+* Basis of Task 1.
+* This class operates by mapping every year in range to a list of strings, and mapping every year in range to a list of frequencies (integers).
+* After the constructor has set up this data structure, then it is very easy and fast to find information about the year of interest.
+* 
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
+package comp3111.popnames;
+
+
+import java.util.*;
+import org.apache.commons.csv.CSVRecord;
+
+import comp3111.export.ReportHistory;
+
+/**
+ * This class is used for task 1.
+ * It contains to hashmaps which allow for rapid access to data after the constructor sets it up.
+ * @author Ryder Khoi Daniel
+ * v1.0
+ */
+public class TopNNames extends Reports {
+	/**
+	* TopNNames.java
+	* 
+	* Basis of Task 1.
+	* This class operates by mapping every year in range to a list of strings, and mapping every year in range to a list of frequencies (integers).
+	* After the constructor has set up this data structure, then it is very easy and fast to find information about the year of interest.
+	* 
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
+	
+	/* Private Variables */
+	private HashMap&lt;Integer, List&lt;String&gt;&gt; collectionOfYears;
+	private HashMap&lt;Integer, List&lt;Integer&gt;&gt; collectionOfFreqs;
+	private int numOfNames;
+	private int startYear;
+	private int endYear;
+	String expandedGender;
+	
+	/* Constructor */
+	/**
+	 * This constructors main role is to set up the hashmaps so data can be pulled from them rapidly.
+	 * It also sends information to the report logger so that information found here may be exported too.
+	 * 
+	 * @param Integer startYear - from which year the user would like to start seeing the top N names.
+	 * @param Integer endYear - the last year the user would like to see the top N names for.
+	 * @param String gender - the gender the user is interested in.
+	 * @param Integer numNames - the number of names per year the user would like to see.
+	 * @param String country - the country of interest.
+	 * @param String type - the type of interest - almost guaranteed to be human.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public TopNNames(int startYear, int endYear, String gender, int numNames, String country, String type){
+		//	Call Report constructor.
+<span class="fc" id="L62">		super(null, gender, country, type);</span>
+<span class="fc" id="L63">		collectionOfYears = new HashMap&lt;Integer, List&lt;String&gt;&gt;();</span>
+<span class="fc" id="L64">		collectionOfFreqs = new HashMap&lt;Integer, List&lt;Integer&gt;&gt;();</span>
+<span class="fc" id="L65">		this.numOfNames = Math.max(0,numNames);</span>
+<span class="fc" id="L66">		this.startYear = Math.max(startYear, GlobalSettings.getLowerBound());</span>
+<span class="fc" id="L67">		this.endYear = Math.min(endYear, GlobalSettings.getUpperBound());</span>
+		
+		/* Stuff for exporting */
+<span class="fc" id="L70">		expandedGender = &quot;Male&quot;;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if(gender.equals(&quot;F&quot;)) expandedGender = &quot;Female&quot;;</span>
+<span class="fc" id="L72">		super.setoReport(&quot;Top &quot;+ expandedGender +&quot; Names From &quot;+startYear+&quot; to &quot;+endYear);</span>
+<span class="fc" id="L73">		super.setTask(String.format(&quot;Top %d Names in %s&quot;, numOfNames, country));</span>
+		
+		/*
+		 * 		Generate the collection of years.
+		 */
+		
+		// For every year in the range
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		for(int year = startYear; year &lt;= endYear; ++year) {</span>
+<span class="fc" id="L81">			int count = 0;</span>
+<span class="fc" id="L82">			List&lt;String&gt; topNNames = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L83">			List&lt;Integer&gt; topNFreqs = new ArrayList&lt;Integer&gt;();</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">			for(CSVRecord rec : AnalyzeNames.getFileParser(year, type, country)) {</span>
+				// We are only interested in Names who belong to the gender of interest.
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				if(rec.get(1).equals(gender)) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">					if(count == numOfNames) break; // only return the top numOfNames names.</span>
+<span class="fc" id="L88">					String name = rec.get(0);</span>
+<span class="fc" id="L89">					topNNames.add(name);</span>
+<span class="fc" id="L90">					topNFreqs.add(Integer.parseInt(rec.get(2)));</span>
+<span class="fc" id="L91">					++count;</span>
+				}
+<span class="fc" id="L93">			}</span>
+			// if there is any discrepancy between the the amount of names found, and the number of names requested, fill the rest with blanks and -1.
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			if(count &lt; numOfNames) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">				for(int i = 0; i &lt; numOfNames-count; ++i) {</span>
+<span class="nc" id="L97">					topNNames.add(&quot; &quot;);</span>
+<span class="nc" id="L98">					topNFreqs.add(-1);</span>
+				}
+			}
+<span class="fc" id="L101">			collectionOfYears.put(year, topNNames);</span>
+<span class="fc" id="L102">			collectionOfFreqs.put(year, topNFreqs);</span>
+		}
+		
+		// Update the report log so that the formatted info can be exported.
+<span class="fc" id="L106">		updateReportLog();</span>
+<span class="fc" id="L107">	}</span>
+	
+	/* Report Functions */
+	/**
+	 * Utility function to send information for export.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	private void updateReportLog() {
+<span class="fc" id="L116">		String thisHtml = String.format(&quot;&lt;head&gt; &lt;style&gt; table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } &lt;/style&gt; &lt;/head&gt; &lt;h3&gt;Top %d %s Names From %d to %d&lt;/h3&gt;&quot;, numOfNames, expandedGender, startYear, endYear); </span>
+<span class="fc" id="L117">		String tableRow = &quot;&lt;tr&gt;&lt;td&gt;%d&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%d&lt;/td&gt;&lt;tr&gt;&quot;;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		for(int year = startYear; year &lt;= endYear; ++year) {</span>
+<span class="fc" id="L119">			thisHtml += &quot;&lt;h4&gt;&quot; + String.format(&quot;%d&quot;, year) + &quot;&lt;/h4&gt;&quot;;</span>
+<span class="fc" id="L120">			thisHtml += &quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Rank&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Frequency&lt;/th&gt;&lt;/tr&gt;&quot;;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">			for(int rank = 0; rank &lt; this.numOfNames; ++rank) {</span>
+<span class="fc" id="L122">				thisHtml += String.format(tableRow,rank+1, collectionOfYears.get(year).get(rank), collectionOfFreqs.get(year).get(rank));</span>
+			}
+<span class="fc" id="L124">			thisHtml += &quot;&lt;/table&gt;&quot;;</span>
+		}
+<span class="fc" id="L126">		thisHtml = &quot;&lt;div&gt;&quot; + thisHtml + &quot;&lt;/div&gt;&quot;;</span>
+<span class="fc" id="L127">		super.setHTML(thisHtml);</span>
+<span class="fc" id="L128">		ReportHistory.addReportLog(this);</span>
+<span class="fc" id="L129">	}</span>
+	
+	/* Interface Functions */
+	/**
+	 * This function returns a list of the top numOfNames names from the year of choice.
+	 * @param Integer year - year of interest. 
+	 * @return Either returns a list of strings if the year is valid, and null otherwise.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public List&lt;String&gt; getListOfNamesFromYear(int year){
+<span class="fc bfc" id="L140" title="All 4 branches covered.">		if(year &lt; startYear || year &gt; endYear) return null;</span>
+<span class="fc" id="L141">		return collectionOfYears.get(year);</span>
+	}
+	/**
+	 * This function returns a list of the top numOfNames frequencies from the year of choice.
+	 * @param Integer year - year of interest.
+	 * @return Either returns a list of integers, or null if the year is invalid.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public List&lt;Integer&gt; getListOfFrequenciesFromYear(int year){
+<span class="fc bfc" id="L151" title="All 4 branches covered.">		if(year &lt; startYear || year &gt; endYear) return null;</span>
+<span class="fc" id="L152">		return collectionOfFreqs.get(year);</span>
+	}
+	
+	// getters
+	/**
+	 * @return returns the start year the user specified
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L161">	public int getStartYear() {return this.startYear;}</span>
+	/**
+	 * @return returns the end year the user specified.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L167">	public int getEndYear() {return this.endYear;}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

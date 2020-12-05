@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Compatibility_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">Compatibility_controller.java</span></div><h1>Compatibility_controller.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+
+
+import comp3111.popnames.DatasetHandler;
+import comp3111.popnames.PredictCompatibilityScore;
+import comp3111.popnames.ReportLog;
+import comp3111.rankingAlgo.RankingAlgorithmFactory;
+import comp3111.rankingAlgo.rankResolver;
+import java.util.*;
+import javafx.util.Pair;
+/**
+ * Controller for T6 Predict Compatibility Score
+ * @author Yuxi Sun
+ * v2.0
+ */
+<span class="fc" id="L30">public class Compatibility_controller {</span>
+
+    @FXML
+    private RadioButton T6_user_male_RadioButton;
+
+    @FXML
+    private RadioButton T6_user_female_RadioButton;
+
+    @FXML
+    private TextField T6_user_name_TextField;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_user_type_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_user_country_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_user_yob_ComboBox;
+
+    @FXML
+    private RadioButton T6_mate_male_RadioButton;
+
+    @FXML
+    private RadioButton T6_mate_female_RadioButton;
+
+    @FXML
+    private TextField T6_mate_name_TextField;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_mate_type_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_mate_country_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_preferences_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_ranking_algorithm_ComboBox;
+
+    @FXML
+    private ComboBox&lt;String&gt; T6_ranking_resolver_ComboBox;
+
+    @FXML
+    private Button T6_generate_Button;
+
+    //score elements
+    @FXML
+    private Text T6_nkt6_score_Text;
+
+    @FXML
+    private Arc T6_parm_Arc;
+
+    @FXML
+    private Text T6_parm_score_Text;
+
+    @FXML
+    private Arc T6_pasrm_Arc;
+
+    @FXML
+    private Text T6_pasrm_score_Text;
+
+    @FXML
+    private Arc T6_ld_Arc;
+
+    @FXML
+    private Text T6_ld_score_Text;
+    
+    @FXML
+    private Arc T6_composite_Arc;
+
+    @FXML
+    private Text T6_composite_score_Text;
+
+    //error elements
+    @FXML
+    private Text T6_user_name_error_Text;
+
+    @FXML
+    private Text T6_user_type_error_Text;
+
+    @FXML
+    private Text T6_country_type_error_Text;
+
+    @FXML
+    private Text T6_user_yob_error_Text;
+
+    @FXML
+    private Text T6_pref_range_error_Text;
+
+    @FXML
+    private Text T6_mate_name_error_Text;
+
+    @FXML
+    private Text T6_mate_type_error_Text;
+
+    @FXML
+    private Text T6_mate_country_error_Text;
+
+    @FXML
+    private Text T6_pref_null_error_Text;
+ 
+    //infoboxs
+    @FXML
+    private TextArea T6_infobox_TextArea;
+    
+    @FXML
+    private TextArea T6_composite_infobox_TextArea;
+
+    @FXML
+    private TextArea T6_parm_infobox_TextArea;
+
+    @FXML
+    private TextArea T6_pasrm_infobox_TextArea;
+
+    @FXML
+    private TextArea T6_ld_infobox_TextArea;
+    //UI components
+
+    //combobox variables
+    ObservableList&lt;String&gt; userTypesList;
+    ObservableList&lt;String&gt; userCountriesList;
+    ObservableList&lt;String&gt; userYOBList;
+
+    ObservableList&lt;String&gt; mateTypesList;
+    ObservableList&lt;String&gt; mateCountries;
+    ObservableList&lt;String&gt; preferenceList;
+
+    ObservableList&lt;String&gt; rankingAlgorithmsList;
+    ObservableList&lt;String&gt; rankResolversList;
+    /**
+     * Initializes relevant UI components on system load.
+     * @author Yuxi Sun
+     */
+    public void initialize(){
+    	//hide error message(s)
+        //User initializers
+        //initialize and link lists
+<span class="fc" id="L169">        userTypesList = FXCollections.observableArrayList(DatasetHandler.getTypes());</span>
+<span class="fc" id="L170">        T6_user_type_ComboBox.setItems(userTypesList);</span>
+<span class="fc" id="L171">        userCountriesList = FXCollections.observableArrayList();</span>
+<span class="fc" id="L172">        T6_user_country_ComboBox.setItems(userCountriesList);</span>
+<span class="fc" id="L173">        userYOBList = FXCollections.observableArrayList();</span>
+        
+<span class="fc" id="L175">        T6_user_yob_ComboBox.setItems(userYOBList);</span>
+        //set user type options
+<span class="fc" id="L177">        T6_user_type_ComboBox.setValue(&quot;human&quot;);</span>
+<span class="fc" id="L178">        selectUserType();</span>
+
+        //set use country options based on the default of usa
+<span class="fc" id="L181">        T6_user_country_ComboBox.setValue(&quot;usa&quot;);</span>
+<span class="fc" id="L182">        selectUserCountry();</span>
+        //update YOB list according to default
+<span class="fc" id="L184">        T6_user_yob_ComboBox.setValue(&quot;1941&quot;);</span>
+
+        //Mate initializers
+        //initialize and link lists
+<span class="fc" id="L188">        mateTypesList = FXCollections.observableArrayList(DatasetHandler.getTypes());</span>
+<span class="fc" id="L189">        T6_mate_type_ComboBox.setItems(mateTypesList);</span>
+<span class="fc" id="L190">        T6_mate_type_ComboBox.setValue(&quot;human&quot;);</span>
+        
+<span class="fc" id="L192">        mateCountries = FXCollections.observableArrayList();</span>
+<span class="fc" id="L193">        T6_mate_country_ComboBox.setItems(mateCountries);</span>
+<span class="fc" id="L194">        preferenceList = FXCollections.observableArrayList();</span>
+        
+        //set country options based on the default of usa
+<span class="fc" id="L197">        selectMateType();</span>
+<span class="fc" id="L198">        T6_mate_country_ComboBox.setValue(&quot;usa&quot;);</span>
+
+        //update preference options
+<span class="fc" id="L201">        preferenceList = FXCollections.observableArrayList();</span>
+<span class="fc" id="L202">        T6_preferences_ComboBox.setItems(preferenceList);</span>
+<span class="fc" id="L203">        updatePreferences();</span>
+        
+        //initialize ranking settings
+        //initialize ranking Algorithm
+<span class="fc" id="L207">        rankingAlgorithmsList = FXCollections.observableArrayList(RankingAlgorithmFactory.getNonIterativeMethods());</span>
+<span class="fc" id="L208">        T6_ranking_algorithm_ComboBox.setItems(rankingAlgorithmsList);</span>
+<span class="fc" id="L209">        T6_ranking_algorithm_ComboBox.setValue(&quot;scr&quot;);</span>
+        //initialize rank Resolver
+<span class="fc" id="L211">        rankResolversList = FXCollections.observableArrayList(rankResolver.getResolutionMethods());</span>
+<span class="fc" id="L212">        T6_ranking_resolver_ComboBox.setItems(rankResolversList);</span>
+<span class="fc" id="L213">        T6_ranking_resolver_ComboBox.setValue(&quot;ld&quot;);</span>
+<span class="fc" id="L214">    }</span>
+    //User UI components
+    @FXML
+    /**
+     * Update country list on change of user type
+     * @author Yuxi Sun
+     */
+    private void selectUserType() {
+<span class="fc" id="L222">        hideAllErrors();</span>
+<span class="fc" id="L223">        userCountriesList.clear();</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        for (String country: DatasetHandler.getCountries(T6_user_type_ComboBox.getValue())){</span>
+<span class="fc" id="L225">            userCountriesList.add(country);</span>
+<span class="fc" id="L226">        }</span>
+        //clearing and resetting userCountry and userYOB;
+<span class="fc" id="L228">        T6_user_country_ComboBox.setValue(&quot;&quot;);</span>
+<span class="fc" id="L229">        T6_user_yob_ComboBox.setValue(&quot;&quot;);</span>
+<span class="fc" id="L230">    }</span>
+    
+    @FXML
+    /**
+     * Update userYOB on change of user country
+     * @author Yuxi Sun
+     */
+    private void selectUserCountry() {
+<span class="fc" id="L238">        hideAllErrors();</span>
+    	//Initializing empty list
+<span class="fc" id="L240">        userYOBList.clear();</span>
+        //getting start year and end year of specified dataset/type/country/
+<span class="fc" id="L242">        String type = T6_user_type_ComboBox.getValue();</span>
+<span class="fc" id="L243">        String country = T6_user_country_ComboBox.getValue();</span>
+<span class="pc bpc" id="L244" title="1 of 4 branches missed.">        if (!isComboBoxEmpty(type) &amp;&amp; !isComboBoxEmpty(country)){</span>
+            //only runs this if both start year and end year are valid.
+<span class="fc" id="L246">            Pair&lt;String,String&gt; userValidRange = DatasetHandler.getValidRange(type, country);</span>
+<span class="fc" id="L247">            int start = Integer.parseInt(userValidRange.getKey());</span>
+<span class="fc" id="L248">            int end = Integer.parseInt(userValidRange.getValue());</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            for(int i = start; i &lt;= end; ++i){</span>
+                //appending all valid years to the list to be displayed in 
+<span class="fc" id="L251">                userYOBList.add(Integer.toString(i));</span>
+            }
+<span class="fc" id="L253">            T6_user_yob_ComboBox.setValue(Integer.toString((start+end)/2));//setting the default YOB to the median year of said range.</span>
+        }
+<span class="fc" id="L255">    }</span>
+    
+    @FXML
+    /**
+     * Called when User YOB is changed
+     * @author Yuxi Sun
+     */
+    private void selectUserYOB() {
+        //update preference list
+<span class="fc" id="L264">        updatePreferences();</span>
+<span class="fc" id="L265">    }</span>
+    //Mate UI components
+    @FXML
+    /**
+     * Update country list on change of mate type
+     * @author Yuxi Sun
+     */
+    private void selectMateType() {
+<span class="fc" id="L273">        hideAllErrors();</span>
+<span class="fc" id="L274">        mateCountries.clear();</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        for (String country: DatasetHandler.getCountries(T6_mate_type_ComboBox.getValue()))</span>
+<span class="fc" id="L276">            mateCountries.add(country);</span>
+        //clearing and resetting mateCountry and preference;
+<span class="fc" id="L278">        T6_mate_country_ComboBox.setValue(&quot;&quot;);</span>
+<span class="fc" id="L279">        updatePreferences();</span>
+<span class="fc" id="L280">    }</span>
+    @FXML
+    /**
+     * called when Mate Country is changed
+     * @author Yuxi Sun
+     */
+    private void selectMateCountry() {
+<span class="nc" id="L287">        hideAllErrors();</span>
+<span class="nc" id="L288">    	updatePreferences();</span>
+<span class="nc" id="L289">    }</span>
+    @FXML
+    /**
+     * called to update preference list
+     * @author Yuxi Sun
+     */
+    private void updatePreferences() {
+//    	T6_pref_error_Text.setVisible(false);
+        // clear all errors();
+<span class="fc" id="L298">        hideAllErrors();</span>
+<span class="fc" id="L299">        preferenceList.clear();</span>
+<span class="fc" id="L300">        T6_preferences_ComboBox.setValue(&quot;&quot;);</span>
+    	//list of preferences [-5,5];
+<span class="fc" id="L302">        ObservableList&lt;String&gt; preferenceOptions = FXCollections.observableArrayList();</span>
+            
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (validateUpdatePreference()){</span>
+            //if all inputs are valid then update everything
+            //setting up useful variables
+            //getting start year and end year of specified dataset/type/country/
+<span class="fc" id="L308">            Pair&lt;String,String&gt; mateValidRange = DatasetHandler.getValidRange(T6_mate_type_ComboBox.getValue(),T6_mate_country_ComboBox.getValue());</span>
+<span class="fc" id="L309">            int start = Integer.parseInt(mateValidRange.getKey());</span>
+<span class="fc" id="L310">            int end = Integer.parseInt(mateValidRange.getValue());</span>
+<span class="fc" id="L311">            int userYob = Integer.parseInt(T6_user_yob_ComboBox.getValue());</span>
+<span class="fc" id="L312">            int prefMin = Math.max(-5,start -userYob); //either -5 or the earliest valid Mate data set</span>
+<span class="fc" id="L313">            int prefMax = Math.min(5,end -userYob); //either 5 or the latest valid Mate data set</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">            for (int i = prefMin; i &lt;= prefMax;++i) {</span>
+<span class="fc" id="L315">                preferenceList.add(Integer.toString(i));</span>
+            }
+<span class="fc" id="L317">            int defaultPref = (prefMin+prefMax)/2;</span>
+            //set to value at the middle of range if -5&lt;=defaultPref&lt;=5 else sett it to &quot;&quot;;
+<span class="pc bpc" id="L319" title="1 of 4 branches missed.">            if (defaultPref&gt;=-5&amp;&amp;defaultPref&lt;=5){</span>
+<span class="fc" id="L320">                T6_preferences_ComboBox.setValue(Integer.toString(defaultPref));</span>
+<span class="fc" id="L321">                T6_pref_range_error_Text.setVisible(false);</span>
+            }else{
+                //display range error message
+<span class="fc" id="L324">                T6_pref_range_error_Text.setVisible(true);</span>
+                //get user YOB ranges
+<span class="fc" id="L326">                Pair&lt;String,String&gt; userValidRange = DatasetHandler.getValidRange(T6_user_type_ComboBox.getValue(),T6_user_country_ComboBox.getValue());</span>
+<span class="fc" id="L327">                int ustart = Integer.parseInt(userValidRange.getKey());</span>
+<span class="fc" id="L328">                int uend = Integer.parseInt(userValidRange.getValue());</span>
+<span class="fc" id="L329">                int validStart = Math.max(ustart, start-5);</span>
+<span class="fc" id="L330">                int validEnd = Math.min(uend, end+5);</span>
+                //update message
+<span class="fc" id="L332">                T6_pref_range_error_Text.setText(String.format(&quot;Your YOB must be between %s and %s for you to be able to have a preference&quot;, validStart,validEnd));</span>
+<span class="fc" id="L333">                T6_preferences_ComboBox.setValue(&quot;&quot;);</span>
+            }
+<span class="fc" id="L335">        }else{</span>
+            //else restrict the options where applicable.
+<span class="pc bpc" id="L337" title="1 of 4 branches missed.">            if (!T6_mate_country_ComboBox.getValue().isBlank()|| T6_mate_country_ComboBox.getValue()!= null) {</span>
+                //if T6_mate_country_ComboBox has been set then we can update the preference options
+<span class="fc bfc" id="L339" title="All 2 branches covered.">                if (T6_user_yob_ComboBox.getValue()==null) {</span>
+                    // if YOB is not set then give the users the full range of options from -5 to +5
+                    //getting start year and end year of specified data set/type/country/
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                    for (int i = -5; i &lt;= 5; ++i) {</span>
+<span class="fc" id="L343">                        preferenceOptions.add(Integer.toString(i));</span>
+                    }
+<span class="fc" id="L345">                    T6_preferences_ComboBox.setValue(&quot;0&quot;);</span>
+                }
+            }
+        }
+<span class="fc" id="L349">    }</span>
+    /**
+     * helper function to check if preference lists can be set
+     * @return if preference list can be set i.e. user data set details are set and mate data set details are set
+     */
+    private boolean validateUpdatePreference() {
+        //hide all previous error messages
+        //load users variables
+<span class="fc" id="L357">        String yob = T6_user_yob_ComboBox.getValue();</span>
+//        String type = T6_user_type_ComboBox.getValue();
+<span class="fc" id="L359">        String country = T6_user_country_ComboBox.getValue();</span>
+        
+        //At this point we assume that all input fields are either empty strings &quot;&quot; or valid. due tot he way the UI is set up
+        //validation of input
+<span class="fc" id="L363">        boolean valid = true;</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">        if(isComboBoxEmpty(yob)){</span>
+            //if yob is empty
+<span class="fc" id="L366">            valid = false;</span>
+        }
+<span class="fc bfc" id="L368" title="All 2 branches covered.">        if(isComboBoxEmpty(country)){</span>
+            //if country is empty
+<span class="fc" id="L370">            valid = false;</span>
+        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(type)){
+//            //if type is empty
+//            valid = false;
+//        }
+        //load all variables
+<span class="fc" id="L378">        String countryMate = T6_mate_country_ComboBox.getValue();</span>
+//        String typeMate = T6_mate_type_ComboBox.getValue();
+        //At this point we assume that all input fields are either empty strings &quot;&quot; or valid. due to the way the UI is set up
+        //validate mate
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        if(isComboBoxEmpty(countryMate)){</span>
+            //if countryMate is empty
+<span class="fc" id="L384">            valid = false;</span>
+//            T6_mate_country_error_Text.setVisible(true);
+        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(typeMate)){
+//            //if typeMate is empty
+//            valid = false;
+////            T6_mate_type_error_Text.setVisible(true);
+//        }
+<span class="fc" id="L393">        return valid;</span>
+    	
+    }
+    /**
+     * Helper function to hide all errors
+     * @author Yuxi Sun
+     */
+    private void hideAllErrors(){
+        //user error messages
+<span class="fc" id="L402">        T6_user_name_error_Text.setVisible(false);</span>
+<span class="fc" id="L403">        T6_country_type_error_Text.setVisible(false);</span>
+<span class="fc" id="L404">        T6_user_type_error_Text.setVisible(false);</span>
+<span class="fc" id="L405">        T6_user_yob_error_Text.setVisible(false);</span>
+        //mate error messages
+<span class="fc" id="L407">        T6_mate_name_error_Text.setVisible(false);</span>
+<span class="fc" id="L408">        T6_pref_null_error_Text.setVisible(false);</span>
+<span class="fc" id="L409">        T6_mate_country_error_Text.setVisible(false);</span>
+<span class="fc" id="L410">        T6_mate_type_error_Text.setVisible(false);</span>
+<span class="fc" id="L411">    }</span>
+    //Validation
+    /**
+     * Helper function to validate user input fields 
+     * @return true if user input fields are valid
+     * @author Yuxi Sun
+     */
+    boolean validateUserInputs(){
+        //load all variables
+<span class="fc" id="L420">        String iName = T6_user_name_TextField.getText();</span>
+//        String iGender = (T6_user_male_RadioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;
+<span class="fc" id="L422">        String yob = T6_user_yob_ComboBox.getValue();</span>
+//        String type = T6_user_type_ComboBox.getValue();
+<span class="fc" id="L424">        String country = T6_user_country_ComboBox.getValue();</span>
+        
+
+        //At this point we assume that all input fields are either empty strings &quot;&quot; or valid. due to the way the UI is set up
+        //validation of input
+<span class="fc" id="L429">        iName = ReportLog.validateName(iName);//clean the name</span>
+<span class="fc" id="L430">        boolean iNameError = iName.isEmpty();</span>
+<span class="fc" id="L431">        boolean valid = true;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">        if(iNameError){</span>
+            //if iName is empty
+<span class="fc" id="L434">            valid = false;</span>
+<span class="fc" id="L435">            T6_user_name_error_Text.setVisible(true);</span>
+        }else {
+//        	update text format
+<span class="fc" id="L438">        	T6_user_name_TextField.setText(iName);</span>
+        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(iGender)){
+//            //if iGender is empty or null (should never happen unless UI fails)
+//            valid = false;
+//            System.out.println(&quot;Gender error&quot;);
+//        }
+<span class="fc bfc" id="L446" title="All 2 branches covered.">        if(isComboBoxEmpty(yob)){</span>
+            //if yob is empty
+<span class="fc" id="L448">            valid = false;</span>
+<span class="fc" id="L449">            T6_user_yob_error_Text.setVisible(true);</span>
+        }
+<span class="fc bfc" id="L451" title="All 2 branches covered.">        if(isComboBoxEmpty(country)){</span>
+            //if country is empty
+<span class="fc" id="L453">            valid = false;</span>
+<span class="fc" id="L454">            T6_country_type_error_Text.setVisible(true);</span>
+        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(type)){
+//            //if type is empty
+//            valid = false;
+//            T6_user_type_error_Text.setVisible(true);
+//        }
+<span class="fc" id="L462">        return valid;</span>
+    }
+    /**
+     * Helper function to validate mate input fields 
+     * @return true if mate input fields are valid
+     * @author Yuxi Sun
+     */
+    boolean validateMateInputs(){
+        //load all variables
+<span class="fc" id="L471">        String iNameMate = T6_mate_name_TextField.getText();</span>
+//        String iGenderMate = (T6_mate_male_RadioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;
+<span class="fc" id="L473">        String preference = T6_preferences_ComboBox.getValue();</span>
+<span class="fc" id="L474">        String countryMate = T6_mate_country_ComboBox.getValue();</span>
+//        String typeMate = T6_mate_type_ComboBox.getValue();
+        //At this point we assume that all input fields are either empty strings &quot;&quot; or valid. due tot he way the UI is set up
+        //validate mate
+<span class="fc" id="L478">        boolean valid = true;</span>
+<span class="fc" id="L479">        iNameMate = ReportLog.validateName(iNameMate);//clean the name</span>
+<span class="fc" id="L480">        boolean iNameMateError = iNameMate.isEmpty();</span>
+<span class="fc bfc" id="L481" title="All 2 branches covered.">        if(iNameMateError){</span>
+            //if iNameMate is empty
+<span class="fc" id="L483">            valid = false;</span>
+<span class="fc" id="L484">            T6_mate_name_error_Text.setVisible(true);</span>
+        }else {
+//        	update text format
+<span class="fc" id="L487">        	T6_mate_name_TextField.setText(iNameMate);</span>
+        }
+//        //Will not occur with current UI setup
+//        if(isComboBoxEmpty(iGenderMate)){
+//            //if iGenderMate is empty
+//            valid = false;
+//            System.out.println(&quot;Gender error&quot;);
+//        }
+
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        if(isComboBoxEmpty(preference)){</span>
+            //if iNameMate is empty
+<span class="fc" id="L498">            valid = false;</span>
+<span class="fc" id="L499">            T6_pref_null_error_Text.setVisible(true);</span>
+        }
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">        if(isComboBoxEmpty(countryMate)){</span>
+            //if countryMate is empty
+<span class="nc" id="L503">            valid = false;</span>
+<span class="nc" id="L504">            T6_mate_country_error_Text.setVisible(true);</span>
+        }
+//      //Will not occur with current UI setup
+//        if(isComboBoxEmpty(typeMate)){
+//            //if typeMate is empty
+//            valid = false;
+//            T6_mate_type_error_Text.setVisible(true);
+//        }
+<span class="fc" id="L512">        return valid;</span>
+    }
+    
+    
+//    private boolean validateRankingInputs(){
+//        //At this point we assume that all input fields are either empty strings &quot;&quot; or valid. due to the way the UI is set up
+//        //double check if rankingAlgo and resolver is from the supported options.
+//        boolean valid = true;
+//        // valid = false;
+//    	return valid;
+//    }
+    //actual execution
+    @FXML
+    /**
+     * Generate function, calls PredictCompatabilityScore object and updates graphical output
+     * @author Yuxi Sun
+     */
+    void compatibilityScore() {
+        //hide all previous error messages
+<span class="fc" id="L531">        hideAllErrors();</span>
+<span class="fc" id="L532">        boolean vMate = validateUserInputs();</span>
+<span class="fc" id="L533">        boolean vUser = validateMateInputs();</span>
+<span class="fc bfc" id="L534" title="All 4 branches covered.">        if (vMate &amp;&amp; vUser){</span>
+<span class="fc" id="L535">        	hideAllErrors();</span>
+        	//if the inputs are valid then proceed
+        	//getting relevant variables
+            //user variables
+<span class="fc" id="L539">            String iName = T6_user_name_TextField.getText();</span>
+<span class="fc bfc" id="L540" title="All 2 branches covered.">            String iGender = (T6_user_male_RadioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;</span>
+<span class="fc" id="L541">            int iYOB = Integer.parseInt(T6_user_yob_ComboBox.getValue());</span>
+<span class="fc" id="L542">            String type = T6_user_type_ComboBox.getValue();</span>
+<span class="fc" id="L543">            String country = T6_user_country_ComboBox.getValue();</span>
+            //mate variables
+<span class="fc" id="L545">            String iNameMate = T6_mate_name_TextField.getText();</span>
+<span class="fc bfc" id="L546" title="All 2 branches covered.">            String iGenderMate = (T6_mate_male_RadioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;</span>
+<span class="fc" id="L547">            int iPreference = Integer.parseInt(T6_preferences_ComboBox.getValue());</span>
+<span class="fc" id="L548">            String countryMate = T6_mate_country_ComboBox.getValue();</span>
+<span class="fc" id="L549">            String typeMate = T6_mate_type_ComboBox.getValue();</span>
+            //rank settings
+<span class="fc" id="L551">            String rankingAlgo = T6_ranking_algorithm_ComboBox.getValue();</span>
+<span class="fc" id="L552">            String resolver = T6_ranking_resolver_ComboBox.getValue();</span>
+            
+            //initializing and generating report
+<span class="fc" id="L555">            PredictCompatibilityScore report = new PredictCompatibilityScore(iName, iGender, iYOB, country, type , iNameMate, iGenderMate, iPreference, countryMate, typeMate, rankingAlgo, resolver);</span>
+            //update relevant variable
+<span class="fc" id="L557">            HashMap&lt;String,Double&gt; oScores = report.getoScore();</span>
+            //update graphics
+<span class="fc" id="L559">            updateGraphics(oScores);//info can be found in helper functions section</span>
+        }
+<span class="fc" id="L561">    }</span>
+
+    //Helper functions
+    /**
+     * checks if a ComboBox is empty
+     * @author Yuxi Sun
+     */
+    private boolean isComboBoxEmpty(String entry){
+<span class="fc bfc" id="L569" title="All 4 branches covered.">        return entry == null || entry.isBlank();</span>
+    }
+    /**
+     *  Converts a [0,1] score to a [0,360] score
+     * @param oScore double between [0,1]
+     * @return double between [0,360]
+     * @author Yuxi Sun
+     */
+    private double toDegree(double oScore){
+    	//rounding performed here
+<span class="fc" id="L579">        return roundTo2dp(oScore*360);</span>
+    }
+    private double roundTo2dp(double score){
+<span class="fc" id="L582">        return (double)Math.round(score*100)/100;</span>
+    }
+    /**
+     * Updates the score graphics and presents the results of the predictions.
+     * @param oScores
+     * @author Yuxi Sun
+     */
+    private void updateGraphics(HashMap&lt;String,Double&gt; oScores){
+<span class="fc" id="L590">        double composite = toDegree(oScores.get(&quot;composite&quot;));</span>
+<span class="fc" id="L591">        double parm = toDegree(oScores.get(&quot;parm&quot;));</span>
+<span class="fc" id="L592">        double pasrm = toDegree(oScores.get(&quot;pasrm&quot;));</span>
+<span class="fc" id="L593">        double ld = toDegree(oScores.get(&quot;ld&quot;));</span>
+        
+        //update composite graphic
+<span class="fc" id="L596">        T6_composite_Arc.setLength(composite);</span>
+<span class="fc" id="L597">        T6_composite_score_Text.setText(Double.toString(roundTo2dp(oScores.get(&quot;composite&quot;))));</span>
+        //update parm graphic
+<span class="fc" id="L599">        T6_parm_Arc.setLength(parm);</span>
+<span class="fc" id="L600">        T6_parm_score_Text.setText(Double.toString(roundTo2dp(oScores.get(&quot;parm&quot;))));</span>
+        //update pasrm graphic
+<span class="fc" id="L602">        T6_pasrm_Arc.setLength(pasrm);</span>
+<span class="fc" id="L603">        T6_pasrm_score_Text.setText(Double.toString(roundTo2dp(oScores.get(&quot;pasrm&quot;))));</span>
+        //update ld graphic
+<span class="fc" id="L605">        T6_ld_Arc.setLength(ld);</span>
+<span class="fc" id="L606">        T6_ld_score_Text.setText(Double.toString(roundTo2dp(oScores.get(&quot;ld&quot;))));</span>
+<span class="fc" id="L607">    }</span>
+    
+    //infoBox
+    @FXML 
+    /**
+     * Show the feature Information Box
+     * @author Yuxi Sun
+     */
+    void showInfoBox(){
+<span class="fc" id="L616">    	T6_infobox_TextArea.setVisible(true);</span>
+<span class="fc" id="L617">    }</span>
+    @FXML 
+    /**
+     * Hide the feature Information Box
+     * @author Yuxi Sun
+     */
+    void hideInfoBox(){
+<span class="fc" id="L624">    	T6_infobox_TextArea.setVisible(false);</span>
+<span class="fc" id="L625">    }</span>
+
+
+    @FXML
+    /**
+     * Hide the composite Information Box
+     * @author Yuxi Sun
+     */
+    void showCompositeInfoBox(){
+<span class="fc" id="L634">        T6_composite_infobox_TextArea.setVisible(true);</span>
+<span class="fc" id="L635">    }</span>
+    @FXML
+    /**
+     * Hide the composite Information Box
+     * @author Yuxi Sun
+     */
+    void hideCompositeInfoBox(){
+<span class="fc" id="L642">        T6_composite_infobox_TextArea.setVisible(false);</span>
+<span class="fc" id="L643">    }</span>
+    @FXML
+    /**
+     * Show the PARM Information Box
+     * @author Yuxi Sun
+     */
+    void showPARMInfoBox(){
+<span class="fc" id="L650">        T6_parm_infobox_TextArea.setVisible(true);</span>
+<span class="fc" id="L651">    }</span>
+    @FXML
+    /**
+     * Hide the PARM Information Box
+     * @author Yuxi Sun
+     */
+    void hidePARMInfoBox(){
+<span class="fc" id="L658">        T6_parm_infobox_TextArea.setVisible(false);</span>
+<span class="fc" id="L659">    }</span>
+    @FXML
+    /**
+     * Show the PASRM Information Box
+     * @author Yuxi Sun
+     */
+    void showPASRMInfoBox(){
+<span class="fc" id="L666">        T6_pasrm_infobox_TextArea.setVisible(true);</span>
+<span class="fc" id="L667">    }</span>
+    @FXML
+    /**
+     * Hide the PASRM Information Box
+     * @author Yuxi Sun
+     */
+    void hidePASRMInfoBox(){
+<span class="fc" id="L674">        T6_pasrm_infobox_TextArea.setVisible(false);</span>
+<span class="fc" id="L675">    }</span>
+    @FXML
+    /**
+     * Show the LD Information Box
+     * @author Yuxi Sun
+     */
+    void showLDInfoBox(){
+<span class="fc" id="L682">        T6_ld_infobox_TextArea.setVisible(true);</span>
+<span class="fc" id="L683">    }</span>
+    @FXML
+    /**
+     * Hide the LD Information Box
+     * @author Yuxi Sun
+     */
+    void hideLDInfoBox(){
+<span class="fc" id="L690">        T6_ld_infobox_TextArea.setVisible(false);</span>
+<span class="fc" id="L691">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

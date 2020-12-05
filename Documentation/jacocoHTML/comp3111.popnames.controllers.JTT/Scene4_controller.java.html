@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Scene4_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers.JTT</a> &gt; <span class="el_source">Scene4_controller.java</span></div><h1>Scene4_controller.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers.JTT;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import comp3111.popnames.JourneyThroughTime;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+
+<span class="nc" id="L25">public class Scene4_controller {</span>
+
+	@FXML
+    private StackPane JTT4_stack_StackPane;
+	
+    @FXML
+    private AnchorPane JTT4_anchor_AnchorPane;
+
+    @FXML
+    private TextField JTT4_learnYear_TextField;
+
+    @FXML
+    private Button JTT4_learn_Button;
+
+    @FXML
+    private ImageView JTT4_yearImage_ImageView;
+
+    @FXML
+    private Label JTT4_invalidYear_Label;
+
+    @FXML
+    private Label JTT4_fact1_TextField;
+
+    @FXML
+    private Label JTT4_fact2_TextField;
+
+    @FXML
+    private Button JTT4_goHome_Button;
+
+    /* Methods */
+    
+    @FXML
+    /**
+     * Initialize all the elements on the interface.
+     * randomly choose a year and display its facts and images.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void initialize() throws FileNotFoundException {
+<span class="nc" id="L64">    	Random rand = new Random();</span>
+<span class="nc" id="L65">    	int randomYear = 1880 + rand.nextInt(140);</span>
+<span class="nc" id="L66">    	loadDisplay(randomYear);</span>
+    	
+<span class="nc" id="L68">    }</span>
+    
+    /**
+     * Utility function to render to the display from a given year.
+     * Assumes that the input year is valid.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void loadDisplay(int year) throws FileNotFoundException {
+<span class="nc" id="L77">    	JTT4_yearImage_ImageView.setImage(JourneyThroughTime.getImage(year));</span>
+<span class="nc" id="L78">    	JTT4_learnYear_TextField.setText(String.format(&quot;%d&quot;, year));</span>
+<span class="nc" id="L79">    	List&lt;String&gt; initFacts = JourneyThroughTime.getFacts(year);</span>
+<span class="nc" id="L80">    	JTT4_fact1_TextField.setText(String.format(&quot;In %d, %s.&quot;, year, initFacts.get(0)));</span>
+<span class="nc" id="L81">    	JTT4_fact2_TextField.setText(String.format(&quot;On top of that, %s.&quot;,  initFacts.get(1)));</span>
+<span class="nc" id="L82">    }</span>
+    
+    /**
+     * returns the year of interest. If the year is invalid, an error message will show up.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    int getCleanedYear() {
+<span class="nc" id="L90">    	int res = -1;</span>
+    	try {
+<span class="nc" id="L92">    		res = Integer.parseInt(JTT4_learnYear_TextField.getText());</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">    		if(res &lt; 1880 || res &gt; 2019) {</span>
+<span class="nc" id="L94">    			JTT4_invalidYear_Label.setVisible(true);</span>
+<span class="nc" id="L95">    			return -1;</span>
+    		}
+<span class="nc" id="L97">    	} catch(NumberFormatException e) {</span>
+    		// the year is not a valid integer.
+<span class="nc" id="L99">    		JTT4_invalidYear_Label.setVisible(true);</span>
+<span class="nc" id="L100">    		return res;</span>
+<span class="nc" id="L101">    	}</span>
+<span class="nc" id="L102">    	return res;</span>
+    }
+    
+    @FXML
+    /**
+     * Called when the user has entered a year and would like to learn more about that year.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void findInfo() throws FileNotFoundException {
+<span class="nc" id="L112">    	JTT4_invalidYear_Label.setVisible(false);</span>
+<span class="nc" id="L113">    	int year = getCleanedYear();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">    	if(year == -1) return;</span>
+    	
+<span class="nc" id="L116">    	loadDisplay(year);</span>
+<span class="nc" id="L117">    }</span>
+
+    @FXML
+    /**
+     * Used to return to the original soulmate interface.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void goHome() {
+<span class="nc" id="L126">    	Parent root = null;</span>
+		try {
+<span class="nc" id="L128">			root = FXMLLoader.load(getClass().getResource(&quot;/interfaces/SoulmateName_interface.fxml&quot;));</span>
+<span class="nc" id="L129">		} catch (IOException e) {</span>
+<span class="nc" id="L130">			System.out.println(&quot;I FAILED...&quot;);</span>
+<span class="nc" id="L131">			System.out.println(e);</span>
+<span class="nc" id="L132">			return;</span>
+<span class="nc" id="L133">		}</span>
+    	
+<span class="nc" id="L135">    	Scene scene = JTT4_goHome_Button.getScene();</span>
+<span class="nc" id="L136">    	root.translateYProperty().set(scene.getHeight());</span>
+    	
+<span class="nc" id="L138">    	JTT4_stack_StackPane.getChildren().add(root);</span>
+    	
+<span class="nc" id="L140">    	Timeline timeline = new Timeline();</span>
+<span class="nc" id="L141">    	KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.EASE_IN);</span>
+<span class="nc" id="L142">    	KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);</span>
+<span class="nc" id="L143">    	timeline.getKeyFrames().add(kf);</span>
+<span class="nc" id="L144">    	timeline.setOnFinished(event-&gt;{</span>
+<span class="nc" id="L145">    		JTT4_stack_StackPane.getChildren().remove(JTT4_anchor_AnchorPane);</span>
+<span class="nc" id="L146">    	});</span>
+    	
+<span class="nc" id="L148">    	timeline.play();</span>
+<span class="nc" id="L149">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
