@@ -70,7 +70,7 @@ public class SoulmateName extends Reports {
 	 * @param String myGender - the users gender in the form of "M" or "F"
 	 * @param Integer YOB - the year of birth of the user.
 	 * @param String m_gender - your soulmate's gender in the form "M" or "F"
-	 * @param Intgeger preference - your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
+	 * @param Integer preference - your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
 	 * @param String algo - which ranking system to use for the NK-T5 algorithm. {or,dr,mcr,scr}
 	 * @param String country - which country the analysis is happening in.
 	 * @param String type - most guaranteed to be human.
