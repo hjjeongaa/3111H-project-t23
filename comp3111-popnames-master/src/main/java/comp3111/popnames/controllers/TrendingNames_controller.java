@@ -78,8 +78,12 @@ public class TrendingNames_controller {
     //infobox
     @FXML
     private TextArea T3_infobox_TextArea;
+   
     
     //output tables constructs
+    @FXML
+    private TextArea T3_summary_TextArea;
+    
     @FXML
     private TableView<T3_row_structure> T3_output_Table;
 
@@ -383,6 +387,8 @@ public class TrendingNames_controller {
          * @author Yuxi Sun
      */
     void trendInPopularity() {
+    	//clear summary
+    	T3_summary_TextArea.clear();
     	//clearing table
     	this.t3_rows.clear();
     	//getting relevant info
@@ -397,10 +403,50 @@ public class TrendingNames_controller {
         	int iStartYear = Integer.parseInt(startYear);
             int iEndYear = Integer.parseInt(endYear);
         	//if inputs are valid
-	        //updating table
-            
+            //generate report
 	        TrendInPopularity  report = new TrendInPopularity(iStartYear, iEndYear, gender, T3_country_ComboBox.getValue(), T3_type_ComboBox.getValue());
 	        HashMap<String,Vector<String>> results  = report.getResults(); // fetching results
+
+	        //updating summary text to only show the first name rising and first name falling.
+	        String rising_names="";
+	        String falling_names="";
+	        String rising_trend="";
+	        String falling_trend="";
+	        String summary = "";
+	        for (int i = 0; i < results.get("name").size();++i) {
+	        	if(Integer.parseInt(results.get("trend").get(i))>=0) {//if trend is positive
+	        		if (rising_names.length()==0) {//if no names have been added to rising_names yet
+//	        			rising_names = results.get("name").get(i);
+//	        	        rising_trend = results.get("trend").get(i);
+	        	        summary += String.format("%s is found to have shown the largest rise in popularity from rank %s in year %s to rank %s in year %s.", 
+	        	        		results.get("name").get(i), 
+	        	        		results.get("startRank").get(i),
+	        	        		results.get("startYear").get(i),
+	        	        		results.get("endRank").get(i),
+	        	        		results.get("endYear").get(i));
+	        		               
+	        		}else {//do nothing
+	        			//falling_names = falling_names +  ", " + results.get("name").get(i);
+	        		}
+	        	}else {//if trend is negative
+	        		if (falling_names.length()==0) {//if no names have been added to falling_names yet
+//	        			falling_names = results.get("name").get(i);
+//	        	        falling_trend = results.get("trend").get(i);
+	        	        summary += String.format(" On the other hand, %s is found to have shown the largest rise in popularity from rank %s in year %s to rank %s in year %s.", 
+	        	        		results.get("name").get(i), 
+	        	        		results.get("startRank").get(i),
+	        	        		results.get("startYear").get(i),
+	        	        		results.get("endRank").get(i),
+	        	        		results.get("endYear").get(i));
+	        		}else {//do nothing
+	        			//falling_names = falling_names +  ", " + results.get("name").get(i);
+	        		}
+	        	}
+	        }
+	        
+	        //setting the text
+	        T3_summary_TextArea.setText(summary);
+	        //updating table
 	        for (int i = 0; i <results.get("name").size();++i){
 	            //create T3_row_structure
 	        	T3_row_structure entry = new T3_row_structure(results.get("name").get(i),
