@@ -24,7 +24,7 @@ import javafx.fxml.FXMLLoader;
 
 public class ExportControllerTest extends ApplicationTest{
 	private Scene s;
-	//private Label nsError;
+	private Label nsError;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -36,6 +36,21 @@ public class ExportControllerTest extends ApplicationTest{
    		stage.show();
    		s = scene;
    		clickOn("#Main_export_Button");
+   		nsError = (Label)s.lookup("#Export_error_label");
+	}
+	
+	@Test
+	public void exportTests() {
+		clickOn("#Main_namePopularity_Button");
+		clickOn("#NamePopularity_generate_button");
+		clickOn("#Main_export_Button");
+		clickOn("#Export_exportSelected_button");
+		type(KeyCode.ESCAPE);
+		assertTrue(nsError.getText().contains("Export cancelled."));
+		
+		clickOn("#Export_exportSelected_button");
+		type(KeyCode.ENTER);
+		assertTrue(nsError.getText().isEmpty());
 	}
 	
 	@Test
@@ -70,7 +85,8 @@ public class ExportControllerTest extends ApplicationTest{
 				noneTicked = false; break;
 			}
 		}
-		assertTrue(noneTicked);
+		clickOn("#Export_exportSelected_button");
+		assertTrue(noneTicked && nsError.getText().contains("Nothing selected."));
 		
 		clickOn("#Export_invertSelection_button");
 		allTicked = true;
@@ -80,8 +96,5 @@ public class ExportControllerTest extends ApplicationTest{
 			}
 		}
 		assertTrue(allTicked);
-		
-		clickOn("#Export_exportSelected_button");
-		type(KeyCode.ENTER);
 	}
 }

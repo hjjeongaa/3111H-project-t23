@@ -1,5 +1,7 @@
 package comp3111.popnames;
 
+import org.apache.log4j.BasicConfigurator;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +44,7 @@ public class MyApplication extends Application {
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
+		BasicConfigurator.configure();
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource(UI_FILE));
     	AnchorPane root = (AnchorPane) loader.load();

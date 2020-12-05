@@ -43,7 +43,7 @@
                         <Insets left="60.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-                  <Label fx:id="Export_nothingSelectedError_label" textFill="#ff4c4c">
+                  <Label fx:id="Export_error_label" textFill="#ff4c4c">
                      <VBox.margin>
                         <Insets left="64.0" top="6.0" />
                      </VBox.margin>
