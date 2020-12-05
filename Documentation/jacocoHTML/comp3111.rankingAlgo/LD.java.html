@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LD.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.rankingAlgo</a> &gt; <span class="el_source">LD.java</span></div><h1>LD.java</h1><pre class="source lang-java linenums">package comp3111.rankingAlgo;
+
+/**
+ * Levenshtein distance, a method of calculating similarities between two strings (names).
+ * @author Marty Sun
+ * v1.0
+ */
+<span class="nc" id="L8">public class LD {</span>
+	/**
+	 * Code is written based off the Algorithm defined here https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
+	 * @param a string or name
+	 * @param b string or name
+	 * @return int giving the number of changes needed to change string a to string b, returns -1 or -2 if a or b are empty strings respectively.
+	 * @author Yuxi Sun
+	 */
+	public static int calculate(String a, String b) {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">		if (a.length() == 0) {</span>
+<span class="nc" id="L18">			return -1; //invalid a length</span>
+		}
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">		if (b.length() == 0) {</span>
+<span class="nc" id="L21">			return -2; //invalid b length</span>
+		}
+<span class="fc" id="L23">		int[][] dp = new int[a.length()+1][b.length()+1];</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">		for (int i = 0; i&lt; a.length()+1; ++i)</span>
+<span class="fc" id="L25">			dp[i][0] = i;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		for (int i = 0; i&lt; b.length()+1; ++i)</span>
+<span class="fc" id="L27">			dp[0][i] = i;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		for (int i = 1; i&lt;a.length()+1;++i) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">			for (int j = 1; j&lt;b.length()+1; ++j) {</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">				int cost = (a.charAt(i-1) == b.charAt(j-1))?0:1;</span>
+<span class="fc" id="L31">				dp[i][j] = Math.min(Math.min(dp[i-1][j] + 1, dp[i][j-1] + 1),dp[i-1][j-1] + cost);</span>
+<span class="fc bfc" id="L32" title="All 4 branches covered.">				if (i&gt;1 &amp;&amp; j &gt; 1 &amp;&amp; </span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">				(a.charAt(i-1) == b.charAt(j-2)) &amp;&amp;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">				(a.charAt(i-2) == b.charAt(j-1))) {</span>
+<span class="fc" id="L35">					dp[i][j] = Math.min(dp[i][j], dp[i-2][j-2] + 1);</span>
+				}
+			}
+		}
+<span class="fc" id="L39">		return dp[a.length()][b.length()];</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MCR.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.rankingAlgo</a> &gt; <span class="el_source">MCR.java</span></div><h1>MCR.java</h1><pre class="source lang-java linenums">package comp3111.rankingAlgo;
+
+import comp3111.popnames.AnalyzeNames;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.csv.*;
+import edu.duke.*;
+/**
+ * This class either calculates the rank of a name in a specified data set type/country/year (and gender) or works as a running rank tracker using Modified Competition Ranking System
+ * NOTE THAT THIS FUNCTION DOES NOT SUPPORT ITERATORS
+ * @author Yuxi Sun 
+ * v 2.0
+ */
+public class MCR extends RankingAlgorithm {
+	private int size;
+	private int rank;
+	private int sameRankCount;
+	private int lastFreq;
+	//keeps track of which type of ranking algorithm it is (discriminator), in this case it is by default false
+	private boolean isIterative;
+	//accessors
+	/**
+	 * Whether or not this Object instance is iterative or noniterative
+	 * @return true if the function is iterative.
+	 * @author Yuxi Sun
+	 */
+<span class="fc" id="L29">	public boolean isIterative(){return this.isIterative;};</span>
+	/**
+	 * @return the full name of the Ranking Algorithm method
+	 * @author Yuxi Sun
+	 */
+	public String getMethod(){
+<span class="fc" id="L35">		return &quot;Modified Competition Ranking&quot;;</span>
+	}
+	/**
+	 * @return the abbreviated name of the Ranking Algorithm method
+	 * @author Yuxi Sun
+	 */
+	public String getMethodAbbreviated(){
+<span class="fc" id="L42">		return &quot;mcr&quot;;</span>
+	}
+	/**
+	 * @return gets the rank of the provided name in the specified data set using MCR.
+	 * @author Yuxi Sun
+	 */
+	public int getRank(){
+<span class="fc" id="L49">		return rank;</span>
+	}
+	/**
+	 * @return the total size of the data set of specification country, year and gender (specified in non-iterative Constructor)
+	 * @author Yuxi Sun
+	 */
+	public int getSize(){
+<span class="fc" id="L56">		return size;</span>
+	}
+	/**
+	 * This function is not supported for this class as look ahead cannot be done on the fly without look ahead
+	 *  @return false by default is addEntry is not supported.
+	 */
+	public boolean addEntry(int freq) {
+		//do nothing as look ahead is not support in the current format
+<span class="fc" id="L64">		return false;</span>
+	}
+	/**
+	 * Non-iterative constructor for this object which is used strictly for getting the rank of a name in a specified data set and the size of the data set.
+	 * No further mutations to this class will be allowed if this constructor is called.
+	 * @param name the name you wish to rank for
+	 * @param gender the gender of the name
+	 * @param yob the year of the data set you wish to use
+	 * @param country the of the data set you wish to use
+	 * @param type the type of the data set you wish to use
+	 * @param resolution the method you wish to use to replace a rank if name is not found in the specified data set. More can be found in the rankResolver class
+	 * @author Yuxi Sun
+	 */
+<span class="fc" id="L77">	public MCR(String name, String gender, int yob, String country, String type, String resolution){</span>
+<span class="fc" id="L78">		this.isIterative = false;</span>
+<span class="fc" id="L79">		int rank = 1;</span>
+<span class="fc" id="L80">		int sameRankCount = 0; //stores the number of names seen with the same rank (frequency) as the current name (exclusive)</span>
+		//iterates through iYOB's data
+<span class="fc" id="L82">		int lastFreq = 0;//stores the last seen frequency (used for seeing if the current name should have the same rank as the previous name).</span>
+<span class="fc" id="L83">		boolean found = false; </span>
+<span class="fc" id="L84">		boolean assigned = false; // this.rank has been assigned yet</span>
+<span class="fc" id="L85">		boolean firstEntry = true;</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">			if (!rec.get(1).equals(gender)){</span>
+<span class="fc" id="L88">				continue; //if the name is not of specified gender then skip</span>
+			}
+			//calculating the names rank in said year.
+<span class="fc bfc" id="L91" title="All 2 branches covered.">			if (firstEntry){</span>
+				//if this is the first entry (boundary case)
+<span class="fc" id="L93">				lastFreq = Integer.parseInt(rec.get(2)); //setting lastFreq for else case</span>
+<span class="fc" id="L94">				firstEntry = false;</span>
+			}else{
+				//not the first entry
+<span class="fc bfc" id="L97" title="All 2 branches covered.">				if (lastFreq == Integer.parseInt(rec.get(2)))</span>
+<span class="fc" id="L98">					++sameRankCount;</span>
+				else{
+					//since we assume the file is grouped by gender and 
+					//order in descending order on frequency, no extra check is required 
+<span class="fc" id="L102">					rank = rank + sameRankCount + 1;</span>
+<span class="fc" id="L103">					sameRankCount = 0;//reset sameRankCount</span>
+<span class="fc bfc" id="L104" title="All 4 branches covered.">					if(!assigned &amp;&amp; found){</span>
+<span class="fc" id="L105">						this.rank = rank;</span>
+<span class="fc" id="L106">						assigned = true;</span>
+					}
+				}
+				//update lastFreq (iteration variable)
+<span class="fc" id="L110">				lastFreq = Integer.parseInt(rec.get(2));</span>
+			}
+			//now rank of current name has been computed, check if the iName is found
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			if(rec.get(0).equals(name)){</span>
+<span class="fc" id="L114">				this.rank = rank;</span>
+<span class="fc" id="L115">				found = true;</span>
+			}
+<span class="fc" id="L117">		}</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">		if(!assigned &amp;&amp; found){ // for the case that the name is found with the same frequency as the last frequency</span>
+<span class="nc" id="L119">			this.rank = rank;</span>
+<span class="nc" id="L120">			assigned = true;</span>
+		}
+		//setting size (number of names in yob)
+<span class="fc" id="L123">		this.size = rank+sameRankCount;</span>
+		// if code gets to this point, then no name has been found
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (!found)</span>
+<span class="fc" id="L126">			this.rank = new rankResolver(&quot;mcr&quot;, name, gender, yob, country, type, this.size, resolution).getRank();</span>
+<span class="fc" id="L127">	}</span>
+	
+	/**
+	 * This function returns a list of names which have a rank of the specified rank.
+	 * @author Ryder Khoi Daniel
+	 * v 1.0
+	 */
+	public List&lt;String&gt; getNameFromRank(int rank, String gender, int yob, String type, String country){
+<span class="fc" id="L135">		int rankUnderInspection = 1;</span>
+<span class="fc" id="L136">		int prevFreq = -1;</span>
+<span class="fc" id="L137">		List&lt;String&gt; output = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L138">		List&lt;String&gt; currentGroup = new ArrayList&lt;String&gt;();</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (rec.get(1).equals(gender)) {</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">				if(rankUnderInspection &gt; rank) break;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">				if(Integer.parseInt(rec.get(2)) != prevFreq) {</span>
+<span class="fc" id="L143">					currentGroup = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L144">					currentGroup.add(rec.get(0));</span>
+				}
+<span class="fc" id="L146">				rankUnderInspection++;</span>
+<span class="fc" id="L147">				prevFreq = Integer.parseInt(rec.get(2));</span>
+			}
+<span class="fc" id="L149">		}</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if(rankUnderInspection -1 == rank) output = currentGroup;</span>
+<span class="fc" id="L151">		return output;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
