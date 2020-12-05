@@ -57,7 +57,7 @@ public class Export_controller {
     private Button Export_exportSelected_button;
     
     @FXML
-    private Label Export_nothingSelectedError_label;
+    private Label Export_error_label;
     
     /**
      * initialize: called once when the UI is initialized
@@ -103,36 +103,41 @@ public class Export_controller {
     @FXML
     void Export_exportSelectedButtonPressed() {
     	String initialFileName = ReportHistory.getLatestSelectedReportDate();
+    	System.out.println("a"+initialFileName+"n");
     	if (!initialFileName.isBlank()) {
-    		Export_nothingSelectedError_label.setText("");
+    		Export_error_label.setText("");
     		FileChooser fc = new FileChooser();
         	fc.setTitle("Save PDF to where?");
         	fc.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
         	fc.setInitialFileName("Report_"+initialFileName.replace(":", "")+".pdf");
         	File outputFile = fc.showSaveDialog(Export_exportSelected_button.getScene().getWindow());
-        	
-        	try {
-				ReportHistory.exportSelected(outputFile);
-			} catch (FileNotFoundException e) {
-				Export_nothingSelectedError_label.setText("Error writing to path.");
-				/*
-				Alert alert = new Alert(AlertType.ERROR);
-	    		alert.setTitle("Error");
-	    		alert.setHeaderText("I/O Error");
-	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
-	    		alert.showAndWait();
-				e.printStackTrace();*/
-			} catch (IOException e) {
-				Export_nothingSelectedError_label.setText("Error writing to path.");
-	    		/*Alert alert = new Alert(AlertType.ERROR);
-	    		alert.setTitle("Error");
-	    		alert.setHeaderText("I/O Error");
-	    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
-	    		alert.showAndWait();
-				e.printStackTrace();*/
-			}
+        	if (outputFile != null) {
+        		Export_error_label.setText("");
+        		try {
+					ReportHistory.exportSelected(outputFile);
+				} catch (FileNotFoundException e) {
+					Export_error_label.setText("Error writing to path.");
+					/*
+					Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error");
+		    		alert.setHeaderText("I/O Error");
+		    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
+		    		alert.showAndWait();
+					e.printStackTrace();*/
+				} catch (IOException e) {
+					Export_error_label.setText("Error writing to path.");
+		    		/*Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error");
+		    		alert.setHeaderText("I/O Error");
+		    		alert.setContentText("An unexpected error occurred while writing to the specified file path.");
+		    		alert.showAndWait();
+					e.printStackTrace();*/
+				}
+        	}else {
+        		Export_error_label.setText("Export cancelled.");
+        	}
     	} else {
-    		Export_nothingSelectedError_label.setText("Nothing selected.");
+    		Export_error_label.setText("Nothing selected.");
     	}
     }
     

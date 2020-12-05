@@ -46,8 +46,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
    		
    		mNameTf = (TextField)s.lookup("#BabyNames_motherName_textField");
 		fNameTf = (TextField)s.lookup("#BabyNames_fatherName_textField");
-		mYobTf = (TextField)s.lookup("#BabyNames_fatherYear_textField");
-		fYobTf = (TextField)s.lookup("#BabyNames_motherYear_textField");
+		mYobTf = (TextField)s.lookup("#BabyNames_motherYear_textField");
+		fYobTf = (TextField)s.lookup("#BabyNames_fatherYear_textField");
 		vYearTf = (TextField)s.lookup("#BabyNames_vintageYear_textField");
 		mNameErrorLabel = (Label)s.lookup("#BabyNames_motherNameError_label");
 		fNameErrorLabel = (Label)s.lookup("#BabyNames_fatherNameError_label");
@@ -59,6 +59,8 @@ public class BabyNamesControllerTest extends ApplicationTest{
 
 	@Test
 	public void normalTest() {
+		clickOn("#BabyNames_information_button");
+		clickOn("#BabyNames_information_button");
 		mNameTf.setText("Julia");
 		fNameTf.setText("Winston");
 		mYobTf.setText("1984");
@@ -68,11 +70,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample = {
-				{"Austin", "4"},
-				{"Jason", "5"},
-				{"Dustin", "6"},
-				{"Judson", "7"},
-				{"Fulton", "8"},
+				{"Austin", "96.58%"},
+				{"Jason", "95.73%"},
+				{"Dustin", "94.87%"},
+				{"Judson", "94.02%"},
+				{"Fulton", "93.16%"},
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#BabyNames_tableView");
@@ -106,11 +108,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample = {
-				{"Aimee", "3"},
-				{"Ailyn", "4"},
-				{"Iman", "5"},
-				{"Samya", "6"},
-				{"Siya", "7"},
+				{"Aimee", "97.3%"},
+				{"Ailyn", "96.4%"},
+				{"Iman", "95.5%"},
+				{"Samya", "94.59%"},
+				{"Siya", "93.69%"},
 				};
 		boolean noErrors = true;
 		TableView table = (TableView)s.lookup("#BabyNames_tableView");
@@ -142,11 +144,11 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		clickOn("#BabyNames_generate_button");
 
 		String [][] sample2 = {
-				{"Mitchell", "3"},
-				{"Michaiah", "4"},
-				{"Mikaele", "5"},
-				{"Mihailo", "6"},
-				{"Micaiah", "8"},
+				{"Mitchell", "97.2%"},
+				{"Michaiah", "96.26%"},
+				{"Mikaele", "95.33%"},
+				{"Mihailo", "94.39%"},
+				{"Micaiah", "92.52%"},
 				};
 		noErrors = true;
 		table = (TableView)s.lookup("#BabyNames_tableView");
@@ -169,6 +171,27 @@ public class BabyNamesControllerTest extends ApplicationTest{
 				&& wcErrorLabel.getText().isEmpty());
 	}
 	@Test
+	public void nameErrorTest() {
+		mNameTf.setText("");
+		fNameTf.setText("");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().contains("Please input a name")
+				&& fNameErrorLabel.getText().contains("Please input a name")
+				&& mYobErrorLabel.getText().isEmpty()
+				&& fYobErrorLabel.getText().isEmpty()
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
+		mNameTf.setText("n aa m");
+		fNameTf.setText("m aa n");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().contains("Please input a valid name")
+				&& fNameErrorLabel.getText().contains("Please input a valid name")
+				&& mYobErrorLabel.getText().isEmpty()
+				&& fYobErrorLabel.getText().isEmpty()
+				&& vYearErrorLabel.getText().isEmpty()
+				&& wcErrorLabel.getText().isEmpty());
+	}
+	@Test
 	public void yearErrorTest() {
 		mNameTf.setText("Jessica");
 		fNameTf.setText("Alex");
@@ -176,6 +199,17 @@ public class BabyNamesControllerTest extends ApplicationTest{
 		mYobTf.setText("223");
 		fYobTf.setText("22000");
 		vYearTf.setText("103");
+		clickOn("#BabyNames_generate_button");
+		assertTrue(mNameErrorLabel.getText().isEmpty()
+				&& fNameErrorLabel.getText().isEmpty()
+				&& mYobErrorLabel.getText().contains("Mother's YOB is out of range")
+				&& fYobErrorLabel.getText().contains("Father's YOB is out of range")
+				&& vYearErrorLabel.getText().contains("Vintage year is out of range")
+				&& wcErrorLabel.getText().isEmpty());
+		
+		mYobTf.setText("22000");
+		fYobTf.setText("222");
+		vYearTf.setText("22220");
 		clickOn("#BabyNames_generate_button");
 		assertTrue(mNameErrorLabel.getText().isEmpty()
 				&& fNameErrorLabel.getText().isEmpty()

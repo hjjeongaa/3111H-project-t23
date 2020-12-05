@@ -69,13 +69,6 @@ public class NamePopularityControllerTest extends ApplicationTest{
 		assertTrue(noErrors
 				&& nameErrorLabel.getText().isEmpty()
 				&& yearErrorLabel.getText().isEmpty());
-		/*
-		 * 
-				&& summaryLabel.getText().contains("is 8418")
-				&& summaryLabel.getText().contains("0.44% of total 1893471 births in 2016")
-				&& summaryLabel.getText().contains("number of births is 8685")
-				&& summaryLabel.getText().contains("0.46% of the total 1901376 births in 2014")
-		 */
 	}
 	
 	@Test
