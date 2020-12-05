@@ -492,6 +492,7 @@ public class Compatibility_controller {
 //            valid = false;
 //            System.out.println("Gender error");
 //        }
+
         if(isComboBoxEmpty(preference)){
             //if iNameMate is empty
             valid = false;
