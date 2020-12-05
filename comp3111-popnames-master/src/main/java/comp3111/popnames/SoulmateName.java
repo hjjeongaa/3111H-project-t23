@@ -66,14 +66,14 @@ public class SoulmateName extends Reports {
 	/**
 	 * Constructor for SoulmateName.
 	 * This constructor sets up the feature of exporting to HTML, and does all calculation necessary so that afterwards, elements may call functions of this class to quickly retrieve data.
-	 * @param String name - the users name.
-	 * @param String myGender - the users gender in the form of "M" or "F"
-	 * @param Integer YOB - the year of birth of the user.
-	 * @param String m_gender - your soulmate's gender in the form "M" or "F"
-	 * @param Integer preference - your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
-	 * @param String algo - which ranking system to use for the NK-T5 algorithm. {or,dr,mcr,scr}
-	 * @param String country - which country the analysis is happening in.
-	 * @param String type - most guaranteed to be human.
+	 * @param name the users name.
+	 * @param myGender the users gender in the form of "M" or "F"
+	 * @param YOB the year of birth of the user.
+	 * @param m_gender your soulmate's gender in the form "M" or "F"
+	 * @param preference your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
+	 * @param algo which ranking system to use for the NK-T5 algorithm. {or,dr,mcr,scr}
+	 * @param country which country the analysis is happening in.
+	 * @param type most guaranteed to be human.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -227,7 +227,8 @@ public class SoulmateName extends Reports {
 	/**
 	 * Given an algorithm, this function returns a list of names that were outputted from that algorithm. This function requires the calling of the constructor beforehand.
 	 * 
-	 * @param String algo - The soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @param algo The soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @return Returns a list of the names from the given algorithm.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -237,7 +238,8 @@ public class SoulmateName extends Reports {
 	
 	/**
 	 * Given an algorithm returns the number of names in the set.
-	 * @param String algo - the soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @param algo the soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @return the number of names in the list of names generated from the algorithm specified.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -247,6 +249,7 @@ public class SoulmateName extends Reports {
 	
 	/**
 	 * This function returns a set of all the names collected from every algorithm. The reason a set was used is so that there are no duplicate names in the final set of names.
+	 * @return returns a list of the set of all names from every algorithm.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */

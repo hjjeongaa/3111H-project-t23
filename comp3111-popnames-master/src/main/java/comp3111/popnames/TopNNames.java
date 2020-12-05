@@ -48,12 +48,12 @@ public class TopNNames extends Reports {
 	 * This constructors main role is to set up the hashmaps so data can be pulled from them rapidly.
 	 * It also sends information to the report logger so that information found here may be exported too.
 	 * 
-	 * @param Integer startYear - from which year the user would like to start seeing the top N names.
-	 * @param Integer endYear - the last year the user would like to see the top N names for.
-	 * @param String gender - the gender the user is interested in.
-	 * @param Integer numNames - the number of names per year the user would like to see.
-	 * @param String country - the country of interest.
-	 * @param String type - the type of interest - almost guaranteed to be human.
+	 * @param startYear from which year the user would like to start seeing the top N names.
+	 * @param endYear the last year the user would like to see the top N names for.
+	 * @param gender the gender the user is interested in.
+	 * @param numNames the number of names per year the user would like to see.
+	 * @param country the country of interest.
+	 * @param type the type of interest - almost guaranteed to be human.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -131,7 +131,7 @@ public class TopNNames extends Reports {
 	/* Interface Functions */
 	/**
 	 * This function returns a list of the top numOfNames names from the year of choice.
-	 * @param Integer year - year of interest. 
+	 * @param year year of interest. 
 	 * @return Either returns a list of strings if the year is valid, and null otherwise.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
@@ -142,7 +142,7 @@ public class TopNNames extends Reports {
 	}
 	/**
 	 * This function returns a list of the top numOfNames frequencies from the year of choice.
-	 * @param Integer year - year of interest.
+	 * @param year year of interest.
 	 * @return Either returns a list of integers, or null if the year is invalid.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
