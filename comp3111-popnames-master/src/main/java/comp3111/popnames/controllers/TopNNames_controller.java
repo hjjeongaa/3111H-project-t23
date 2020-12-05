@@ -29,6 +29,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TopNNames_controller {
+	/**
+	* TopNNames_controller.java
+	* This is the controller for the interface for the TopNNames task.
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	/* Shared Stuff */
 	
 	/* Stuff for Table */

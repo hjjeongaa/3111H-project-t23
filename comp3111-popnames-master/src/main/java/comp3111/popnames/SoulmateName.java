@@ -21,6 +21,16 @@ import comp3111.rankingAlgo.LD;
 import comp3111.rankingAlgo.RankingAlgorithmFactory;
 
 public class SoulmateName extends Reports {
+	/**
+	 * SoulmateName
+	 * 
+	 * Task 5. Given your name, year of birth, gender of interest, and age preference, can predict your soulmate's name using various algorithms.
+	 * Then from that point,this class is also the bridge into the journey through time with a selected name.
+	 * 
+	 * The way this class works is by creating a hashmap mapping a string to a list of strings. Where the key value of the string is the name of the method of obtaining a list of soulmate names.
+	 * 
+	 * @author Ryder Khoi Daniel
+	 */
 	private LocalDateTime time;
 	private String inputName;
 	private String inputGender;

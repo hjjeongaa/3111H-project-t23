@@ -29,6 +29,14 @@ import javafx.scene.image.Image;
  * v1.0
  */
 public class JourneyThroughTime extends Reports {
+	/**
+	 * JourneyThroughTime
+	 * 
+	 * WOW factor of task 5.
+	 * Called by SoulmateName and is used to pull data from for the scenes in the journey through time. 
+	 * Employs a singleton design class for simplicity and consistency.
+	 * @author Ryder Khoi Daniel
+	 */
 	// Singleton Stuff
 	private static final JourneyThroughTime SINGLE_INSTANCE = new JourneyThroughTime();
 	/**

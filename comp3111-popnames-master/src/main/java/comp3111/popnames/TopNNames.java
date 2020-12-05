@@ -24,6 +24,16 @@ import comp3111.export.ReportHistory;
  * v1.0
  */
 public class TopNNames extends Reports {
+	/**
+	* TopNNames.java
+	* 
+	* Basis of Task 1.
+	* This class operates by mapping every year in range to a list of strings, and mapping every year in range to a list of frequencies (integers).
+	* After the constructor has set up this data structure, then it is very easy and fast to find information about the year of interest.
+	* 
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	
 	/* Private Variables */
 	private HashMap<Integer, List<String>> collectionOfYears;

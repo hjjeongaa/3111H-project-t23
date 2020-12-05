@@ -16,6 +16,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
 public class Settings_controller {
+	/**
+	* Settings_controller.java
+	* This is the controller for the settings page, where global settings like country can be set.
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	
     @FXML
     private ComboBox<String> Settings_countryChoice_ComboBox;

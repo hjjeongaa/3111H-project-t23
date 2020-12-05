@@ -17,6 +17,13 @@ import javafx.scene.control.*;
  * v1.0
  */
 public class Main_controller {
+	/**
+	* Main_controller.java
+	* This is the main interface which acts as a root of all other interfaces. There is a panel on the left in which you can click to go to different pages. More information is on Ryder's supplementary document.
+	* 
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	
 	/*
 	 *	 ELEMENTS

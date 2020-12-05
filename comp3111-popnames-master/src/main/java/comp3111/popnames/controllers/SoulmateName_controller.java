@@ -42,6 +42,12 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class SoulmateName_controller {
+	/**
+	* SoulmateName_controller.java
+	* This is the controller for the interface of the soulmate page for task 5. This controller sanitizes inputs and allows the user to access task 5's WOW factor.
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	/* Stuff for tables and buttons */
 	private ObservableList<SoulmateDataModel> nkList;
 	private ObservableList<SoulmateDataModel> closestNameList;

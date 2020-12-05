@@ -19,6 +19,16 @@ import javafx.util.Pair;
  * v1.0
  */
 public class GlobalSettings {
+	/**
+	* GlobalSettings.java
+	* 
+	* Singleton design Class to keep track of all settings that can be shared between pages.
+	* In the context of this program, only the country, start year, and end year need keeping track of.
+	* This class uses a singleton design pattern to ensure that it is the same object/data all pages are referencing.
+	*
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	/* Global Settings */
 	private static String country;
 	private static int lowerBound;
