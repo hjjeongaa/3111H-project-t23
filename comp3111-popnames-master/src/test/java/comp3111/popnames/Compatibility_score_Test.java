@@ -7,7 +7,7 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+//NOTE: Since defensive programming was used, most boundary and validation test cases were tested in the controller.
 public class Compatibility_score_Test {
 	PredictCompatibilityScore report;
 	@Before

@@ -159,7 +159,8 @@ public class CompatibilityControllersTest extends ApplicationTest{
 		assertFalse(info.isVisible()||compInfo.isVisible()||parmInfo.isVisible()||pasrmInfo.isVisible()||ldInfo.isVisible());
 		
 	}
-	//remove unnecessary check
+
+	
 	private boolean isComboBoxEmpty(ComboBox<String> a) {
 		return a.getValue()==null || a.getValue().isBlank();
 	}
@@ -192,6 +193,18 @@ public class CompatibilityControllersTest extends ApplicationTest{
 		assertTrue(uNameError.isVisible());
 	}
 	@Test
+	public void testBadUserName() {	
+		clickOn("#Main_compatibility_Button");
+		TextField uName = (TextField) s.lookup("#T6_user_name_TextField");
+		uName.setText("  thisIs ERRRORRR");
+		clickOn("#T6_user_country_ComboBox");
+		type(KeyCode.DOWN);//select Scotland
+		type(KeyCode.ENTER);
+		clickOn("#T6_generate_Button");
+		Text uNameError = (Text) s.lookup("#T6_user_name_error_Text");
+		assertTrue(uNameError.isVisible());
+	}
+	@Test
 	public void testEmptyMateName() {	
 		clickOn("#Main_compatibility_Button");
 		clickOn("#T6_mate_female_RadioButton");
@@ -205,6 +218,21 @@ public class CompatibilityControllersTest extends ApplicationTest{
 		Text mateNameError = (Text) s.lookup("#T6_mate_name_error_Text");
 		assertTrue(mateNameError.isVisible());
 	}
+	@Test
+	public void testBadMateName() {	
+		clickOn("#Main_compatibility_Button");
+		clickOn("#T6_mate_female_RadioButton");
+		clickOn("#T6_user_female_RadioButton");
+		TextField mateName = (TextField) s.lookup("#T6_mate_name_TextField");
+		mateName.setText("  thisIs ERRRORRR");
+		clickOn("#T6_mate_country_ComboBox");
+		type(KeyCode.DOWN);//select Scotland
+		type(KeyCode.ENTER);
+		clickOn("#T6_generate_Button");
+		Text mateNameError = (Text) s.lookup("#T6_mate_name_error_Text");
+		assertTrue(mateNameError.isVisible());
+	}
+	@Test
 	public void testValidEntryBothFemale() {	
 		clickOn("#Main_compatibility_Button");
 		clickOn("#T6_mate_female_RadioButton");
@@ -213,10 +241,7 @@ public class CompatibilityControllersTest extends ApplicationTest{
 		boolean userError = uNameError.isVisible() || uTypeError.isVisible() || uCountryError.isVisible()|| uYOBError.isVisible();
 		
 		boolean mateError = mNameError.isVisible() || mTypeError.isVisible() || mCountryError.isVisible() || preferenceError.isVisible() || rangeError.isVisible();
-		assertTrue(userError || mateError);
+		assertFalse(userError || mateError);
 	}
-	//change mate country check
-	//test mate type change
-	//test mate 
 	
 }

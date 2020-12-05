@@ -103,7 +103,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" GridPane.rowIndex="1">
                <children>
-                  <TableView fx:id="T3_output_Table" layoutX="1.0" layoutY="1.0" prefHeight="366.0" prefWidth="922.0">
+                  <TableView fx:id="T3_output_Table" layoutX="1.0" layoutY="94.0" prefHeight="262.0" prefWidth="922.0">
                     <columns>
                       <TableColumn fx:id="T3_name_TableColumn" prefWidth="120.0" text="Name" />
                         <TableColumn fx:id="T3_start_rank_TableColumn" prefWidth="170.0" text="Start Rank" />
@@ -116,11 +116,11 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <TextArea fx:id="T3_infobox_TextArea" layoutX="237.0" layoutY="76.0" prefHeight="196.0" prefWidth="402.0" text="This feature generates the list of names  (and their most recent, shortest duration) with the largest rise or largest fall.&#10;&#10;You may specify the Gender (Male or Female), Type (human or animal), Country and a corresponding start year and end year (within the supported years).&#10;&#10;Click generate to generate the report&#10;&#10;The rankings are generated using Standard Competition Ranking: more can be found here (https://en.wikipedia.org/wiki/Ranking)." visible="false" wrapText="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="50.0" />
+                  <TextArea fx:id="T3_summary_TextArea" editable="false" layoutY="-3.0" prefHeight="95.0" prefWidth="924.0" wrapText="true" />
+                  <TextArea fx:id="T3_infobox_TextArea" layoutX="237.0" layoutY="76.0" prefHeight="196.0" prefWidth="402.0" text="This feature generates the list of names  (and their most recent, shortest duration) with the largest rise or largest fall. That will be shown in the table.&#10;&#10;The textual summary will only report on the first rising name and first falling name with the largest increase/ decrease in popularity respectively&#10;&#10;You may specify the Gender (Male or Female), Type (human or animal), Country and a corresponding start year and end year (within the supported years).&#10;&#10;Click generate to generate the report&#10;&#10;The rankings are generated using Standard Competition Ranking: more can be found here (https://en.wikipedia.org/wiki/Ranking)." visible="false" wrapText="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
          </children>
       </GridPane>
    </children>
 </AnchorPane>
-
