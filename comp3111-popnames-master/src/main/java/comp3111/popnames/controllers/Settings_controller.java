@@ -1,3 +1,10 @@
+/**
+* Settings_controller.java
+* This is the controller for the settings page, where global settings like country can be set.
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.DatasetHandler;

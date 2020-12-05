@@ -54,6 +54,12 @@ public class Scene4_controller {
     /* Methods */
     
     @FXML
+    /**
+     * Initialize all the elements on the interface.
+     * randomly choose a year and display its facts and images.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() throws FileNotFoundException {
     	Random rand = new Random();
     	int randomYear = 1880 + rand.nextInt(140);
@@ -61,6 +67,12 @@ public class Scene4_controller {
     	
     }
     
+    /**
+     * Utility function to render to the display from a given year.
+     * Assumes that the input year is valid.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void loadDisplay(int year) throws FileNotFoundException {
     	JTT4_yearImage_ImageView.setImage(JourneyThroughTime.getImage(year));
     	JTT4_learnYear_TextField.setText(String.format("%d", year));
@@ -69,6 +81,11 @@ public class Scene4_controller {
     	JTT4_fact2_TextField.setText(String.format("On top of that, %s.",  initFacts.get(1)));
     }
     
+    /**
+     * returns the year of interest. If the year is invalid, an error message will show up.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     int getCleanedYear() {
     	int res = -1;
     	try {
@@ -86,6 +103,11 @@ public class Scene4_controller {
     }
     
     @FXML
+    /**
+     * Called when the user has entered a year and would like to learn more about that year.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void findInfo() throws FileNotFoundException {
     	JTT4_invalidYear_Label.setVisible(false);
     	int year = getCleanedYear();
@@ -95,6 +117,11 @@ public class Scene4_controller {
     }
 
     @FXML
+    /**
+     * Used to return to the original soulmate interface.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void goHome() {
     	Parent root = null;
 		try {

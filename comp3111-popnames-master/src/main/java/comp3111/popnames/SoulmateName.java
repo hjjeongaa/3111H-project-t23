@@ -1,7 +1,11 @@
 /**
  * SoulmateName
  * 
- * Task 5. Given your name, year of birth, gender of interest, and age preference, can predict your soulmates name using various algorithms.
+ * Task 5. Given your name, year of birth, gender of interest, and age preference, can predict your soulmate's name using various algorithms.
+ * Then from that point,this class is also the bridge into the journey through time with a selected name.
+ * 
+ * The way this class works is by creating a hashmap mapping a string to a list of strings. Where the key value of the string is the name of the method of obtaining a list of soulmate names.
+ * 
  * @author Ryder Khoi Daniel
  */
 
@@ -36,12 +40,34 @@ public class SoulmateName extends Reports {
 	 * 
 	 * */
 	
+	/**
+	 * Utility boolean function to determine if source is inside table.
+	 * @param String source, the string in question
+	 * @param Table a list of strings. To be checked whether source is in it.
+	 * @return True if source is in table, false otherwise.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
 	private boolean in(String source, List<String> table) {
 		for(String comp : table) if(source.equals(comp)) return true;
 		return false;
 	}
 	
-	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo,String country, String type) {
+	/**
+	 * Constructor for SoulmateName.
+	 * This constructor sets up the feature of exporting to HTML, and does all calculation necessary so that afterwards, elements may call functions of this class to quickly retrieve data.
+	 * @param String name - the users name.
+	 * @param String myGender - the users gender in the form of "M" or "F"
+	 * @param Integer YOB - the year of birth of the user.
+	 * @param String m_gender - your soulmate's gender in the form "M" or "F"
+	 * @param Intgeger preference - your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
+	 * @param String algo - which ranking system to use for the NK-T5 algorithm. {or,dr,mcr,scr}
+	 * @param String country - which country the analysis is happening in.
+	 * @param String type - most guaranteed to be human.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo, String country, String type) {
 		super(name, myGender, country, type);
 		super.setoReport("Potential Soulmates of " + name);
 		super.setTask("Soulmates of " + name);
@@ -63,6 +89,8 @@ public class SoulmateName extends Reports {
 		
 		// Systematically go through algorithms to populate the list soulmateNames.
 		// Things that will be used across algorithms:
+		// Check for boundary cases where your age is already the max year and you prefer someone younger, or you are born in the minimum year and prefer someone older.
+		// In which case, just go to the edge years.
 		int oYOB = this.inputYOB - preference;
 		if(oYOB == GlobalSettings.getLowerBound()-1) oYOB++;
 		if(oYOB == GlobalSettings.getUpperBound()+1) oYOB--;
@@ -76,6 +104,7 @@ public class SoulmateName extends Reports {
 		for(String recommended : oNames) finalNames.add(recommended);
 		
 		// Second algorithm: Closest name
+		// Find the person with the smallest LD to you without having the same name as you.
 		int minLD = Integer.MAX_VALUE;
 		String selectedName = "";
 		for(CSVRecord rec : AnalyzeNames.getFileParser(oYOB, type, country)){
@@ -96,7 +125,7 @@ public class SoulmateName extends Reports {
 		oNames =  new ArrayList<String>();
 		Set<String> collectNames = new HashSet<String>();
 		int count = 0;
-		if(YOB != GlobalSettings.getLowerBound()) {
+		if(YOB != GlobalSettings.getLowerBound()) { // check for those boundary cases.
 			for(CSVRecord rec : AnalyzeNames.getFileParser(YOB - 1, type, country)){
 				if(rec.get(1).equals(m_gender)) {
 					if(count == 2) break;
@@ -159,6 +188,11 @@ public class SoulmateName extends Reports {
 	}
 	
 	/* Report Functions */
+	/**
+	 * Utility class used to set the output foe exporting, formatting the HTML output table so it looks half decent after exporting.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
 	private void updateReportLog() {
 		String thisHtml = String.format("<head> <style> table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } </style> </head> <h3>Potential Soulmates of %s</h3>", this.inputName); 
 		thisHtml += "<table><tr><th>NK-T5</th><th>Similar Name</th><th>Probably Your Classmate</th><th>Chance Encounter</th></tr>";
@@ -180,15 +214,32 @@ public class SoulmateName extends Reports {
 	}
 	
 	// Getters
-	
+	/**
+	 * Given an algorithm, this function returns a list of names that were outputted from that algorithm. This function requires the calling of the constructor beforehand.
+	 * 
+	 * @param String algo - The soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
 	public List<String> getSoulmateNames(String algo){
 		return soulmateNames.get(algo);
 	}
 	
+	/**
+	 * Given an algorithm returns the number of names in the set.
+	 * @param String algo - the soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
 	public int getSoulmateNamesSize(String algo) {
 		return soulmateNames.get(algo).size();
 	}
 	
+	/**
+	 * This function returns a set of all the names collected from every algorithm. The reason a set was used is so that there are no duplicate names in the final set of names.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
 	public List<String> getFinalNames(){
 		List<String> output = new ArrayList<String>();
 		for(String name : finalNames) output.add(name);

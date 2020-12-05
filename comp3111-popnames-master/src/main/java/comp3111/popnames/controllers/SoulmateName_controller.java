@@ -1,3 +1,10 @@
+/**
+* SoulmateName_controller.java
+* This is the controller for the interface of the soulmate page for task 5. This controller sanitizes inputs and allows the user to access task 5's WOW factor.
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
 package comp3111.popnames.controllers;
 
 import java.io.IOException;
@@ -171,6 +178,11 @@ public class SoulmateName_controller {
     private HBox Soulmate_chance_HBox;
     
     @FXML
+    /**
+     * Initialize all the elements on the interface such as tables and comboboxes.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() {
     	//Link each table column with the correct variable inside the data model for the tableview.
     	Soulmate_NKcol_TableColumn.setCellValueFactory(new PropertyValueFactory<SoulmateDataModel,String>("name"));
@@ -204,6 +216,11 @@ public class SoulmateName_controller {
     	Soulmate_nkAlgo_ComboBox.setValue("Ordinal");
     }
     
+    /**
+     * Used to remove any error messages quickly.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private void clearScreen() {
     	nkList.clear();
     	closestNameList.clear();
@@ -221,6 +238,12 @@ public class SoulmateName_controller {
     	Soulmate_infoPane_Pane.setVisible(false);
     }
     
+    /**
+     * given a lower bound and an upper bound, this will check if the value in the input year is an integer, and if it is within the range specified.
+     * if not, then the appropriate error messages will appear.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private int getCleanedYear(int lowerBound, int upperBound) {
     	int res = -1;
     	try {
@@ -237,6 +260,11 @@ public class SoulmateName_controller {
     	return res;
     }
     
+    /**
+     * returns a sanitized name. Displays error message if name is empty.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private String getCleanedName() {
     	String res = Soulmate_inputName_TextField.getText();
     	if( res.length() == 0) Soulmate_errorName_Label.setVisible(true);
@@ -244,6 +272,12 @@ public class SoulmateName_controller {
     }
     
     @FXML
+    /**
+     * Uses the class SoulmateName and its computed values to populate the tables in the interface.
+     * It also makes use of the functions getting cleaned input.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void findSoulmate() {
     	clearScreen();
     	/* Get Variables */
@@ -300,6 +334,11 @@ public class SoulmateName_controller {
     	Soulmate_JTT_Button.setDisable(false);
     }
     
+    /**
+     * Make the user select a name from the table on the right hand side. If they dont, an error message will appear.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private String getCleanedJTTName() {
     	if(Soulmate_JTTNameSelection_TableView.getSelectionModel().isEmpty()) {
 	    	Soulmate_JTTMessage_Label.setText("Please select one of the names from below.");
@@ -310,6 +349,11 @@ public class SoulmateName_controller {
     }
     
     @FXML
+    /**
+     * The bridge into the WOW factor, after all the inputs have been checked again, then the JourneyThroughTime object is set up and ready for the user to experience.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void JTT() {
     	Soulmate_JTTMessage_Label.setText("Select a name from below when available, and press 'Journey Through Time' for a brief history of your two names.");
     	Soulmate_JTTMessage_Label.setTextFill(Color.BLACK);
@@ -353,10 +397,20 @@ public class SoulmateName_controller {
 
 
     @FXML
+    /**
+     * Used to close the info pane after the user has decided to learn more about an algorithm.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void closeInfo() {
     	Soulmate_infoPane_Pane.setVisible(false);
     }
 
+    /**
+     * Utility function to update the info pane with the desired information in one line.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private void updateInfo(String algo, String description) {
     	Soulmate_infoPaneTitle_Label.setText(algo);
     	Soulmate_infoPaneDescription_Label.setText(description);
@@ -365,6 +419,11 @@ public class SoulmateName_controller {
     }
     
     @FXML
+    /**
+     * Lets the user learn more about the NK-T5 algorithm.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void nkShow() {
     	String algo = "NK-T5";
     	String desc = "    The NK-T5 is described on canvas too. What this algorithm does is it gets the rank of your name in your year of birth. And determines the year of birth of your mate, and returns the name of the person of the desired gender with equal rank.";
@@ -372,6 +431,11 @@ public class SoulmateName_controller {
     }
     
     @FXML
+    /**
+     * Lets the user learn more about the closest name algorithm
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void ldShow() {
     	String algo = "Closest Name";
     	String desc = "    This algorithm returns the person with the closes name to you in the year before, on, or after the year you were born based off of your preference. Who knows, maybe you'll get along swell with someone with almost the same name as you?";
@@ -379,6 +443,11 @@ public class SoulmateName_controller {
     }
 
     @FXML
+    /**
+     * Lets the user learn more about the probably your classmate algorithm
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void pycShow() {
     	String algo = "Probably Your Classmate";
     	String desc = "    The people listed here were likely names of your classmates! A great source of soulmates! The way this algorithm works is it gets the most popular names of the desired gender from the years around your birth year.";
@@ -386,6 +455,11 @@ public class SoulmateName_controller {
     }
     
     @FXML
+    /**
+     * Lets the user learn more about the chance encounter algorithm.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void chanceShow() {
     	String algo = "Chance Enounter";
     	String desc = "    Maybe you meet your soulmate in a completely random fashion? On a bus? On the train? What this algorithm does is it chooses a name randomly where the probability of choosing that name is equal to the frequency of that name divided by the number of members of your desired gender in that year. This algorithm selects two names for good measure and good luck!";

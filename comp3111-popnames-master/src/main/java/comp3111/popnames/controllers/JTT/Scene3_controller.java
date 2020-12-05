@@ -42,6 +42,12 @@ public class Scene3_controller {
 
     /* Methods */
     @FXML
+    /**
+     * Initialize all the elements on the interface.
+     * In this case, its facts about your birth year, and an image related to your year.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() throws FileNotFoundException {
     	int birthYear = JourneyThroughTime.getYOB();
     	List<String> usersFacts = JourneyThroughTime.getFacts(birthYear);
@@ -51,6 +57,11 @@ public class Scene3_controller {
     }
     
     @FXML
+    /**
+     * Used to jump to the next scene.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void nextScene() {
     	Parent root = null;
 		try {
