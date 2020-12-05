@@ -251,9 +251,9 @@ public class RecommendBabyName extends ReportLog {
 			//how much the RGB can deviate from the base color
 <span class="fc" id="L252">			float offsetRange = 0.2f;</span>
 			//check that the new RGB is still in range
-<span class="pc bpc" id="L254" title="1 of 4 branches missed.">			float rOffset; do {rOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(rOffset + newR &gt; 0.0f &amp;&amp; rOffset+newR &lt; 1.0f));</span>
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">			float rOffset; do {rOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(rOffset + newR &gt; 0.0f &amp;&amp; rOffset+newR &lt; 1.0f));</span>
 <span class="pc bpc" id="L255" title="1 of 4 branches missed.">			float gOffset; do {gOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(gOffset + newG &gt; 0.0f &amp;&amp; gOffset+newG &lt; 1.0f));</span>
-<span class="pc bpc" id="L256" title="1 of 4 branches missed.">			float bOffset; do {bOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(bOffset + newB &gt; 0.0f &amp;&amp; bOffset+newB &lt; 1.0f));</span>
+<span class="pc bpc" id="L256" title="2 of 4 branches missed.">			float bOffset; do {bOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(bOffset + newB &gt; 0.0f &amp;&amp; bOffset+newB &lt; 1.0f));</span>
 <span class="fc" id="L257">			Color c = new Color(newR+rOffset, newG+gOffset, newB+bOffset, 1);</span>
 <span class="fc" id="L258">		    thisPalette[i] = c;</span>
 		}
