@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">GlobalSettings.java</span></div><h1>GlobalSettings.java</h1><pre class="source lang-java linenums">/**
+* GlobalSettings.java
+* 
+* Singleton design Class to keep track of all settings that can be shared between pages.
+* In the context of this program, only the country, start year, and end year need keeping track of.
+* This class uses a singleton design pattern to ensure that it is the same object/data all pages are referencing.
+*
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
+package comp3111.popnames;
+
+import javafx.util.Pair;
+/**
+ * Used for getting the country that all pages should be pulling their data set from, and that countries respective upper and lower bounds for retrieving years.
+ * This class can also be used to set the country, in which case, the upper and lower bounds will be automatically updated. 
+ * @author Ryder Khoi Daniel
+ * v1.0
+ */
+public class GlobalSettings {
+	/**
+	* GlobalSettings.java
+	* 
+	* Singleton design Class to keep track of all settings that can be shared between pages.
+	* In the context of this program, only the country, start year, and end year need keeping track of.
+	* This class uses a singleton design pattern to ensure that it is the same object/data all pages are referencing.
+	*
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
+	/* Global Settings */
+	private static String country;
+	private static int lowerBound;
+	private static int upperBound;
+	
+<span class="fc" id="L37">	private static final GlobalSettings SINGLE_INSTANCE = new GlobalSettings();</span>
+	/**
+	 * The constructor of this class is private as this class uses a singleton design pattern.
+	 * Moreover, the default data set it the US. This constructor is called when the object is referenced for the first time from anywhere in the program.
+	 * 
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L45">	private GlobalSettings() {</span>
+		// Setting the defaults
+<span class="fc" id="L47">		GlobalSettings.country = &quot;usa&quot;;</span>
+<span class="fc" id="L48">		GlobalSettings.lowerBound = 1880;</span>
+<span class="fc" id="L49">		GlobalSettings.upperBound = 2019;</span>
+<span class="fc" id="L50">	}</span>
+	
+	// Setter
+	/**
+	 * This function is used to set the country to your liking. Intended to only be called from the settings page.
+	 * After this function is called, the upper and lower bound are automatically updated. This function operates under the assumption that the country parameter represents a valid data set.
+	 * @param countryName {usa, scotland, norway, NorthernIreland, France, EnglandAndWales}
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static void setCountry(String countryName) {
+<span class="fc" id="L61">		Pair&lt;String, String&gt; countryRange = DatasetHandler.getValidRange(&quot;human&quot;, countryName);</span>
+<span class="fc" id="L62">		GlobalSettings.country = countryName;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		if(countryRange == null) return;</span>
+<span class="fc" id="L64">		GlobalSettings.lowerBound = Integer.parseInt(countryRange.getKey());</span>
+<span class="fc" id="L65">		GlobalSettings.upperBound = Integer.parseInt(countryRange.getValue());</span>
+<span class="fc" id="L66">	}</span>
+	
+	// Getters
+	/**
+	 * returns the object itself. Not entirely useful in the context of this program.
+	 * @return The GlobalSettings object
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static GlobalSettings getInstance() {
+<span class="nc" id="L76">		return SINGLE_INSTANCE;</span>
+	}
+	
+	/**
+	 * @return String of the country variable.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static String getCountry() {
+<span class="fc" id="L85">		return country;</span>
+	}
+	
+	/**
+	 * @return Integer The smallest year in which a csv file for country can be opened.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static int getLowerBound() {
+<span class="fc" id="L94">		return lowerBound;</span>
+	}
+	
+	/**
+	 * @return Integer The largest year in which a csv file for country can be opened.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static int getUpperBound() {
+<span class="fc" id="L103">		return upperBound;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

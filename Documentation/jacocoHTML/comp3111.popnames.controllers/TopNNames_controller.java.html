@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopNNames_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">TopNNames_controller.java</span></div><h1>TopNNames_controller.java</h1><pre class="source lang-java linenums">/**
+* TopNNames_controller.java
+* This is the controller for the interface for the TopNNames task.
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
+package comp3111.popnames.controllers;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.TopNNames;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+<span class="fc" id="L31">public class TopNNames_controller {</span>
+	/**
+	* TopNNames_controller.java
+	* This is the controller for the interface for the TopNNames task.
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
+	/* Shared Stuff */
+	
+	/* Stuff for Table */
+	private ObservableList&lt;TopNNamesDataModel&gt; tableViewList;
+	
+	//Data model for each row of the TableView; each row has two columns, rank and name.
+	public class TopNNamesDataModel {
+		private final SimpleStringProperty rank;
+		private final SimpleStringProperty name;
+		private final SimpleStringProperty freq;
+		
+<span class="fc" id="L49">		public TopNNamesDataModel(String Rank, String Name, String Freq) {</span>
+<span class="fc" id="L50">			this.rank = new SimpleStringProperty(Rank);</span>
+<span class="fc" id="L51">			this.name = new SimpleStringProperty(Name);</span>
+<span class="fc" id="L52">			this.freq = new SimpleStringProperty(Freq);</span>
+<span class="fc" id="L53">		}</span>
+		//Each table column will use these methods to retrieve the values of each cell.
+<span class="fc" id="L55">		public String getRank() {return this.rank.get();}</span>
+<span class="fc" id="L56">		public String getName() {return this.name.get();}</span>
+<span class="fc" id="L57">		public String getFreq() {return this.freq.get();}</span>
+	}
+	
+	
+	/* Elements */
+	@FXML
+    private TextField TopNNames_startYear_TextField;
+
+    @FXML
+    private TextField TopNNames_endYear_TextField;
+
+    @FXML
+    private RadioButton TopNNames_isMale_RadioButton;
+
+    @FXML
+    private ToggleGroup TopNNames_getGender;
+
+    @FXML
+    private RadioButton TopNNames_isFemale_RadioButton;
+
+    @FXML
+    private Label TopNNames_invalidEnd_Label;
+
+    @FXML
+    private Label TopNNames_endRangeError_Label;
+
+    @FXML
+    private Label TopNNames_invalidStart_Label;
+
+    @FXML
+    private Label TopNNames_startRangeError_Label;
+
+    @FXML
+    private TextField TopNNames_N_TextField;
+
+    @FXML
+    private Label TopNNames_NError1_Label;
+
+    @FXML
+    private Label TopNNames_NError2_Label;
+
+    @FXML
+    private Button TopNNames_generate_Button;
+
+    @FXML
+    private Label TopNNames_description_Label;
+
+    @FXML
+    private TableView&lt;TopNNamesDataModel&gt; TopNNames_outputTable_TableView;
+
+    @FXML
+    private TableColumn&lt;TopNNamesDataModel, String&gt; TopNNames_rank_TableColumn;
+
+    @FXML
+    private TableColumn&lt;TopNNamesDataModel, String&gt; TopNNames_name_TableColumn;
+    
+    @FXML
+    private TableColumn&lt;TopNNamesDataModel, String&gt; TopNNames_freq_TableColumn;
+
+    @FXML
+    private Slider TopNNames_yearselector_Slider;
+    
+    @FXML
+    private Label TopNNames_yearlabel_Label;
+
+    /* Table Initialization */
+    @FXML
+    /**
+     * Initialize the table.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void initialize() {
+    	// Link each table column with the correct variable inside the data model for the tableview.
+<span class="fc" id="L131">    	TopNNames_rank_TableColumn.setCellValueFactory(new PropertyValueFactory&lt;TopNNamesDataModel,String&gt;(&quot;rank&quot;));</span>
+<span class="fc" id="L132">    	TopNNames_name_TableColumn.setCellValueFactory(new PropertyValueFactory&lt;TopNNamesDataModel,String&gt;(&quot;name&quot;));</span>
+<span class="fc" id="L133">    	TopNNames_freq_TableColumn.setCellValueFactory(new PropertyValueFactory&lt;TopNNamesDataModel,String&gt;(&quot;freq&quot;));</span>
+    	
+    	// Create an array of data models and link this array with the tableview.
+<span class="fc" id="L136">    	this.tableViewList = FXCollections.&lt;TopNNamesDataModel&gt;observableArrayList();</span>
+<span class="fc" id="L137">    	TopNNames_outputTable_TableView.setItems(this.tableViewList);</span>
+<span class="fc" id="L138">    }</span>
+    
+    /* Methods */
+    /**
+     * Used to clear the screen of errors and disable the slider.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private void clearScreen() {
+<span class="fc" id="L147">    	TopNNames_invalidStart_Label.setVisible(false);</span>
+<span class="fc" id="L148">    	TopNNames_invalidEnd_Label.setVisible(false);</span>
+    	
+<span class="fc" id="L150">    	TopNNames_startRangeError_Label.setVisible(false);</span>
+<span class="fc" id="L151">    	TopNNames_endRangeError_Label.setVisible(false);</span>
+    	
+<span class="fc" id="L153">    	TopNNames_NError1_Label.setVisible(false);</span>
+<span class="fc" id="L154">    	TopNNames_NError2_Label.setVisible(false);</span>
+    	
+<span class="fc" id="L156">    	TopNNames_description_Label.setText(&quot;&quot;);</span>
+    	
+<span class="fc" id="L158">    	TopNNames_yearselector_Slider.setDisable(true);</span>
+<span class="fc" id="L159">    }</span>
+    
+    /**
+     * returns the start year if its valid, shows error messages if not and returns -1.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private int getCleanedStartYear( int lowerBound, int upperBound) {
+<span class="fc" id="L167">    	int res = -1;</span>
+    	try {
+<span class="fc" id="L169">    		res = Integer.parseInt(TopNNames_startYear_TextField.getText());</span>
+<span class="fc" id="L170">    	} catch(NumberFormatException e) {</span>
+    		// the year is not a valid integer.
+<span class="fc" id="L172">    		TopNNames_invalidStart_Label.setVisible(true);</span>
+<span class="fc" id="L173">    		return res;</span>
+<span class="fc" id="L174">    	}</span>
+<span class="fc bfc" id="L175" title="All 4 branches covered.">    	if(res &lt; lowerBound || res &gt; upperBound ) {</span>
+<span class="fc" id="L176">    		TopNNames_startRangeError_Label.setText(String.format(&quot;Year Range %d-%d&quot;,lowerBound, upperBound));</span>
+<span class="fc" id="L177">    		TopNNames_startRangeError_Label.setVisible(true);</span>
+<span class="fc" id="L178">    		res = -1;</span>
+    	} 
+<span class="fc" id="L180">    	return res;</span>
+    }
+    
+    /**
+     * Returns the end year if its valid or shows error messages if the year is not valid and returns -1.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private int getCleanedEndYear( int lowerBound, int upperBound) {
+<span class="fc" id="L189">    	int res = -1;</span>
+    	try {
+<span class="fc" id="L191">    		res = Integer.parseInt(TopNNames_endYear_TextField.getText());</span>
+<span class="fc" id="L192">    	} catch(NumberFormatException e) {</span>
+    		// the year is not a valid integer.
+<span class="fc" id="L194">    		TopNNames_invalidEnd_Label.setVisible(true);</span>
+<span class="fc" id="L195">    		return res;</span>
+<span class="fc" id="L196">    	}</span>
+<span class="fc bfc" id="L197" title="All 4 branches covered.">    	if( res &lt; lowerBound || res &gt; upperBound ) {</span>
+<span class="fc" id="L198">    		TopNNames_endRangeError_Label.setText(String.format(&quot;Year Range %d-%d&quot;, lowerBound, upperBound));</span>
+<span class="fc" id="L199">    		TopNNames_endRangeError_Label.setVisible(true);</span>
+<span class="fc" id="L200">    		res = -1;</span>
+    	}
+<span class="fc" id="L202">    	return res;</span>
+    }
+    
+    /**
+     * returns the number of names specified, or -1 if the number is invalid. If it is invalid error messages will also be shown.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private int getCleanedNumberOfNames() {
+<span class="fc" id="L211">    	int res = -1;</span>
+    	try {
+<span class="fc" id="L213">    		res = Integer.parseInt(TopNNames_N_TextField.getText());</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">    		if(res &lt; 1) {</span>
+<span class="fc" id="L215">    			TopNNames_NError1_Label.setVisible(true);</span>
+<span class="fc" id="L216">    			TopNNames_NError2_Label.setVisible(true);</span>
+<span class="fc" id="L217">    			res = -1;</span>
+    		}
+<span class="fc" id="L219">    	} catch(NumberFormatException e) {</span>
+    		// N is not an integer
+<span class="fc" id="L221">    		TopNNames_NError1_Label.setVisible(true);</span>
+<span class="fc" id="L222">    	}</span>
+<span class="fc" id="L223">    	return res;</span>
+    }
+    
+    /**
+     * Used to calculate the names that appear most often in the top two position.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private List&lt;String&gt; modeName(TopNNames source) {
+<span class="fc" id="L232">    	List&lt;String&gt; output = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L233">    	List&lt;String&gt; topNames1 = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L234">    	List&lt;String&gt; topNames2 = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">    	for(int year = source.getStartYear(); year &lt;= source.getEndYear(); ++year) {</span>
+<span class="fc" id="L236">    		topNames1.add(source.getListOfNamesFromYear(year).get(0));</span>
+<span class="fc" id="L237">    		topNames2.add(source.getListOfNamesFromYear(year).get(1));</span>
+    	}
+    	
+<span class="fc" id="L240">    	String mode1 = &quot;-1&quot;; int msf1 = 1;</span>
+<span class="fc" id="L241">    	String mode2 = &quot;-1&quot;; int msf2 = 1;</span>
+<span class="fc" id="L242">    	HashMap&lt;String,Integer&gt; modeFind1 = new HashMap&lt;String, Integer&gt;();</span>
+<span class="fc" id="L243">    	HashMap&lt;String,Integer&gt; modeFind2 = new HashMap&lt;String, Integer&gt;();</span>
+    	
+<span class="fc bfc" id="L245" title="All 2 branches covered.">    	for(String name : topNames1) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">    		if(modeFind1.get(name) == null) modeFind1.put(name, 1);</span>
+<span class="fc" id="L247">    		else modeFind1.put(name, modeFind1.get(name)+1);</span>
+<span class="fc" id="L248">    	}</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">    	for(String name : topNames2) {</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">    		if(modeFind2.get(name) == null) modeFind2.put(name, 1);</span>
+<span class="fc" id="L251">    		else modeFind2.put(name, modeFind2.get(name)+1);</span>
+<span class="fc" id="L252">    	}</span>
+    	
+<span class="fc bfc" id="L254" title="All 2 branches covered.">    	for (Map.Entry me : modeFind1.entrySet()) {</span>
+<span class="fc" id="L255">            msf1 = Math.max(msf1, (int) me.getValue());</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">            if(msf1 == (int) me.getValue()) mode1 = (String) me.getKey();</span>
+<span class="fc" id="L257">        }</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">    	for (Map.Entry me : modeFind2.entrySet()) {</span>
+<span class="fc" id="L259">            msf2 = Math.max(msf2, (int) me.getValue());</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if(msf2 == (int) me.getValue()) mode2 = (String) me.getKey();</span>
+<span class="fc" id="L261">        }</span>
+    	
+<span class="fc" id="L263">    	output.add(mode1);</span>
+<span class="fc" id="L264">    	output.add(mode2);</span>
+    	
+<span class="fc" id="L266">    	return output;</span>
+    }
+    
+    /**
+     * Used to find the frequencies of those names appearing in top positions.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    private List&lt;Integer&gt; modeFreq(TopNNames source) {
+<span class="fc" id="L275">    	List&lt;Integer&gt; output = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L276">    	List&lt;String&gt; topNames1 = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L277">    	List&lt;String&gt; topNames2 = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">    	for(int year = source.getStartYear(); year &lt;= source.getEndYear(); ++year) {</span>
+<span class="fc" id="L279">    		topNames1.add(source.getListOfNamesFromYear(year).get(0));</span>
+<span class="fc" id="L280">    		topNames2.add(source.getListOfNamesFromYear(year).get(1));</span>
+    	}
+    	
+<span class="fc" id="L283">    	Integer mode1 = -1; int msf1 = 1;</span>
+<span class="fc" id="L284">    	Integer mode2 = -1; int msf2 = 1;</span>
+<span class="fc" id="L285">    	HashMap&lt;String,Integer&gt; modeFind1 = new HashMap&lt;String, Integer&gt;();</span>
+<span class="fc" id="L286">    	HashMap&lt;String,Integer&gt; modeFind2 = new HashMap&lt;String, Integer&gt;();</span>
+    	
+<span class="fc bfc" id="L288" title="All 2 branches covered.">    	for(String name : topNames1) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">    		if(modeFind1.get(name) == null) modeFind1.put(name, 1);</span>
+<span class="fc" id="L290">    		else modeFind1.put(name, modeFind1.get(name)+1);</span>
+<span class="fc" id="L291">    	}</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">    	for(String name : topNames2) {</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">    		if(modeFind2.get(name) == null) modeFind2.put(name, 1);</span>
+<span class="fc" id="L294">    		else modeFind2.put(name, modeFind2.get(name)+1);</span>
+<span class="fc" id="L295">    	}</span>
+    	
+<span class="fc bfc" id="L297" title="All 2 branches covered.">    	for (Map.Entry me : modeFind1.entrySet()) {</span>
+<span class="fc" id="L298">            msf1 = Math.max(msf1, (int) me.getValue());</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">            if(msf1 == (int) me.getValue()) mode1 = (Integer) me.getValue();</span>
+<span class="fc" id="L300">        }</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">    	for (Map.Entry me : modeFind2.entrySet()) {</span>
+<span class="fc" id="L302">            msf2 = Math.max(msf2, (int) me.getValue());</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">            if(msf2 == (int) me.getValue()) mode2 = (Integer) me.getValue();</span>
+<span class="fc" id="L304">        }</span>
+    	
+<span class="fc" id="L306">    	output.add(mode1);</span>
+<span class="fc" id="L307">    	output.add(mode2);</span>
+    	
+<span class="fc" id="L309">    	return output;</span>
+    }
+    
+    private TopNNames src;
+    private int nums;
+    
+    @FXML
+    /**
+     * This is run when the button is pressed. Based on the user inputs, the data structure is set up, and all other elements may now access it rapidly. If any of the inputs are bad, then an error message will show up and nothing will happen.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void generateTopNNames() {
+<span class="fc" id="L322">    	clearScreen();</span>
+    	// Input sanitation.
+<span class="fc" id="L324">    	int numberOfNames = getCleanedNumberOfNames();</span>
+    	
+<span class="fc" id="L326">    	int startYear = getCleanedStartYear(GlobalSettings.getLowerBound(), GlobalSettings.getUpperBound()); // these values are hard coded for now.</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">    	if(startYear == -1) return;</span>
+<span class="fc" id="L328">    	int endYear = getCleanedEndYear(startYear, 2019);</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">    	if(endYear == -1) return;</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">    	if(numberOfNames == -1) return;</span>
+    	
+<span class="fc bfc" id="L332" title="All 2 branches covered.">    	String gender = (TopNNames_isMale_RadioButton.isSelected())?&quot;M&quot;:&quot;F&quot;;</span>
+    	
+<span class="fc" id="L334">    	this.src = new TopNNames(startYear, endYear, gender, numberOfNames ,GlobalSettings.getCountry(), &quot;human&quot;);</span>
+<span class="fc" id="L335">    	this.nums = numberOfNames;</span>
+    	
+    	// Enable the slider now that everything is good
+    	
+<span class="fc bfc" id="L339" title="All 2 branches covered.">    	if(startYear != endYear) TopNNames_yearselector_Slider.setDisable(false);</span>
+    	
+<span class="fc" id="L341">    	TopNNames_yearselector_Slider.setMin(startYear);</span>
+<span class="fc" id="L342">    	TopNNames_yearselector_Slider.setMax(endYear);</span>
+<span class="fc" id="L343">    	TopNNames_yearselector_Slider.setValue(startYear);</span>
+    	
+<span class="fc" id="L345">    	updateTable();</span>
+<span class="fc" id="L346">    	List&lt;String&gt; tops = modeName(this.src);</span>
+<span class="fc" id="L347">    	List&lt;Integer&gt; topF = modeFreq(this.src);</span>
+<span class="fc" id="L348">    	String analysis  = String.format(&quot;Between %d and %d, the most consistently popular name was %s, appearing %d times in first. And the second most consistently popular name was %s, appearing %d times in second.&quot;, startYear, endYear, tops.get(0), topF.get(0), tops.get(1), topF.get(1));</span>
+    	
+<span class="fc" id="L350">    	TopNNames_description_Label.setText(analysis);</span>
+<span class="fc" id="L351">    }</span>
+    
+    @FXML
+    /**
+     * Called whenever there is a drag or mouse event detected. Allows for a dynamic view of the names.
+     * This function gets information from the slider and draws the desired output to the table.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void updateTable() {
+<span class="fc" id="L361">    	int yearOfInterest = (int) TopNNames_yearselector_Slider.getValue();</span>
+<span class="fc" id="L362">    	TopNNames_yearlabel_Label.setText(String.format(&quot;Year: %d&quot;, yearOfInterest));</span>
+<span class="fc" id="L363">    	tableViewList.clear();</span>
+    	
+<span class="fc" id="L365">    	List&lt;String&gt; names = this.src.getListOfNamesFromYear(yearOfInterest);</span>
+<span class="fc" id="L366">    	List&lt;Integer&gt; freqs = this.src.getListOfFrequenciesFromYear(yearOfInterest);</span>
+    	
+<span class="pc bpc" id="L368" title="2 of 4 branches missed.">    	if(names == null || freqs == null) return;</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">    	for(int rank = 0; rank &lt; this.nums; ++rank) {</span>
+<span class="fc" id="L370">    		String s_rank = Integer.toString(rank + 1);</span>
+<span class="fc" id="L371">    		String name = names.get(rank);</span>
+<span class="fc" id="L372">    		String s_frequency = Integer.toString(freqs.get(rank));</span>
+    		
+<span class="fc" id="L374">    		TopNNamesDataModel Entry = new TopNNamesDataModel(s_rank, name, s_frequency);</span>
+<span class="fc" id="L375">    		tableViewList.add(Entry);</span>
+    	}
+    	
+<span class="fc" id="L378">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopularityOfName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">PopularityOfName.java</span></div><h1>PopularityOfName.java</h1><pre class="source lang-java linenums">/**
+ * PopularityOfName
+ * 
+ * For task 2. Outputs a report on the popularity of a name and gender within a year range.
+ * @author Hyun Joon Jeong
+ */
+
+package comp3111.popnames;
+
+import java.text.DecimalFormat;
+import java.util.*;
+import org.apache.commons.csv.*;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
+import comp3111.export.ReportHistory;
+
+public class PopularityOfName extends Reports {
+	/**
+	 * PopularityOfName
+	 * 
+	 * For task 2. Outputs a report on the popularity of a name and gender within a year range.
+	 * @author Hyun Joon Jeong
+	 */
+	//The inputs provided to generate the report.
+	private int startYear;
+	private int endYear;
+	
+	//RanksInEachYear: A list of 4-tuples, each tuple containing a statistic of the name in a certain year.
+	//The left item contains the user's rank in the year, middle item contains the name's frequency in the year, and right item contains a pair; inside of which contains the percentage of the name from all names in the year, and the total population of the year.
+	private List&lt;Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt;&gt; ranksInEachYear;
+	/**
+	 * Constructor for PopularityOfName
+	 * Computes all the ranks of the given name for each year between startYear and endYear, as well as the total number of names in each year, and puts it into an array.
+	 * @param startYear the starting year where popularity should be analyzed
+	 * @param endYear the ending year where popularity should be analyzed
+	 * @param name name whose popularity the user wants to analyze
+	 * @param gender M or F, depending on gender of the name.
+	 * @param country data set's country of origin
+	 * @param type data set's type
+	 */
+	public PopularityOfName(int startYear, int endYear, String name, String gender, String country, String type) {
+		//Call Report constructor
+<span class="fc" id="L43">		super(name, gender, country, type);</span>
+<span class="fc" id="L44">		super.setoReport(name+&quot; (&quot;+gender+&quot;), &quot;+startYear+&quot;~&quot;+endYear);</span>
+<span class="fc" id="L45">		super.setTask(&quot;Popularity of Name&quot;);</span>
+		//For HTML generation. It will be generated on the fly while we iterate through the CSV.
+<span class="fc" id="L47">		String thisHtml = &quot;&lt;head&gt; &lt;style&gt; table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } &lt;/style&gt; &lt;/head&gt;&quot;;</span>
+<span class="fc" id="L48">		thisHtml +=  String.format(&quot;&lt;h3&gt;Popularity of %s between %d and %d&lt;/h3&gt;&quot;, name,startYear,endYear);</span>
+<span class="fc" id="L49">		thisHtml += &quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Your name's rank&lt;/th&gt;&lt;th&gt;Frequency of name&lt;/th&gt;&lt;th&gt;Percentage&lt;/th&gt;&lt;/tr&gt;&quot;;</span>
+<span class="fc" id="L50">		String tableRow = &quot;&lt;tr&gt;&lt;td&gt;%d&lt;/td&gt;&lt;td&gt;%d&lt;/td&gt;&lt;td&gt;%d&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;tr&gt;&quot;;</span>
+		
+<span class="fc" id="L52">		this.startYear = startYear;</span>
+<span class="fc" id="L53">		this.endYear = endYear;</span>
+		//Initialize ranksInEachYear
+<span class="fc" id="L55">		this.ranksInEachYear = new ArrayList&lt;Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt;&gt;();</span>
+		//Iterate through all years within the start &amp; end year.
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		for (int thisYear = startYear; thisYear &lt;= endYear; ++thisYear) {</span>
+			//To improve speed, we stop comparing names once the name we are looking for is found.
+<span class="fc" id="L59">			boolean nameFound = false;</span>
+			//This will store the rank at which the name was found for this year.
+<span class="fc" id="L61">			int thisYearRank = 0;</span>
+			//Will store the total population of the year for this gender, used to calculate the percentage.
+<span class="fc" id="L63">			int thisYearPopulation = 0;</span>
+			//Will store the frequency of the name.
+<span class="fc" id="L65">			int thisYearFrequency = 0;</span>
+			//Counter for the current rank of the name being processed right now.
+<span class="fc" id="L67">			int rankCounter = 0;</span>
+			//Go through all the names
+<span class="fc bfc" id="L69" title="All 2 branches covered.">			for (CSVRecord rec : AnalyzeNames.getFileParser(thisYear, type, country)) {</span>
+				//Check gender matches.
+<span class="fc bfc" id="L71" title="All 2 branches covered.">				if (gender.equals(rec.get(1))) {</span>
+					//If we find another name with the same gender, the rank increases. We also increase the total number of names found.
+<span class="fc" id="L73">					thisYearPopulation += Integer.parseInt(rec.get(2));</span>
+<span class="fc" id="L74">					++rankCounter;</span>
+					//Compare names if the name hasn't been found yet
+<span class="fc bfc" id="L76" title="All 2 branches covered.">					if (!nameFound) {</span>
+<span class="fc" id="L77">						String thisRecName = rec.get(0);</span>
+						//Check name matches.
+<span class="fc bfc" id="L79" title="All 2 branches covered.">						if (name.equals(thisRecName)) {</span>
+							//Update the rank and frequency of the name we want to find.
+<span class="fc" id="L81">							nameFound = true;</span>
+<span class="fc" id="L82">							thisYearRank = rankCounter;</span>
+<span class="fc" id="L83">							thisYearFrequency = Integer.parseInt(rec.get(2));</span>
+						}
+					}
+				}
+<span class="fc" id="L87">			}</span>
+			//Calculate percentage
+<span class="fc" id="L89">			Double thisNamePercentage = (double) ((100.0*thisYearFrequency)/thisYearPopulation);</span>
+<span class="fc" id="L90">			Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt; rankAndYearSize = Triple.of(thisYearRank,thisYearFrequency,Pair.of(thisYearPopulation,thisNamePercentage));</span>
+<span class="fc" id="L91">			this.ranksInEachYear.add(rankAndYearSize);</span>
+			//Html table should have the percentage truncated.
+<span class="fc" id="L93">			DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc" id="L94">			thisHtml += String.format(tableRow, thisYear, thisYearRank, thisYearFrequency, df.format(thisNamePercentage)+&quot;%&quot;);</span>
+		}
+
+<span class="fc" id="L97">		thisHtml += &quot;&lt;/table&gt;&quot;;</span>
+<span class="fc" id="L98">		thisHtml = &quot;&lt;div&gt;&quot; + thisHtml + &quot;&lt;/div&gt;&quot;;</span>
+<span class="fc" id="L99">		super.setHTML(thisHtml);</span>
+		//Add to list of generated reports
+<span class="fc" id="L101">		ReportHistory.addReportLog(this);</span>
+<span class="fc" id="L102">	}</span>
+	
+	/**
+	 * Returns the List object with the results. Used to fill the tableview in the output UI.
+	 * @return the four tuple that stores all the results from generation
+	 */
+	public List&lt;Triple&lt;Integer,Integer,Pair&lt;Integer,Double&gt;&gt;&gt; getPopularityList() {
+<span class="fc" id="L109">		return this.ranksInEachYear;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BabyNames_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">BabyNames_controller.java</span></div><h1>BabyNames_controller.java</h1><pre class="source lang-java linenums">/**
+ * BabyNames_controller
+ * UI controller for task 4's tab.
+ * @author Hyun Joon Jeong
+ */
+
+package comp3111.popnames.controllers;
+
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.RecommendBabyName;
+import comp3111.popnames.ReportLog;
+
+import java.util.*;
+import org.apache.commons.lang3.tuple.Triple;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+<span class="fc" id="L36">public class BabyNames_controller {</span>
+	//will hold data model of each row in the table view
+	private ObservableList&lt;BabyNamesTableDataModel&gt; tableViewList;
+	/**
+	 * Data model class for table view's rows.
+	 * Table view's columns consist of the recommended baby name and their percentage score.
+	 */
+	public class BabyNamesTableDataModel {
+		private final SimpleStringProperty name;
+		private final SimpleStringProperty percentageScore;
+		
+<span class="fc" id="L47">		public BabyNamesTableDataModel(String name, String percentageScore) {</span>
+<span class="fc" id="L48">			this.name = new SimpleStringProperty(name);</span>
+<span class="fc" id="L49">			this.percentageScore = new SimpleStringProperty(percentageScore);</span>
+<span class="fc" id="L50">		}</span>
+<span class="fc" id="L51">		public String getName() {return this.name.get();}</span>
+<span class="fc" id="L52">		public String getPercentageScore() {return this.percentageScore.get();}</span>
+	}
+	@FXML
+	private Label BabyNames_title_label;
+
+	@FXML
+	private Label BabyNames_information_label;
+	
+	@FXML
+	private Button BabyNames_information_button;
+	
+	@FXML
+	private GridPane BabyNames_inputGrid_gridpane;
+	
+    @FXML
+    private TextField BabyNames_motherName_textField;
+
+    @FXML
+    private TextField BabyNames_fatherName_textField;
+
+    @FXML
+    private TextField BabyNames_fatherYear_textField;
+
+    @FXML
+    private TextField BabyNames_motherYear_textField;
+
+    @FXML
+    private TextField BabyNames_vintageYear_textField;
+    
+    @FXML
+    private Label BabyNames_motherNameError_label;
+
+    @FXML
+    private Label BabyNames_motherYearError_label;
+
+    @FXML
+    private Label BabyNames_fatherNameError_label;
+
+    @FXML
+    private Label BabyNames_fatherYearError_label;
+
+    @FXML
+    private Label BabyNames_vintageYearError_label;
+    
+    @FXML
+    private Label BabyNames_wordCloudError_label;
+    
+    @FXML
+    private RadioButton BabyNames_male_radioButton;
+
+    @FXML
+    private RadioButton BabyNames_female_radioButton;
+
+    @FXML
+    private Button BabyNames_generate_button;
+    
+    @FXML
+    private ImageView BabyNames_wordCloud_imageView;
+
+    @FXML
+    private TableView&lt;BabyNamesTableDataModel&gt; BabyNames_tableView;
+
+    @FXML
+    private TableColumn&lt;BabyNamesTableDataModel, String&gt; BabyNames_tableView_name_tableColumn;
+
+    @FXML
+    private TableColumn&lt;BabyNamesTableDataModel, String&gt; BabyNames_tableView_percentageScore_tableColumn;
+    
+    /**
+     * initialize: called once when the UI is initialized
+     * Bind the table view's columns to the data model, and link tableViewList with the table view.
+     */
+    @FXML
+    void initialize() {
+<span class="fc" id="L126">    	BabyNames_tableView_name_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;BabyNamesTableDataModel,String&gt;(&quot;name&quot;));</span>
+<span class="fc" id="L127">    	BabyNames_tableView_percentageScore_tableColumn.setCellValueFactory(new PropertyValueFactory&lt;BabyNamesTableDataModel,String&gt;(&quot;percentageScore&quot;));</span>
+<span class="fc" id="L128">    	this.tableViewList = FXCollections.&lt;BabyNamesTableDataModel&gt;observableArrayList();</span>
+<span class="fc" id="L129">    	BabyNames_tableView.setItems(this.tableViewList);</span>
+<span class="fc" id="L130">    	BabyNames_tableView.setPlaceholder(new Label(&quot;Empty&quot;));</span>
+<span class="fc" id="L131">    }</span>
+    /**
+     * Helper function to create a red highlight around text fields with an error.
+     * @param errorField the text field to highlight
+     * @param on whether the error highlight should be on or not
+     */
+    private void errorEffect(TextField errorField, boolean on) {
+<span class="fc" id="L138">        DropShadow errorShadow = (DropShadow) (errorField.getEffect());</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        errorShadow.setColor(Color.color(1,0,0,(on? 1 : 0)));</span>
+<span class="fc" id="L140">        errorField.setEffect(errorShadow);</span>
+<span class="fc" id="L141">    }</span>
+    /**
+     * Called when the generate button is pressed.
+     * Performs input checking on all the inputs, and handles error UI. If none of the inputs have errors, the RecommendBabyName object is initialized and the list is generated.
+     */
+    @FXML
+    void generateBabyNames() {
+        // Variables needed to generated the baby names list.
+<span class="fc" id="L149">        String fatherName = BabyNames_fatherName_textField.getText();</span>
+<span class="fc" id="L150">        String motherName = BabyNames_motherName_textField.getText();</span>
+<span class="fc" id="L151">        int fatherYear = -1;</span>
+<span class="fc" id="L152">        int motherYear = -1;</span>
+<span class="fc" id="L153">        int vintageYear = -1;</span>
+<span class="fc" id="L154">        final int MAX_YEAR = GlobalSettings.getUpperBound();</span>
+<span class="fc" id="L155">        final int MIN_YEAR = GlobalSettings.getLowerBound();</span>
+        
+        //Handle empty names.
+<span class="fc" id="L158">        boolean fatherNameBlank = fatherName.isBlank();</span>
+<span class="fc" id="L159">        boolean motherNameBlank = motherName.isBlank();</span>
+<span class="fc" id="L160">        fatherName = ReportLog.validateName(fatherName);</span>
+<span class="fc" id="L161">        motherName = ReportLog.validateName(motherName);</span>
+<span class="fc" id="L162">        boolean fatherNameError = fatherName.isEmpty();</span>
+<span class="fc" id="L163">        boolean motherNameError = motherName.isEmpty();</span>
+        //set error effect and error message if needed
+<span class="pc bpc" id="L165" title="1 of 4 branches missed.">        errorEffect(BabyNames_fatherName_textField, fatherNameError || fatherNameBlank);</span>
+<span class="pc bpc" id="L166" title="1 of 4 branches missed.">        errorEffect(BabyNames_motherName_textField, motherNameError || motherNameBlank);</span>
+<span class="fc" id="L167">        String fatherNameErrorMessage = &quot;&quot;;</span>
+<span class="fc" id="L168">        String motherNameErrorMessage = &quot;&quot;;</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (fatherNameBlank) {fatherNameErrorMessage = &quot;Please input a name.&quot;;}</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        else if (fatherNameError) {fatherNameErrorMessage = &quot;Please input a valid name.&quot;;}</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (motherNameBlank) {motherNameErrorMessage = &quot;Please input a name.&quot;;}</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        else if (motherNameError) {motherNameErrorMessage = &quot;Please input a valid name.&quot;;}</span>
+<span class="fc" id="L173">        BabyNames_fatherNameError_label.setText(fatherNameErrorMessage);</span>
+<span class="fc" id="L174">        BabyNames_motherNameError_label.setText(motherNameErrorMessage);</span>
+        
+        //Handle invalid father year
+        //Different error messages appear for whether the inputted year is out of range or invalid
+<span class="fc" id="L178">        boolean fatherYearError = false;</span>
+        try {
+<span class="fc" id="L180">            fatherYear = Integer.parseInt(BabyNames_fatherYear_textField.getText());</span>
+<span class="fc bfc" id="L181" title="All 4 branches covered.">            if(fatherYear &gt; MAX_YEAR || fatherYear &lt; MIN_YEAR) {</span>
+<span class="fc" id="L182">                fatherYearError = true;</span>
+<span class="fc" id="L183">                BabyNames_fatherYearError_label.setText(&quot;Father's YOB is out of range.&quot;);</span>
+            } else {
+<span class="fc" id="L185">            	BabyNames_fatherYearError_label.setText(&quot;&quot;);</span>
+            }
+<span class="fc" id="L187">        } catch(NumberFormatException e) {</span>
+<span class="fc" id="L188">            fatherYearError = true;</span>
+<span class="fc" id="L189">            BabyNames_fatherYearError_label.setText(&quot;Father's YOB is invalid.&quot;);</span>
+<span class="fc" id="L190">        }</span>
+        //Handle invalid mother's year
+<span class="fc" id="L192">        boolean motherYearError = false;</span>
+        try {
+<span class="fc" id="L194">            motherYear = Integer.parseInt(BabyNames_motherYear_textField.getText());</span>
+<span class="fc bfc" id="L195" title="All 4 branches covered.">            if(motherYear &gt; MAX_YEAR || motherYear &lt; MIN_YEAR) {</span>
+<span class="fc" id="L196">                motherYearError = true;</span>
+<span class="fc" id="L197">                BabyNames_motherYearError_label.setText(&quot;Mother's YOB is out of range.&quot;);</span>
+            } else {
+<span class="fc" id="L199">            	BabyNames_motherYearError_label.setText(&quot;&quot;);</span>
+            }
+<span class="fc" id="L201">        } catch(NumberFormatException e) {</span>
+<span class="fc" id="L202">            motherYearError = true;</span>
+<span class="fc" id="L203">            BabyNames_motherYearError_label.setText(&quot;Mother's YOB is invalid.&quot;);</span>
+<span class="fc" id="L204">        }</span>
+        //Special case for vintage year - if it is blank, it is automatically set to 2019.
+<span class="fc" id="L206">        boolean vintageYearError = false;</span>
+        try {
+<span class="fc" id="L208">            vintageYear = Integer.parseInt(BabyNames_vintageYear_textField.getText());</span>
+<span class="fc bfc" id="L209" title="All 4 branches covered.">            if(vintageYear &gt; MAX_YEAR || vintageYear &lt; MIN_YEAR) {</span>
+<span class="fc" id="L210">                vintageYearError = true;</span>
+<span class="fc" id="L211">                BabyNames_vintageYearError_label.setText(&quot;Vintage year is out of range.&quot;);</span>
+            } else {
+<span class="fc" id="L213">            	BabyNames_vintageYearError_label.setText(&quot;&quot;);</span>
+            }
+<span class="fc" id="L215">        } catch(NumberFormatException e) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        	if (!BabyNames_vintageYear_textField.getText().isBlank()) {</span>
+<span class="fc" id="L217">        		vintageYearError = true;</span>
+<span class="fc" id="L218">                BabyNames_vintageYearError_label.setText(&quot;Vintage year is invalid.&quot;);</span>
+        	} else {
+<span class="fc" id="L220">        		BabyNames_vintageYearError_label.setText(&quot;&quot;);</span>
+<span class="fc" id="L221">        		vintageYear = GlobalSettings.getUpperBound();</span>
+        	}
+<span class="fc" id="L223">        }</span>
+        //Set error effects for year text fields if needed
+<span class="fc" id="L225">        errorEffect(BabyNames_fatherYear_textField, fatherYearError);</span>
+<span class="fc" id="L226">        errorEffect(BabyNames_motherYear_textField, motherYearError);</span>
+<span class="fc" id="L227">        errorEffect(BabyNames_vintageYear_textField, vintageYearError);</span>
+        
+        //Without any errors, the baby names can be generated.
+<span class="pc bpc" id="L230" title="5 of 14 branches missed.">        if(!(fatherNameError || fatherNameBlank || motherNameError || motherNameBlank || fatherYearError || motherYearError || vintageYearError)) {</span>
+        	//Clear tableview from previous results
+<span class="fc" id="L232">            this.tableViewList.clear();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            String gender = (BabyNames_male_radioButton.isSelected()? &quot;M&quot; : &quot;F&quot;);</span>
+            //Generate baby names
+<span class="fc" id="L235">            RecommendBabyName babyNames = new RecommendBabyName(fatherName, motherName, fatherYear, motherYear, vintageYear, gender,GlobalSettings.getCountry(), &quot;human&quot;);</span>
+<span class="fc" id="L236">            List&lt;Triple&lt;String,Integer,Integer&gt;&gt; babyNamesList = babyNames.getBabyNamesList();</span>
+            //Assign each baby name a table data model and add it to the tableViewList.
+<span class="fc" id="L238">            int maxScore = 0;</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">    		for (int i = 0; i &lt; babyNamesList.size(); i++) {</span>
+<span class="fc" id="L240">    			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">    			if (maxScore &lt; score) {</span>
+<span class="fc" id="L242">    				maxScore = score;</span>
+    			}
+    		}
+<span class="fc bfc" id="L245" title="All 2 branches covered.">            for (int i = 0; i &lt; babyNamesList.size(); ++i) {</span>
+<span class="fc" id="L246">                Triple&lt;String,Integer,Integer&gt; babyName = babyNamesList.get(i);</span>
+<span class="fc" id="L247">                DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc" id="L248">                int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());</span>
+<span class="fc" id="L249">                String formattedPercentageScore = df.format(100.0*(1.0-((double)score/(double)maxScore)))+&quot;%&quot;;//df.format(babyName.getRight())+&quot;%&quot;;</span>
+                
+<span class="fc" id="L251">                BabyNamesTableDataModel row = new BabyNamesTableDataModel(babyName.getLeft(), formattedPercentageScore);</span>
+<span class="fc" id="L252">                this.tableViewList.add(row);</span>
+            }
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">            if (babyNamesList.size() &gt; 20 &amp;&amp; babyNames.getWordCloudImageBytes() != null) {</span>
+<span class="fc" id="L255">            	BabyNames_wordCloudError_label.setText(&quot;&quot;);</span>
+<span class="fc" id="L256">            	InputStream input = new ByteArrayInputStream(babyNames.getWordCloudImageBytes());</span>
+<span class="fc" id="L257">                Image image = new Image(input);</span>
+<span class="fc" id="L258">                BabyNames_wordCloud_imageView.setImage(image);</span>
+<span class="fc" id="L259">            } else {</span>
+<span class="nc" id="L260">            	BabyNames_wordCloudError_label.setText(&quot;Word cloud too small.&quot;);</span>
+            }
+        }
+<span class="fc" id="L263">    }</span>
+<span class="fc" id="L264">    private boolean informationShown = false;</span>
+    @FXML
+    void toggleInformation() {
+<span class="fc bfc" id="L267" title="All 2 branches covered.">    	if (!informationShown) {</span>
+<span class="fc" id="L268">    		BabyNames_title_label.setText(&quot;How do I work?&quot;);</span>
+<span class="fc" id="L269">    		BabyNames_inputGrid_gridpane.setVisible(false);</span>
+<span class="fc" id="L270">    		BabyNames_generate_button.setVisible(false);</span>
+<span class="fc" id="L271">    		BabyNames_wordCloud_imageView.setVisible(false);</span>
+        	
+<span class="fc" id="L273">        	BabyNames_information_label.setVisible(true);</span>
+<span class="fc" id="L274">        	BabyNames_information_label.setText(</span>
+        			&quot;This algorithm works by finding a name which has the greatest similarity between &quot;
+        			+ &quot;both of the parents.\n&quot;
+        			+ &quot;It does this by using an algorithm called the 'Levenshtein distance', which calculates &quot;
+        			+ &quot;how many characters\n&quot;
+        			+ &quot;must be inserted, deleted, or substituted for two names to be the same.\n&quot;
+        			+ &quot;To generate a baby's name, we firstly load all of the names from the vintage year that is specified. (The\n&quot;
+        			+ &quot;vintage year represents the year that the baby is supposed to be born, so it is appopriate for us to\n&quot;
+        			+ &quot;generate a baby name that is from the vintage year.)\n&quot; + 
+        			&quot;Then, we create two lists; one will contain the list of names that are sorted by similarity to the father's\n&quot;
+        			+ &quot;name, and one for similarity to the mother's name. The algorithm determines whether a baby name is similar\n&quot;
+        			+ &quot;to a parent name by looking for names with a Levenshtein distance of approximately half the length of the\n&quot;
+        			+ &quot;parent's name. This way, we can try and obtain names that are neither too similar, nor too different, to\n&quot;
+        			+ &quot;the parent's name.\n&quot;
+        			+ &quot;Along with this, we store the difference between the Levenshtein distance to the father's name, and the\n&quot;
+        			+ &quot;Levenshtein distance to the mother's name - the lower this is, the better. For example, if the difference\n&quot;
+        			+ &quot;in the Levenshtein distances is 0, then both the father and the mother have the same Levenshtein distance\n&quot;
+        			+ &quot;to the baby's name, meaning there is an equal mix of both the father and mother's name in the baby name.\n&quot;
+        			+ &quot;Now that we have a list of 'candidate' names from both the father and mother's name, it's time to combine\n&quot;
+        			+ &quot;these lists. But this algorithm won't just combine them equally!&quot;
+        			+ &quot;\nA parent with a year of birth closer to the baby's year of birth will likely have a more 'appropriate'\n&quot;
+        			+ &quot;name for the baby's name to be similar to. This means, for example, if the mother were born 20 years before\n&quot;
+        			+ &quot;the baby's year of birth, and the father were born 60 years before, then more names from the mother's\n&quot;
+        			+ &quot;candidate names will be included in the final list of candidate names.\nFinally, we also consider whether\n&quot;
+        			+ &quot;a baby boy or girl's name is being generated. The parent with the same gender as the baby name being\n&quot;
+        			+ &quot;generated will likely have a more appropriate name for the baby's name to be similar to.&quot;);
+<span class="fc" id="L300">        	BabyNames_information_button.setText(&quot;Back&quot;);</span>
+        } else {
+<span class="fc" id="L302">        	BabyNames_title_label.setText(&quot;Here, you can generate baby names from a mother and father's information.&quot;);</span>
+<span class="fc" id="L303">    		BabyNames_inputGrid_gridpane.setVisible(true);</span>
+<span class="fc" id="L304">    		BabyNames_generate_button.setVisible(true);</span>
+<span class="fc" id="L305">    		BabyNames_wordCloud_imageView.setVisible(true);</span>
+        	
+<span class="fc" id="L307">        	BabyNames_information_label.setVisible(false);</span>
+<span class="fc" id="L308">        	BabyNames_information_button.setText(&quot;How do I work?&quot;);</span>
+        }
+<span class="fc bfc" id="L310" title="All 2 branches covered.">    	informationShown = !informationShown;</span>
+<span class="fc" id="L311">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
