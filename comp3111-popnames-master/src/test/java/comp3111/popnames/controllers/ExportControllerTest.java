@@ -24,7 +24,7 @@ import javafx.fxml.FXMLLoader;
 
 public class ExportControllerTest extends ApplicationTest{
 	private Scene s;
-	private Label nsError;
+	//private Label nsError;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -36,7 +36,6 @@ public class ExportControllerTest extends ApplicationTest{
    		stage.show();
    		s = scene;
    		clickOn("#Main_export_Button");
-   		nsError = (Label)s.lookup("#Export_nothingSelectedError_label");
 	}
 	
 	@Test
@@ -82,7 +81,7 @@ public class ExportControllerTest extends ApplicationTest{
 		}
 		assertTrue(allTicked);
 		
-		//clickOn("#Export_exportSelected_button");
-		//type(KeyCode.ENTER);
+		clickOn("#Export_exportSelected_button");
+		type(KeyCode.ENTER);
 	}
 }
