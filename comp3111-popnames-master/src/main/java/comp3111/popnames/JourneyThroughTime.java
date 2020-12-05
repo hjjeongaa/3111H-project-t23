@@ -64,6 +64,13 @@ public class JourneyThroughTime extends Reports {
 	// Assume this is called first
 	/**
 	 * Called by SoulmateName_controller. This is the function that sets all the values to be used by later functions.
+	 * @param inputName name of the user.
+	 * @param soulmateName name of the potential soulmate.
+	 * @param inputGender gender of the user.
+	 * @param soulmateGender Gender of the soulmate.
+	 * @param YOB The birth year of the user.
+	 * @param country The country of the database.
+	 * @param type Type of species.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -82,9 +89,9 @@ public class JourneyThroughTime extends Reports {
 	/**
 	 * This function looks for and returns the year of first appearance of a given name and gender in the data set specified by country.
 	 * 
-	 * @param String name - The name of the person you are looking for.
-	 * @param String gender - The gender of the person you are looking for.
-	 * @return Integer representing the year in which the person you are looking for first appears.
+	 * @param name The name of the person you are looking for.
+	 * @param gender The gender of the person you are looking for.
+	 * @return number representing the year in which the person you are looking for first appears. negative one is returned if the name is not found.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -105,8 +112,8 @@ public class JourneyThroughTime extends Reports {
 	
 	/**
 	 * This function returns a list containing two facts about any year from 1880-2019.
-	 * @param Integer year [1880, 2019]
-	 * @return List<String> facts - a list of facts in string format.
+	 * @param  year value in [1880, 2019]
+	 * @return a list of facts in string format.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -127,8 +134,8 @@ public class JourneyThroughTime extends Reports {
 	/**
 	 * This function returns an Image object of an image that has to do with a specified year.
 	 * 
-	 * @param Integer year [1880, 2019].
-	 * @return Image object of image that has to do with year.
+	 * @param year  in [1880, 2019].
+	 * @return image object of image that has to do with year.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -145,9 +152,9 @@ public class JourneyThroughTime extends Reports {
 	 * Let there also be another array keeping track of the frequency of that name on each year.
 	 * Then starting from 1880 (0 index), we look at the year 1880 + life expectancy, and from that point onwards to the end, we subtract the population of the specified name from 1880. This process is repeated for the whole range of years.
 	 * 
-	 * @param name of interest
-	 * @param gender of name of interest
-	 * @param life expectancy of people with name of interest. 
+	 * @param name name of interest
+	 * @param gender gender of name of interest
+	 * @param lifeExpectancy Life expectancy of people with name of interest. 
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
@@ -185,43 +192,43 @@ public class JourneyThroughTime extends Reports {
 	
 	/* Getters */
 	/**
-	 * @return Returns the name of the user.
+	 * @return name of the user.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static String getUserName() { return JourneyThroughTime.inputName;}
 	/**
-	 * @return Returns the soulmates name.
+	 * @return soulmates name.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static String getSoulmateName(){return JourneyThroughTime.SoulmateName;}
 	/**
-	 * @return Returns the gender of the user.
+	 * @return gender of the user.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static String getUserGender() {return JourneyThroughTime.inputGender;}
 	/**
-	 * @return Returns the soulmates gender.
+	 * @return soulmates gender.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static String getSoulmateGender(){return JourneyThroughTime.soulmateGender;}
 	/**
-	 * @return Returns the year of birth of the user.
+	 * @return year of birth of the user.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static int getYOB(){return JourneyThroughTime.YOB;}
 	/**
-	 * @return Returns the country of interest
+	 * @return country of interest
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
 	public static String getCountry(){return JourneyThroughTime.country;}
 	/**
-	 * @return Returns the type. Almost guaranteed to be human.
+	 * @return type. Almost guaranteed to be human.
 	 * @author Ryder Khoi Daniel
 	 * v1.0
 	 */
