@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PredictCompatibilityScore.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">PredictCompatibilityScore.java</span></div><h1>PredictCompatibilityScore.java</h1><pre class="source lang-java linenums">package comp3111.popnames;
+/**
+* PredictCompatibilityScore.java - Code for Task 6
+* Predicting Compatibility Score
+* @author Yuxi Sun
+* @version 1.1
+*/
+import comp3111.rankingAlgo.LD;
+import comp3111.export.ReportHistory;
+import org.apache.commons.csv.*;
+import edu.duke.*;
+import java.time.LocalDateTime;  
+import java.util.*;
+import java.lang.Math;
+/**
+ * Code for Task 6, predicting the compatibility of two names
+ * @author Yuxi Sun
+ */
+public class PredictCompatibilityScore extends ReportLog{
+	//records the time of creation or last modification
+	private LocalDateTime time;  
+
+	//variables
+	private Person user;
+	private Person mate;
+	private String rankAlgo;
+	private String rankResolver;
+	private HashMap&lt;String, Double&gt; oScore;
+
+	//accessors
+	/**
+	 * @return the time said object was generated
+ 	 * @author Yuxi Sun
+	 */
+<span class="fc" id="L35">	public LocalDateTime getTime(){return time;};</span>
+	/**
+	 * @return the generated scores
+	 * @author Yuxi Sun
+	 */
+<span class="fc" id="L40">	public HashMap&lt;String, Double&gt;  getoScore(){return oScore;};</span>
+	/**
+	 * @return the Person object user
+	 * @author Yuxi Sun
+	 */
+<span class="nc" id="L45">	public Person getUser(){return user;};</span>
+	/**
+	 * @return the Person object mate
+	 * @author Yuxi Sun
+	 */
+<span class="nc" id="L50">	public Person getMate(){return mate;};</span>
+	/**
+	 * @return the String representing the ranking algorithm
+	 * @author Yuxi Sun
+	 */
+<span class="nc" id="L55">	public String rankAlgo() {return rankAlgo;};</span>
+	/**
+	 * @return the String representing the ranking resolving method
+	 * @author Yuxi Sun
+	 */
+<span class="nc" id="L60">	public String getRankResolver() {return rankResolver;};</span>
+	//functions for ReportLog class
+	/**
+	 * @return a html string representing said object using the template stored in the exports package
+	 * template and code by Yuxi Sun
+	 * v1.0
+	 * @author Yuxi Sun
+	 */
+	public String getHTML(){
+		//grabbing template
+<span class="fc" id="L70">    	FileResource fr = new FileResource(&quot;export/t6htmlTemplate.txt&quot;);</span>
+    	//substituting values into the template
+<span class="fc" id="L72">		return String.format(fr.asString(),</span>
+<span class="fc" id="L73">				user.getName(),</span>
+<span class="fc" id="L74">				user.getGender(),</span>
+<span class="fc" id="L75">				user.getType(),</span>
+<span class="fc" id="L76">				user.getCountry(),</span>
+<span class="fc" id="L77">				user.getYob(),</span>
+<span class="fc" id="L78">				mate.getName(),</span>
+<span class="fc" id="L79">				mate.getGender(),</span>
+<span class="fc" id="L80">				mate.getType(),</span>
+<span class="fc" id="L81">				mate.getCountry(),</span>
+<span class="fc" id="L82">				mate.getYob(),</span>
+				this.rankAlgo,
+				this.rankResolver,
+<span class="fc" id="L85">				this.oScore.get(&quot;composite&quot;),</span>
+<span class="fc" id="L86">				this.oScore.get(&quot;parm&quot;),</span>
+<span class="fc" id="L87">				this.oScore.get(&quot;pasrm&quot;),</span>
+<span class="fc" id="L88">				this.oScore.get(&quot;ld&quot;));</span>
+	};
+	
+	//accessors for Report History
+	/**
+	 * @return a string representing the task
+	 * @author Yuxi Sun
+	 */
+	public String getTask(){
+<span class="fc" id="L97">		return &quot;Task 6&quot;;</span>
+	}
+	/**
+	 * @return a string representing the content of the question, for ReportLog class
+	 * @author Yuxi Sun
+	 */
+	public String getoReport(){
+<span class="fc" id="L104">		String oReport = String.format(&quot;%s %s %s and %s %s %s&quot;, user.getName(),user.getGender(), user.getYob(),</span>
+<span class="fc" id="L105">				mate.getName(),mate.getGender(), mate.getYob());</span>
+<span class="fc" id="L106">		return oReport;</span>
+	}
+	/**
+	 * Evaluation functions
+	 * these functions should be called in the controller based on user selections to return scalar oScore.
+	 */
+
+	/**
+	 * parm: Population Adjusted Rank Matching
+	 * Self made function 1 (WOW FACTOR), takes take population size of each year into account so that the most compatible pair of names
+	 * are the names that have the same population adjusted rank in their respective years.
+	 * @return oScore from parm algorithm
+	 * @author Yuxi Sun
+	 */
+	public double parm() {
+		//normalizing ranks of each user
+<span class="fc" id="L122">		double nUser = (double)user.getRank()/(user.getSize()+1);</span>
+<span class="fc" id="L123">		double nMate = (double)mate.getRank()/(mate.getSize()+1);</span>
+<span class="fc" id="L124">		return Math.max(0,(1-Math.abs(nUser-nMate)));</span>
+	}
+	/** 
+	 * parsm: Population Adjusted Symmetric Rank Matching
+	 * Self made function 2 (WOW FACTOR), takes parm and adapts it to take make the rank symmetric around the 50% to be the most compatible 
+	 * e.g. if there are 100 names and iName is rank 70th, his most compatible name would be at rank 30th.
+	 * The idea of this algorithm is that both names combined together would result in a neutral/ average level of uniqueness
+	 * @return oScore from pasrm algorithm
+	 * @author Yuxi Sun
+	*/
+	public double pasrm(){
+		//normalizing ranks of each user 
+<span class="fc" id="L136">		double nUser = (double)user.getRank()/(user.getSize()+1);</span>
+<span class="fc" id="L137">		double nMate = (double)mate.getRank()/(mate.getSize()+1);</span>
+<span class="fc" id="L138">		double optMate = 0.5-(nUser -0.5);</span>
+<span class="fc" id="L139">		return Math.max(0,1-  Math.abs(nMate-optMate));</span>
+	}
+	/**
+	 *  String similarity using a modified Levenshtein distance. The values are squared to introduce nonlinearity.
+	 *  @return Max(0,1-(Levenshtein distance)^2/ (Max(user name length, mate name length)^2)\
+	 *  @author Yuxi Sun
+	 */
+	public double ld() {
+<span class="fc" id="L147">		int ldScore = LD.calculate(user.getName(), mate.getName());</span>
+<span class="fc" id="L148">		return Math.max(0,1 - (double)Math.pow(ldScore,2)/Math.pow(Math.max(user.getName().length(),mate.getName().length()),2));</span>
+	}
+	
+	/**
+	 * 
+	 * @return the mean score of parm, pasrm, and ld
+	 * @author Yuxi Sun
+	 */
+	public double composite(){
+		//should only be called after the other functions
+<span class="fc" id="L158">		double composite = 0;</span>
+<span class="fc" id="L159">		composite += this.oScore.get(&quot;parm&quot;);</span>
+<span class="fc" id="L160">		composite += this.oScore.get(&quot;pasrm&quot;);</span>
+<span class="fc" id="L161">		composite += this.oScore.get(&quot;ld&quot;);</span>
+<span class="fc" id="L162">		return composite/3;</span>
+	}
+	/**
+	 * Constructor
+	 * @param iName name of the person seeking advice
+	 * @param iGender gender of the person seeking advice
+	 * @param iYOB year of birth of the person seeking advice
+	 * @param country particulars of the person seeking advice
+	 * @param type particulars of the person seeking advice
+	 * @param iNameMate the name of the person to be matched
+	 * @param iGenderMate the gender of the person to be matched
+	 * @param iPreference Specify the preference on having a younger (negative number) or older (positive number) soul mate
+	 * @param countryMate particulars of the person to be matched
+	 * @param typeMate particulars of the person to be matched
+	 * @param rankingAlgo the method in which to perform ranking, call RankingAlgorithmFactory.getRankAlgorithm(name,gender,year,country,type) to find out about the supported methods
+	 * @param resolver the method in which to perform rank resolution: when a name is not found in a year, call rankResolution.getResolutionMethods()
+	 * @author Yuxi Sun
+	 */
+
+<span class="fc" id="L181">	public PredictCompatibilityScore(String iName, String iGender, int iYOB, String country, String type , String iNameMate, String iGenderMate, int iPreference, String countryMate, String typeMate, String rankingAlgo, String resolver) {</span>
+<span class="fc" id="L182">		this.time = LocalDateTime.now();</span>
+<span class="fc" id="L183">		this.rankAlgo = rankingAlgo;</span>
+<span class="fc" id="L184">		this.rankResolver = resolver;</span>
+		// both names could not exist in the data set hence a special rankingAlgo and resolver has been used.
+<span class="fc" id="L186">		this.user = new Person(iName, iGender, iYOB, country, type, rankingAlgo, resolver);</span>
+<span class="fc" id="L187">		this.mate = new Person(iNameMate, iGenderMate, iYOB+iPreference, countryMate, typeMate, rankingAlgo, resolver);</span>
+<span class="fc" id="L188">		this.oScore = new HashMap&lt;String, Double&gt;();</span>
+		//Note that preference will have no effect on the oScores if the name is not found within the dataset
+		//Population Adjusted Rank Matching
+<span class="fc" id="L191">		this.oScore.put(&quot;parm&quot;, parm());</span>
+		//Population Adjusted Symmetric Rank Matching
+<span class="fc" id="L193">		this.oScore.put(&quot;pasrm&quot;, pasrm());</span>
+		//Levenshtein distance
+<span class="fc" id="L195">		this.oScore.put(&quot;ld&quot;, ld());</span>
+		//composite
+<span class="fc" id="L197">		this.oScore.put(&quot;composite&quot;, composite());</span>
+<span class="fc" id="L198">		ReportHistory.addReportLog(this);</span>
+<span class="fc" id="L199">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

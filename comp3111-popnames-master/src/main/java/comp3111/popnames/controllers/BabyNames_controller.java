@@ -235,10 +235,18 @@ public class BabyNames_controller {
             RecommendBabyName babyNames = new RecommendBabyName(fatherName, motherName, fatherYear, motherYear, vintageYear, gender,GlobalSettings.getCountry(), "human");
             List<Triple<String,Integer,Integer>> babyNamesList = babyNames.getBabyNamesList();
             //Assign each baby name a table data model and add it to the tableViewList.
+            int maxScore = 0;
+    		for (int i = 0; i < babyNamesList.size(); i++) {
+    			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());
+    			if (maxScore < score) {
+    				maxScore = score;
+    			}
+    		}
             for (int i = 0; i < babyNamesList.size(); ++i) {
                 Triple<String,Integer,Integer> babyName = babyNamesList.get(i);
                 DecimalFormat df = new DecimalFormat("#.##");
-                String formattedPercentageScore = df.format((i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight()));//df.format(babyName.getRight())+"%";
+                int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());
+                String formattedPercentageScore = df.format(100.0*(1.0-((double)score/(double)maxScore)))+"%";//df.format(babyName.getRight())+"%";
                 
                 BabyNamesTableDataModel row = new BabyNamesTableDataModel(babyName.getLeft(), formattedPercentageScore);
                 this.tableViewList.add(row);

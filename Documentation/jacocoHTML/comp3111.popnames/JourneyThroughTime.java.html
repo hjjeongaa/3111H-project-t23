@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JourneyThroughTime.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">JourneyThroughTime.java</span></div><h1>JourneyThroughTime.java</h1><pre class="source lang-java linenums">/**
+ * JourneyThroughTime
+ * 
+ * WOW factor of task 5.
+ * Called by SoulmateName and is used to pull data from for the scenes in the journey through time. 
+ * Employs a singleton design class for simplicity and consistency.
+ * @author Ryder Khoi Daniel
+ */
+
+package comp3111.popnames;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import edu.duke.*;
+import javafx.scene.image.Image;
+/**
+ * This class represents the singleton object in which all journeys through time will refer to.
+ * The order in which objects interact with this object is as follows:
+ * The SoulmateName_controller calls this object to set the values for the coming scenes.
+ * Then, all the following scenes pull data and use functions in this class to operate.
+ * @author Ryder Khoi Daniel
+ * v1.0
+ */
+public class JourneyThroughTime extends Reports {
+	/**
+	 * JourneyThroughTime
+	 * 
+	 * WOW factor of task 5.
+	 * Called by SoulmateName and is used to pull data from for the scenes in the journey through time. 
+	 * Employs a singleton design class for simplicity and consistency.
+	 * @author Ryder Khoi Daniel
+	 */
+	// Singleton Stuff
+<span class="fc" id="L41">	private static final JourneyThroughTime SINGLE_INSTANCE = new JourneyThroughTime();</span>
+	/**
+	 * Essentially Empty Constructor. Needs to call the super-classes constructor.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	private JourneyThroughTime() {
+<span class="fc" id="L48">		super(null,null,null,null);</span>
+<span class="fc" id="L49">	}</span>
+	
+	// Variables
+	private static String inputName;
+	private static String SoulmateName;
+	private static String inputGender;
+	private static String soulmateGender;
+	private static int YOB;
+	private static String country;
+	private static String type;
+	
+	// Variables for the export function.
+	
+	private static String thisHTML;
+	
+	// Assume this is called first
+	/**
+	 * Called by SoulmateName_controller. This is the function that sets all the values to be used by later functions.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static void setValues(String inputName, String soulmateName, String inputGender, String soulmateGender, int YOB, String country, String type) {
+<span class="fc" id="L71">		JourneyThroughTime.inputName = inputName;</span>
+<span class="fc" id="L72">		JourneyThroughTime.SoulmateName = soulmateName;</span>
+<span class="fc" id="L73">		JourneyThroughTime.inputGender = inputGender;</span>
+<span class="fc" id="L74">		JourneyThroughTime.soulmateGender = soulmateGender;</span>
+<span class="fc" id="L75">		JourneyThroughTime.YOB = YOB;</span>
+<span class="fc" id="L76">		JourneyThroughTime.country = country;</span>
+<span class="fc" id="L77">		JourneyThroughTime.type = type;</span>
+		
+<span class="fc" id="L79">	}</span>
+	
+	// These methods here are guaranteed to be called after all of the values have been set.
+	/**
+	 * This function looks for and returns the year of first appearance of a given name and gender in the data set specified by country.
+	 * 
+	 * @param String name - The name of the person you are looking for.
+	 * @param String gender - The gender of the person you are looking for.
+	 * @return Integer representing the year in which the person you are looking for first appears.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static int getFirstAppearance(String name, String gender) {
+<span class="fc" id="L92">		int res = -1;</span>
+<span class="fc" id="L93">		int startYear = GlobalSettings.getLowerBound();</span>
+<span class="fc" id="L94">		int endYear = GlobalSettings.getUpperBound();</span>
+<span class="fc" id="L95">		String country = GlobalSettings.getCountry();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for(int year = startYear; year &lt;= endYear; ++year) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">			for(CSVRecord rec : AnalyzeNames.getFileParser(year, &quot;human&quot;, country)){</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">				if(rec.get(1).equals(gender)) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">					if(rec.get(0).equals(name)) return year;</span>
+				}
+<span class="fc" id="L101">			}</span>
+		}
+<span class="fc" id="L103">		return res;</span>
+	}
+	
+	/**
+	 * This function returns a list containing two facts about any year from 1880-2019.
+	 * @param Integer year [1880, 2019]
+	 * @return List&lt;String&gt; facts - a list of facts in string format.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static List&lt;String&gt; getFacts(int year) {
+<span class="fc" id="L114">		List&lt;String&gt; facts = new ArrayList&lt;String&gt;();		</span>
+<span class="fc" id="L115">		FileResource factsSource = new FileResource(&quot;JTTImagesAndFacts/facts_clean.csv&quot;);</span>
+<span class="fc" id="L116">		CSVParser factsAsCSV = factsSource.getCSVParser(false, &quot;\t&quot;);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for(CSVRecord rec : factsAsCSV) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			if(Integer.parseInt(rec.get(0)) == year) {</span>
+<span class="fc" id="L119">				facts.add(rec.get(1));</span>
+<span class="fc" id="L120">				facts.add(rec.get(2));</span>
+<span class="fc" id="L121">				break;</span>
+			}
+<span class="fc" id="L123">		}</span>
+<span class="fc" id="L124">		return facts;</span>
+	}
+	
+	/**
+	 * This function returns an Image object of an image that has to do with a specified year.
+	 * 
+	 * @param Integer year [1880, 2019].
+	 * @return Image object of image that has to do with year.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static Image getImage(int year) throws FileNotFoundException {
+<span class="pc bpc" id="L136" title="1 of 4 branches missed.">		if(year &lt; GlobalSettings.getLowerBound() || year &gt; GlobalSettings.getUpperBound()) return null;</span>
+<span class="fc" id="L137">		return new Image(String.format(&quot;/JTTImagesAndFacts/images/%d.jpg&quot;, year));</span>
+	}
+	
+	/**
+	 * This function, given a name, gender and life expectancy returns a list of the population of that name on any given year between 1880 and 2019.
+	 * The index 0 of the list returned refers to the population of name in the year 1880.
+	 * 
+	 * The way this function works is it first sums up the entire population and saves that as a list. For example, let P be the list of cumulative population, meaning that P[i] = SUM(P[0:i-1]).
+	 * Let there also be another array keeping track of the frequency of that name on each year.
+	 * Then starting from 1880 (0 index), we look at the year 1880 + life expectancy, and from that point onwards to the end, we subtract the population of the specified name from 1880. This process is repeated for the whole range of years.
+	 * 
+	 * @param name of interest
+	 * @param gender of name of interest
+	 * @param life expectancy of people with name of interest. 
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public static List&lt;Integer&gt; getPopulationOf(String name, String gender, int lifeExpectancy){
+<span class="fc" id="L155">		List&lt;Integer&gt; output = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L156">		List&lt;Integer&gt; track = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L157">		int startYear = GlobalSettings.getLowerBound();</span>
+<span class="fc" id="L158">		int endYear = GlobalSettings.getUpperBound();</span>
+<span class="fc" id="L159">		String country = GlobalSettings.getCountry();</span>
+<span class="fc" id="L160">		int sum = 0;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for(int year = startYear; year &lt;= endYear; ++year) {</span>
+<span class="fc" id="L162">			boolean found = false;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">			for(CSVRecord rec : AnalyzeNames.getFileParser(year, &quot;human&quot;, country)) {</span>
+<span class="fc bfc" id="L164" title="All 4 branches covered.">				if(rec.get(1).equals(gender) &amp;&amp; rec.get(0).equals(name)) {</span>
+<span class="fc" id="L165">					sum += Integer.parseInt(rec.get(2));</span>
+<span class="fc" id="L166">					track.add(Integer.parseInt(rec.get(2)));</span>
+<span class="fc" id="L167">					output.add(sum);</span>
+<span class="fc" id="L168">					found = true;</span>
+<span class="fc" id="L169">					break;</span>
+				}
+<span class="fc" id="L171">			}</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			if(found == false) {</span>
+<span class="fc" id="L173">				output.add(sum);</span>
+<span class="fc" id="L174">				track.add(0);</span>
+			}
+		}
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		for(int popYear = 0; popYear &lt; track.size(); ++popYear ) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">			for(int year = popYear + lifeExpectancy; year &lt; track.size(); ++year) {</span>
+<span class="fc" id="L179">				int newPop = output.get(year) - track.get(popYear);</span>
+<span class="fc" id="L180">				output.set(year, newPop);</span>
+			}
+		}
+<span class="fc" id="L183">		return output;</span>
+	}
+	
+	/* Getters */
+	/**
+	 * @return Returns the name of the user.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L192">	public static String getUserName() { return JourneyThroughTime.inputName;}</span>
+	/**
+	 * @return Returns the soulmates name.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L198">	public static String getSoulmateName(){return JourneyThroughTime.SoulmateName;}</span>
+	/**
+	 * @return Returns the gender of the user.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L204">	public static String getUserGender() {return JourneyThroughTime.inputGender;}</span>
+	/**
+	 * @return Returns the soulmates gender.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L210">	public static String getSoulmateGender(){return JourneyThroughTime.soulmateGender;}</span>
+	/**
+	 * @return Returns the year of birth of the user.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L216">	public static int getYOB(){return JourneyThroughTime.YOB;}</span>
+	/**
+	 * @return Returns the country of interest
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L222">	public static String getCountry(){return JourneyThroughTime.country;}</span>
+	/**
+	 * @return Returns the type. Almost guaranteed to be human.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+<span class="fc" id="L228">	public static String getType(){return JourneyThroughTime.type;}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportLog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">ReportLog.java</span></div><h1>ReportLog.java</h1><pre class="source lang-java linenums">/** ReportLog
+ * A class that Reports and tasks 4,5,6 inherits.
+ * Requires all subclasses to implement four basic methods which are used to keep a record log of all reports generated, and to export them all if the user wishes.
+ * @author Hyun Joon Jeong 
+ */
+
+package comp3111.popnames;
+
+import java.time.LocalDateTime;
+import java.util.regex.*;
+
+<span class="fc" id="L12">public abstract class ReportLog{</span>
+	/**
+	 * A simple static method usable by all UI controllers for input name sanitization (no whitespace inside the name).
+	 * @param name The name to be validated.
+	 * @return An empty string if the name has whitespace within it. If the name has no whitespace inside but has leading and trailing whitespace, they will be removed and the result returned. If there is no whitespace in the name at all, the original input will be returned.
+	 */
+	public static String validateName(String name) {
+<span class="fc" id="L19">		Matcher validName = Pattern.compile(&quot;^\\s*\\S+\\s*$&quot;).matcher(name);</span>
+		//Trim name if there are no spaces in the name.
+<span class="fc bfc" id="L21" title="All 2 branches covered.">		if (validName.find()){</span>
+<span class="fc" id="L22">			String temp = name.trim().toLowerCase();</span>
+<span class="fc" id="L23">			return temp.substring(0, 1).toUpperCase() + temp.substring(1);</span>
+		}else{
+<span class="fc" id="L25">			return &quot;&quot;;</span>
+		}
+	}
+	public abstract String getoReport();
+	public abstract String getTask();
+	public abstract LocalDateTime getTime();
+	public abstract String getHTML();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

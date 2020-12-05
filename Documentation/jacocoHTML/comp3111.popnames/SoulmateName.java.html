@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SoulmateName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">SoulmateName.java</span></div><h1>SoulmateName.java</h1><pre class="source lang-java linenums">/**
+ * SoulmateName
+ * 
+ * Task 5. Given your name, year of birth, gender of interest, and age preference, can predict your soulmate's name using various algorithms.
+ * Then from that point,this class is also the bridge into the journey through time with a selected name.
+ * 
+ * The way this class works is by creating a hashmap mapping a string to a list of strings. Where the key value of the string is the name of the method of obtaining a list of soulmate names.
+ * 
+ * @author Ryder Khoi Daniel
+ */
+
+package comp3111.popnames;
+
+import java.time.LocalDateTime;
+import java.util.*;
+
+import org.apache.commons.csv.CSVRecord;
+
+import comp3111.export.ReportHistory;
+import comp3111.rankingAlgo.LD;
+import comp3111.rankingAlgo.RankingAlgorithmFactory;
+
+public class SoulmateName extends Reports {
+	/**
+	 * SoulmateName
+	 * 
+	 * Task 5. Given your name, year of birth, gender of interest, and age preference, can predict your soulmate's name using various algorithms.
+	 * Then from that point,this class is also the bridge into the journey through time with a selected name.
+	 * 
+	 * The way this class works is by creating a hashmap mapping a string to a list of strings. Where the key value of the string is the name of the method of obtaining a list of soulmate names.
+	 * 
+	 * @author Ryder Khoi Daniel
+	 */
+	private LocalDateTime time;
+	private String inputName;
+	private String inputGender;
+	private int inputYOB;
+	private String matesGender;
+	private int agePreference; // -1 -&gt; younger; 0 -&gt; same age; 1 -&gt; older
+	
+	private String algorithm; // for choosing which ranking algorithm to be used in the nkt5 algorithm.
+	
+	private Set&lt;String&gt; finalNames;
+	private HashMap&lt;String, List&lt;String&gt;&gt; soulmateNames; // maps an algorithm to a list of names.
+	/*
+	 * 		'nkt5' 	-&gt; 	output of nkt5 algorithm.
+	 * 		'ld'	-&gt;	output of smallest ld distance. (besides the input name)
+	 * 		'pyc'	-&gt;	output of 'Probably' your classmate algorithm.
+	 * 		'chance'-&gt;	output of 'chance encounter' algorithm.
+	 * 
+	 * */
+	
+	/**
+	 * Utility boolean function to determine if source is inside table.
+	 * @param String source, the string in question
+	 * @param Table a list of strings. To be checked whether source is in it.
+	 * @return True if source is in table, false otherwise.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	private boolean in(String source, List&lt;String&gt; table) {
+<span class="fc bfc" id="L62" title="All 4 branches covered.">		for(String comp : table) if(source.equals(comp)) return true;</span>
+<span class="fc" id="L63">		return false;</span>
+	}
+	
+	/**
+	 * Constructor for SoulmateName.
+	 * This constructor sets up the feature of exporting to HTML, and does all calculation necessary so that afterwards, elements may call functions of this class to quickly retrieve data.
+	 * @param String name - the users name.
+	 * @param String myGender - the users gender in the form of &quot;M&quot; or &quot;F&quot;
+	 * @param Integer YOB - the year of birth of the user.
+	 * @param String m_gender - your soulmate's gender in the form &quot;M&quot; or &quot;F&quot;
+	 * @param Integer preference - your age preference of your mate. Utilized in calculation by doing year - preference. This means that a preference of -1 implies you prefer a younger mate and a preference of 1 implied an older mate.
+	 * @param String algo - which ranking system to use for the NK-T5 algorithm. {or,dr,mcr,scr}
+	 * @param String country - which country the analysis is happening in.
+	 * @param String type - most guaranteed to be human.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public SoulmateName(String name, String myGender, int YOB, String m_gender, int preference, String algo, String country, String type) {
+<span class="fc" id="L81">		super(name, myGender, country, type);</span>
+<span class="fc" id="L82">		super.setoReport(&quot;Potential Soulmates of &quot; + name);</span>
+<span class="fc" id="L83">		super.setTask(&quot;Soulmates of &quot; + name);</span>
+		
+<span class="fc" id="L85">		this.inputName = name;</span>
+<span class="fc" id="L86">		this.inputGender = myGender;</span>
+<span class="fc" id="L87">		this.inputYOB = YOB;</span>
+<span class="fc" id="L88">		this.matesGender = m_gender;</span>
+<span class="fc" id="L89">		this.agePreference = preference;</span>
+<span class="fc" id="L90">		this.time = LocalDateTime.now();</span>
+		
+<span class="fc" id="L92">		List&lt;String&gt; availableAlgos = List.of(&quot;or&quot;, &quot;dr&quot;, &quot;mcr&quot;, &quot;scr&quot;);</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if(!in(algo, availableAlgos)) algo = &quot;or&quot;;</span>
+<span class="fc" id="L94">		this.algorithm = algo;</span>
+		
+<span class="fc" id="L96">		this.soulmateNames = new HashMap&lt;String,List&lt;String&gt;&gt;();</span>
+<span class="fc" id="L97">		this.finalNames = new HashSet&lt;String&gt;();</span>
+		
+		
+		// Systematically go through algorithms to populate the list soulmateNames.
+		// Things that will be used across algorithms:
+		// Check for boundary cases where your age is already the max year and you prefer someone younger, or you are born in the minimum year and prefer someone older.
+		// In which case, just go to the edge years.
+<span class="fc" id="L104">		int oYOB = this.inputYOB - preference;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		if(oYOB == GlobalSettings.getLowerBound()-1) oYOB++;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">		if(oYOB == GlobalSettings.getUpperBound()+1) oYOB--;</span>
+		
+		// First algorithm: NK-T5
+		// get inputs rank based on their selected algorithm. If it can't find your name, it returns the rank of the person with
+		// the closest name to you according to Levenshtein distance.
+<span class="fc" id="L111">		int myRank = RankingAlgorithmFactory.getRankAlgorithm(algorithm, name, myGender, YOB, country, type, &quot;ld&quot;).getRank();</span>
+<span class="fc" id="L112">		List&lt;String&gt; oNames = RankingAlgorithmFactory.getRankAlgorithm(algorithm, name, myGender, YOB, country, type, &quot;ld&quot;).getNameFromRank(myRank, m_gender, oYOB, type, country);</span>
+<span class="fc" id="L113">		soulmateNames.put(&quot;nkt5&quot;, oNames);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		for(String recommended : oNames) finalNames.add(recommended);</span>
+		
+		// Second algorithm: Closest name
+		// Find the person with the smallest LD to you without having the same name as you.
+<span class="fc" id="L118">		int minLD = Integer.MAX_VALUE;</span>
+<span class="fc" id="L119">		String selectedName = &quot;&quot;;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for(CSVRecord rec : AnalyzeNames.getFileParser(oYOB, type, country)){</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">			if(rec.get(1).equals(m_gender)) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">				if(rec.get(0).equals(name)) continue;</span>
+<span class="fc" id="L123">				int currLD = LD.calculate(inputName, rec.get(0));</span>
+<span class="fc" id="L124">				minLD = Math.min(minLD, currLD);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">				if(minLD == currLD) selectedName = rec.get(0);</span>
+			}
+<span class="fc" id="L127">		}</span>
+<span class="fc" id="L128">		oNames =  new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L129">		oNames.add(selectedName);</span>
+<span class="fc" id="L130">		soulmateNames.put(&quot;ld&quot;, oNames);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for(String recommended : oNames) finalNames.add(recommended);</span>
+		
+		// Third algorithm: pyc - Probably your classmate
+		// take your birth year +- a year, and take the top 2 most popular names of the gender of interest.
+<span class="fc" id="L135">		oNames =  new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L136">		Set&lt;String&gt; collectNames = new HashSet&lt;String&gt;();</span>
+<span class="fc" id="L137">		int count = 0;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if(YOB != GlobalSettings.getLowerBound()) { // check for those boundary cases.</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			for(CSVRecord rec : AnalyzeNames.getFileParser(YOB - 1, type, country)){</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">				if(rec.get(1).equals(m_gender)) {</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">					if(count == 2) break;</span>
+<span class="fc" id="L142">					collectNames.add(rec.get(0).replaceAll( &quot;[^-a-zA-Z0-9]&quot;, &quot;&quot;));</span>
+<span class="fc" id="L143">					count++;</span>
+				}
+<span class="fc" id="L145">			}</span>
+		}
+<span class="fc" id="L147">		count = 0;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		for(CSVRecord rec : AnalyzeNames.getFileParser(YOB, type, country)){</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">			if(rec.get(1).equals(m_gender)) {</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">				if(count == 2) break;</span>
+<span class="fc" id="L151">				collectNames.add(rec.get(0).replaceAll( &quot;[^-a-zA-Z0-9]&quot;, &quot;&quot;));</span>
+<span class="fc" id="L152">				count++;</span>
+			}
+<span class="fc" id="L154">		}</span>
+<span class="fc" id="L155">		count = 0;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		if(YOB != GlobalSettings.getUpperBound()) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			for(CSVRecord rec : AnalyzeNames.getFileParser(YOB + 1, type, country)){</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">				if(rec.get(1).equals(m_gender)) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">					if(count == 2) break;</span>
+<span class="fc" id="L160">					collectNames.add(rec.get(0).replaceAll( &quot;[^-a-zA-Z0-9]&quot;, &quot;&quot;));</span>
+<span class="fc" id="L161">					count++;</span>
+				}
+<span class="fc" id="L163">			}</span>
+		}
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for(String collected : collectNames) oNames.add(collected);</span>
+<span class="fc" id="L166">		soulmateNames.put(&quot;pyc&quot;, oNames);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for(String recommended : oNames) finalNames.add(recommended);</span>
+		
+		// 	Fourth Algorithm: chance - Chance encounter
+		//	Randomly picks two names from your year of birth where the probability of any name being selected is its frequency
+		//	divided by the number of members in that gender.
+<span class="fc" id="L172">		oNames = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L173">		List&lt;Integer&gt; deltas = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L174">		List&lt;String&gt; potentialNames = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L175">		int size = 0;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for(CSVRecord rec : AnalyzeNames.getFileParser(YOB, type, country)) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			if(rec.get(1).equals(m_gender)) {</span>
+<span class="fc" id="L178">				size += Integer.parseInt(rec.get(2));</span>
+<span class="fc" id="L179">				deltas.add(size);</span>
+<span class="fc" id="L180">				potentialNames.add(rec.get(0));</span>
+			}
+<span class="fc" id="L182">		}</span>
+<span class="fc" id="L183">		Random rand = new Random();</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for(int i = 0; i &lt; 2; ++i) {</span>
+<span class="fc" id="L185">			int choice = rand.nextInt(size);</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			for(int c = 0; c &lt; deltas.size(); ++c){</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">				if(deltas.get(c) &gt;= choice) {</span>
+<span class="fc" id="L188">					oNames.add(potentialNames.get(c));</span>
+<span class="fc" id="L189">					break;</span>
+				}
+			}
+		}
+<span class="fc" id="L193">		soulmateNames.put(&quot;chance&quot;, oNames);</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for(String recommended : oNames) finalNames.add(recommended);</span>
+		
+<span class="fc" id="L196">		updateReportLog();</span>
+		
+<span class="fc" id="L198">	}</span>
+	
+	/* Report Functions */
+	/**
+	 * Utility class used to set the output foe exporting, formatting the HTML output table so it looks half decent after exporting.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	private void updateReportLog() {
+<span class="fc" id="L207">		String thisHtml = String.format(&quot;&lt;head&gt; &lt;style&gt; table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } &lt;/style&gt; &lt;/head&gt; &lt;h3&gt;Potential Soulmates of %s&lt;/h3&gt;&quot;, this.inputName); </span>
+<span class="fc" id="L208">		thisHtml += &quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;NK-T5&lt;/th&gt;&lt;th&gt;Similar Name&lt;/th&gt;&lt;th&gt;Probably Your Classmate&lt;/th&gt;&lt;th&gt;Chance Encounter&lt;/th&gt;&lt;/tr&gt;&quot;;</span>
+<span class="fc" id="L209">		String tableRow = &quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;tr&gt;&quot;;</span>
+<span class="fc" id="L210">		int depth = 0;</span>
+		while(true) {
+<span class="fc bfc" id="L212" title="All 2 branches covered.">			String nkName = (getSoulmateNamesSize(&quot;nkt5&quot;) &lt;= depth )?&quot;&quot;:getSoulmateNames(&quot;nkt5&quot;).get(depth);</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">			String ldName = (getSoulmateNamesSize(&quot;ld&quot;) &lt;= depth )?&quot;&quot;:getSoulmateNames(&quot;ld&quot;).get(depth);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">			String pycName = (getSoulmateNamesSize(&quot;pyc&quot;) &lt;= depth )?&quot;&quot;:getSoulmateNames(&quot;pyc&quot;).get(depth);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">			String chanceName = (getSoulmateNamesSize(&quot;chance&quot;) &lt;= depth )?&quot;&quot;:getSoulmateNames(&quot;chance&quot;).get(depth);</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">			if(nkName.length() + ldName.length() + pycName.length() + chanceName.length() == 0) break;</span>
+<span class="fc" id="L217">			thisHtml += String.format(tableRow, nkName, ldName, pycName, chanceName);</span>
+<span class="fc" id="L218">			depth++;</span>
+<span class="fc" id="L219">		}</span>
+<span class="fc" id="L220">		thisHtml += &quot;&lt;/table&gt;&quot;;</span>
+<span class="fc" id="L221">		thisHtml = &quot;&lt;div&gt;&quot; + thisHtml + &quot;&lt;/div&gt;&quot;;</span>
+<span class="fc" id="L222">		super.setHTML(thisHtml);</span>
+<span class="fc" id="L223">		ReportHistory.addReportLog(this);</span>
+<span class="fc" id="L224">	}</span>
+	
+	// Getters
+	/**
+	 * Given an algorithm, this function returns a list of names that were outputted from that algorithm. This function requires the calling of the constructor beforehand.
+	 * 
+	 * @param String algo - The soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public List&lt;String&gt; getSoulmateNames(String algo){
+<span class="fc" id="L235">		return soulmateNames.get(algo);</span>
+	}
+	
+	/**
+	 * Given an algorithm returns the number of names in the set.
+	 * @param String algo - the soulmate name algorithm {nkt5, ld, pyc, chance}
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public int getSoulmateNamesSize(String algo) {
+<span class="fc" id="L245">		return soulmateNames.get(algo).size();</span>
+	}
+	
+	/**
+	 * This function returns a set of all the names collected from every algorithm. The reason a set was used is so that there are no duplicate names in the final set of names.
+	 * @author Ryder Khoi Daniel
+	 * v1.0
+	 */
+	public List&lt;String&gt; getFinalNames(){
+<span class="fc" id="L254">		List&lt;String&gt; output = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for(String name : finalNames) output.add(name);</span>
+<span class="fc" id="L256">		return output;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

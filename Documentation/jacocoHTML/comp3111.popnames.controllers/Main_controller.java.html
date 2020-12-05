@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">Main_controller.java</span></div><h1>Main_controller.java</h1><pre class="source lang-java linenums">/**
+* Main_controller.java
+* This is the main interface which acts as a root of all other interfaces. There is a panel on the left in which you can click to go to different pages. More information is on Ryder's supplementary document.
+* 
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
+package comp3111.popnames.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+
+/**
+ * Controller for the host interface.
+ * @author Ryder Khoi Daniel
+ * v1.0
+ */
+<span class="fc" id="L19">public class Main_controller {</span>
+	/**
+	* Main_controller.java
+	* This is the main interface which acts as a root of all other interfaces. There is a panel on the left in which you can click to go to different pages. More information is on Ryder's supplementary document.
+	* 
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
+	
+	/*
+	 *	 ELEMENTS
+	 */
+
+	@FXML
+    private Button Main_home_Button;
+
+    @FXML
+    private Button Main_dataReporting_Button;
+
+    @FXML
+    private Button Main_topNames_Button;
+
+    @FXML
+    private Button Main_namePopularity_Button;
+
+    @FXML
+    private Button Main_trendingNames_Button;
+
+    @FXML
+    private Button Main_babyNames_Button;
+
+    @FXML
+    private Button Main_soulmate_Button;
+
+    @FXML
+    private Button Main_compatibility_Button;
+
+    @FXML
+    private Button Main_export_Button;
+
+    @FXML
+    private Button Main_settings_Button;
+
+    @FXML
+    private TabPane Main_pageOutput_TabPane;
+
+    @FXML
+    private Label Main_pageName_Label;
+    
+    /*
+     * 	METHODS
+     */
+    
+    @FXML
+    void Main_showHomePage(){
+<span class="nc" id="L74">    	Main_pageOutput_TabPane.getSelectionModel().select(0);</span>
+<span class="nc" id="L75">    	Main_pageName_Label.setText(&quot;Welcome!&quot;);</span>
+<span class="nc" id="L76">    }</span>
+    
+    @FXML
+    void Main_showDataReportPage(){
+<span class="fc" id="L80">    	Main_pageOutput_TabPane.getSelectionModel().select(1);</span>
+<span class="fc" id="L81">    	Main_pageName_Label.setText(&quot;Data Reporting&quot;);</span>
+<span class="fc" id="L82">    }</span>
+    
+    @FXML
+    void Main_showTopNamesPage(){
+<span class="fc" id="L86">    	Main_pageOutput_TabPane.getSelectionModel().select(2);</span>
+<span class="fc" id="L87">    	Main_pageName_Label.setText(&quot;Top Names&quot;);</span>
+<span class="fc" id="L88">    }</span>
+    
+    @FXML
+    void Main_showNamesPopularityPage(){
+<span class="fc" id="L92">    	Main_pageOutput_TabPane.getSelectionModel().select(3);</span>
+<span class="fc" id="L93">    	Main_pageName_Label.setText(&quot;Name Popularity&quot;);</span>
+<span class="fc" id="L94">    }</span>
+    
+    @FXML
+    void Main_showTrendingNamesPage(){
+<span class="fc" id="L98">    	Main_pageOutput_TabPane.getSelectionModel().select(4);</span>
+<span class="fc" id="L99">    	Main_pageName_Label.setText(&quot;Name Trends&quot;);</span>
+<span class="fc" id="L100">    }</span>
+    
+    @FXML
+    void Main_showBabyNamesPage(){
+<span class="fc" id="L104">    	Main_pageOutput_TabPane.getSelectionModel().select(5);</span>
+<span class="fc" id="L105">    	Main_pageName_Label.setText(&quot;Baby Name Generator&quot;);</span>
+<span class="fc" id="L106">    }</span>
+    
+    @FXML
+    void Main_showSoulmateNamesPage(){
+<span class="fc" id="L110">    	Main_pageOutput_TabPane.getSelectionModel().select(6);</span>
+<span class="fc" id="L111">    	Main_pageName_Label.setText(&quot;Soulmate Name&quot;);</span>
+<span class="fc" id="L112">    }</span>
+    
+    @FXML
+    void Main_showNamesCompatibilityPage(){
+<span class="fc" id="L116">    	Main_pageOutput_TabPane.getSelectionModel().select(7);</span>
+<span class="fc" id="L117">    	Main_pageName_Label.setText(&quot;Name Compatibility Score&quot;);</span>
+<span class="fc" id="L118">    }</span>
+    
+    @FXML
+    void Main_showExportPage(){
+<span class="fc" id="L122">    	Main_pageOutput_TabPane.getSelectionModel().select(8);</span>
+<span class="fc" id="L123">    	Main_pageName_Label.setText(&quot;Export Results&quot;);</span>
+<span class="fc" id="L124">    }</span>
+    
+    @FXML
+    void Main_showSettingsPage(){
+<span class="nc" id="L128">    	Main_pageOutput_TabPane.getSelectionModel().select(9);</span>
+<span class="nc" id="L129">    	Main_pageName_Label.setText(&quot;Settings&quot;);</span>
+<span class="nc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

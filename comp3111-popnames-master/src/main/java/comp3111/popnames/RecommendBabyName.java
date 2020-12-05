@@ -15,7 +15,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.ByteArrayOutputStream;
 import org.apache.commons.text.similarity.LevenshteinDistance;
-
+import java.text.DecimalFormat;
 import com.kennycason.kumo.CollisionMode;
 import com.kennycason.kumo.WordCloud;
 import com.kennycason.kumo.WordFrequency;
@@ -240,7 +240,7 @@ public class RecommendBabyName extends ReportLog {
 		    Color color = new Color(r,g,b,1);
 		    //ensure its not too similar to the background color
 		    if (!similarColor(color,Color.WHITE))
-		    	break;
+		    	continue;
 		}
 		//generate a color swatch based off the base color we generated above
 		for (int i = 0; i < 30; ++i) {
@@ -318,8 +318,18 @@ public class RecommendBabyName extends ReportLog {
 		String tableRow = "<td>%s</td><td>%s</td>";
 		String[][] rows = new String[4][25];
 		//System.out.println(babyNamesList.size());
+		
+		int maxScore = 0;
 		for (int i = 0; i < babyNamesList.size(); i++) {
-			rows[i/25][i%25] = String.format(tableRow, babyNamesList.get(i).getLeft(), babyNamesList.get(i).getRight());
+			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());
+			if (maxScore < score) {
+				maxScore = score;
+			}
+		}
+		DecimalFormat df = new DecimalFormat("#.##");
+		for (int i = 0; i < babyNamesList.size(); i++) {
+			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());
+			rows[i/25][i%25] = String.format(tableRow, babyNamesList.get(i).getLeft(), df.format(100.0*(1.0-((double)score/(double)maxScore)))+"%");
 		}
 		for (int i = 0; i < 25; ++i) {
 			html += "<tr>";

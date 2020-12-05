@@ -432,7 +432,7 @@ public class TrendingNames_controller {
 	        		if (falling_names.length()==0) {//if no names have been added to falling_names yet
 //	        			falling_names = results.get("name").get(i);
 //	        	        falling_trend = results.get("trend").get(i);
-	        	        summary += String.format(" On the other hand, %s is found to have shown the largest rise in popularity from rank %s in year %s to rank %s in year %s.", 
+	        	        summary += String.format(" On the other hand, %s is found to have shown the largest fall in popularity from rank %s in year %s to rank %s in year %s.", 
 	        	        		results.get("name").get(i), 
 	        	        		results.get("startRank").get(i),
 	        	        		results.get("startYear").get(i),

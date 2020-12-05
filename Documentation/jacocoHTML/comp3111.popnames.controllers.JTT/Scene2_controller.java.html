@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Scene2_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers.JTT</a> &gt; <span class="el_source">Scene2_controller.java</span></div><h1>Scene2_controller.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers.JTT;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.List;
+
+import comp3111.popnames.GlobalSettings;
+import comp3111.popnames.JourneyThroughTime;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedAreaChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+
+<span class="nc" id="L31">public class Scene2_controller {</span>
+
+	@FXML
+    private StackPane JTT2_stack_StackPane;
+
+    @FXML
+    private AnchorPane JTT2_source_AnchorPane;
+
+    @FXML
+    private Label JTT2_titleLabel_Label;
+
+    @FXML
+    private Button JTT2_nextScene_Button;
+
+    @FXML
+    private Button JTT2_calculate_Button;
+
+    @FXML
+    private TextField JTT2_lifeExpectancy_TextField;
+
+    @FXML
+    private Label JTT2_lifeExpectancy_Label;
+    
+    @FXML
+    private AreaChart&lt;Integer, Integer&gt; JTT2_chart_AreaChart;
+
+    @FXML
+    private NumberAxis JTT2_xAxis_NumberAxis;
+
+    @FXML
+    private NumberAxis JTT2_yAxis_NumberAxis;
+    
+
+    /* Methods */
+    
+	
+	@FXML
+	/**
+     * Initialize the graph.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void initialize() {
+<span class="nc" id="L74">		JTT2_titleLabel_Label.setText(String.format(&quot;Population of %s and %s&quot;, JourneyThroughTime.getUserName(), JourneyThroughTime.getSoulmateName()));</span>
+<span class="nc" id="L75">    	renderGraph(70);</span>
+<span class="nc" id="L76">    }</span>
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	/**
+     * Used to draw to the graph with a given life expectancy.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+	void renderGraph(int le) {
+		// Creation and initialization of the series.
+<span class="nc" id="L86">    	XYChart.Series&lt;Integer,Integer&gt; seriesUser = new Series&lt;&gt;();</span>
+<span class="nc" id="L87">    	XYChart.Series&lt;Integer,Integer&gt; seriesSoulmate = new Series&lt;&gt;();</span>
+    	
+<span class="nc" id="L89">    	seriesUser.setName(JourneyThroughTime.getUserName());</span>
+<span class="nc" id="L90">    	seriesSoulmate.setName(JourneyThroughTime.getSoulmateName());</span>
+    	
+    	// Populate the series
+<span class="nc" id="L93">    	List&lt;Integer&gt; userData = JourneyThroughTime.getPopulationOf(JourneyThroughTime.getUserName(), JourneyThroughTime.getUserGender(), le);</span>
+<span class="nc" id="L94">    	List&lt;Integer&gt; soulmateData = JourneyThroughTime.getPopulationOf(JourneyThroughTime.getSoulmateName(), JourneyThroughTime.getSoulmateGender(), le);</span>
+    	//System.out.println(userData[0]);
+<span class="nc" id="L96">    	int startYear = GlobalSettings.getLowerBound();</span>
+<span class="nc" id="L97">    	int endYear = GlobalSettings.getUpperBound();</span>
+    	//seriesUser.getData().add(new XYChart.Data&lt;&gt;(1880,userData[0]));
+<span class="nc bnc" id="L99" title="All 2 branches missed.">    	for(int year = 0; year &lt; endYear - startYear; ++year) {</span>
+<span class="nc" id="L100">    		int xLab = startYear + year;</span>
+<span class="nc" id="L101">    		int yLabUser = userData.get(year);</span>
+<span class="nc" id="L102">    		int yLabSoulmate = soulmateData.get(year);</span>
+<span class="nc" id="L103">    		seriesUser.getData().add(new XYChart.Data&lt;&gt;(xLab, yLabUser));</span>
+<span class="nc" id="L104">    		seriesSoulmate.getData().add(new XYChart.Data&lt;&gt;(xLab, yLabSoulmate));</span>
+    	}
+    	
+    	// Draw to graph
+<span class="nc" id="L108">    	JTT2_chart_AreaChart.getData().addAll(seriesUser, seriesSoulmate);</span>
+<span class="nc" id="L109">	}</span>
+    
+	/**
+     * Used to sanitize the input of the life expectancy.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+	private int getCleanedLifeExpectancy() {
+<span class="nc" id="L117">		int res = -1;</span>
+		try {
+<span class="nc" id="L119">    		res = Integer.parseInt(JTT2_lifeExpectancy_TextField.getText());</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">    		if(res &lt; 1) {</span>
+<span class="nc" id="L121">    			JTT2_lifeExpectancy_Label.setText(&quot;Invalid life expectancy.&quot;);</span>
+<span class="nc" id="L122">    			return -1;</span>
+    		}
+<span class="nc" id="L124">    	} catch(NumberFormatException e) {</span>
+    		// the year is not a valid integer.
+<span class="nc" id="L126">    		JTT2_lifeExpectancy_Label.setText(&quot;Invalid life expectancy.&quot;);</span>
+<span class="nc" id="L127">    		return res;</span>
+<span class="nc" id="L128">    	}</span>
+<span class="nc" id="L129">		return res;</span>
+	}
+	
+    @FXML
+    /**
+     * Called when the user has enetered a life expectancy and want to see the graph drawn.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void calculateGraph() {
+<span class="nc" id="L139">    	JTT2_lifeExpectancy_Label.setText(&quot;Life Expectancy&quot;);</span>
+<span class="nc" id="L140">    	int lifeExpectancy = getCleanedLifeExpectancy();</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">    	if(lifeExpectancy == -1) return;</span>
+<span class="nc" id="L142">    	JTT2_chart_AreaChart.getData().clear();</span>
+<span class="nc" id="L143">    	renderGraph(lifeExpectancy);</span>
+<span class="nc" id="L144">    }</span>
+
+    @FXML
+    /**
+     * Used to jump to the next scene.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
+    void nextScene() {
+<span class="nc" id="L153">    	Parent root = null;</span>
+		try {
+<span class="nc" id="L155">			root = FXMLLoader.load(getClass().getResource(&quot;/interfaces/Scene3_interface.fxml&quot;));</span>
+<span class="nc" id="L156">		} catch (IOException e) {</span>
+<span class="nc" id="L157">			System.out.println(&quot;I FAILED...&quot;);</span>
+<span class="nc" id="L158">			System.out.println(e);</span>
+<span class="nc" id="L159">			return;</span>
+<span class="nc" id="L160">		}</span>
+    	
+<span class="nc" id="L162">    	Scene scene = JTT2_nextScene_Button.getScene();</span>
+<span class="nc" id="L163">    	root.translateYProperty().set(scene.getHeight());</span>
+    	
+<span class="nc" id="L165">    	JTT2_stack_StackPane.getChildren().add(root);</span>
+    	
+<span class="nc" id="L167">    	Timeline timeline = new Timeline();</span>
+<span class="nc" id="L168">    	KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.EASE_IN);</span>
+<span class="nc" id="L169">    	KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);</span>
+<span class="nc" id="L170">    	timeline.getKeyFrames().add(kf);</span>
+<span class="nc" id="L171">    	timeline.setOnFinished(event-&gt;{</span>
+<span class="nc" id="L172">    		JTT2_stack_StackPane.getChildren().remove(JTT2_source_AnchorPane);</span>
+<span class="nc" id="L173">    	});</span>
+    	
+<span class="nc" id="L175">    	timeline.play();</span>
+<span class="nc" id="L176">    }</span>
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
