@@ -2,6 +2,8 @@ package comp3111.rankingAlgo;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,5 +75,13 @@ public class SCRTest {
 	public void scrGetSizeFoundNametestFemale() {
 		SCR algo = new SCR("Jabez","F",2000,"usa","human","standard");
 		assertTrue(algo.getSize() == 17652);
+	}
+	
+	@Test
+	public void testGetNameFromRank() {
+		SCR testHolder = new SCR("Jabez","F",2000,"usa","human","standard");
+		List<String> tester = testHolder.getNameFromRank(7, "M", 1899, "human", "usa");
+		assertTrue(tester.size() == 1);
+		assertTrue(tester.get(0).equals("Robert"));
 	}
 }

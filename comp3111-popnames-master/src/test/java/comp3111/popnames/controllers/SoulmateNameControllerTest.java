@@ -70,7 +70,7 @@ public class SoulmateNameControllerTest extends ApplicationTest{
 		
 		clickOn("#Soulmate_findSoulmate_Button");
 		
-		String sample = "Aiyana";
+		String sample = "Allyssa";
 		TableView table = (TableView)mainscene.lookup("#Soulmate_NKout_TableView");
 		TableColumn col = (TableColumn) table.getColumns().get(0);
 		String data = (String) col.getCellObservableValue(table.getItems().get(0)).getValue();

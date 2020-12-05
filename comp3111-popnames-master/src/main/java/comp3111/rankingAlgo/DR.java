@@ -148,7 +148,7 @@ public class DR extends RankingAlgorithm {
 	 * v 1.0
 	 */
 	public List<String> getNameFromRank(int rank, String gender, int yob, String type, String country){
-		int rankUnderInspection = 1;
+		int rankUnderInspection = 0;
 		int prevFreq = -1;
 		List<String> output = new ArrayList<String>();
 		for(CSVRecord rec : AnalyzeNames.getFileParser(yob, type, country)){

@@ -2,6 +2,8 @@ package comp3111.rankingAlgo;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,5 +86,14 @@ public class DRTest {
 	public void drGetSizeFoundNametestFemale() {
 		DR algo = new DR("Jabez","F",2000,"usa","human","standard");
 		assertTrue(algo.getSize() == 17652);
+	}
+	
+	@Test
+	public void testGetNameFromRank() {
+		// getNameFromRank(int rank, String gender, int yob, String type, String country)
+		DR testHolder = new DR("Jabez","F",2000,"usa","human","standard");
+		List<String> tester = testHolder.getNameFromRank(1, "M", 2000, "human", "usa");
+		assertTrue(tester.size() == 1);
+		assertTrue(tester.get(0).equals("Jacob"));
 	}
 }
