@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatasetHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">DatasetHandler.java</span></div><h1>DatasetHandler.java</h1><pre class="source lang-java linenums">package comp3111.popnames;
+
+import java.util.Vector;
+
+import edu.duke.FileResource;
+import javafx.util.Pair;
+
+/**
+ * Used for handling valid data set access handlers and is helpful for controllers.
+ * @author Yuxi Sun
+ * v1.0
+ */
+<span class="nc" id="L13">public abstract class DatasetHandler {</span>
+	/**
+	 * This function is used to get the valid types in the current data set
+	 * @return a Vector of Strings of the support types in the current data set using the data set/metadata.txt
+	 */
+	public static Vector&lt;String&gt; getTypes(){
+<span class="fc" id="L19">		Vector&lt;String&gt; types = new Vector&lt;String&gt;();</span>
+<span class="fc" id="L20">    	FileResource fr = new FileResource(&quot;dataset/metadata.txt&quot;);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">    	for(String line: fr.lines()) {</span>
+<span class="fc" id="L22">    		types.add(line);</span>
+<span class="fc" id="L23">    	}</span>
+<span class="fc" id="L24">    	return types;</span>
+	}
+	/**
+	 * This function is used to get the valid countries given a type using the dataset/(type)/metadata.txt
+	 * @param type [human, pet]
+	 * @return Vector of Strings of the supported countries in the existing data set
+	 */
+	public static Vector&lt;String&gt; getCountries(String type){
+<span class="fc" id="L32">		type = type.strip(); //cleaning input</span>
+<span class="fc" id="L33">		Vector&lt;String&gt; types = new Vector&lt;String&gt;();</span>
+<span class="fc" id="L34">    	FileResource fr = new FileResource(String.format(&quot;dataset/%s/metadata.txt&quot;, type));</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    	for(String line: fr.lines()) {</span>
+<span class="fc" id="L36">    		types.add(line);</span>
+<span class="fc" id="L37">    	}</span>
+<span class="fc" id="L38">    	return types;</span>
+	}
+
+	/**
+	 * Used to get the valid start and end year ranges inclusive of a type/country
+	 * @param type the type of data set being used
+	 * @param country the country of data set being 
+	 * @return A Pair of type String,String with key start year and value end year or null if the type and country are invalid.
+	 */
+	public static Pair&lt;String,String&gt; getValidRange(String type, String country){
+<span class="fc" id="L48">		type = type.strip(); //cleaning input</span>
+<span class="fc" id="L49">		country = country.strip(); //cleaning input</span>
+		//validation
+<span class="fc bfc" id="L51" title="All 4 branches covered.">		if (getTypes().contains(type) &amp;&amp; getCountries(type).contains(country)){</span>
+<span class="fc" id="L52">	    	FileResource fr = new FileResource(String.format(&quot;dataset/%s/%s/metadata.txt&quot;, type,country));</span>
+<span class="fc" id="L53">	    	Vector&lt;String&gt; metadata = new Vector&lt;String&gt;(); // used to store the first line of the metadata file (that holds the start and end year separated by a space</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">	    	for(String line: fr.lines()) {</span>
+<span class="fc" id="L55">	    		metadata.add(line);</span>
+<span class="fc" id="L56">	    	}</span>
+<span class="fc" id="L57">			return new Pair&lt;String,String&gt;(metadata.get(0),metadata.get(1));</span>
+		}
+<span class="fc" id="L59">		return null;//input error</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

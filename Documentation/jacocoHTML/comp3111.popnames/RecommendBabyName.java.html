@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecommendBabyName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames</a> &gt; <span class="el_source">RecommendBabyName.java</span></div><h1>RecommendBabyName.java</h1><pre class="source lang-java linenums">/**
+ * RecommendBabyName
+ * 
+ * For task 4. Outputs a list of recommended baby names, given a pair of parents' names, their YOBs, the baby's gender, and an optional vintageYear (the year the baby should be born in, default 2019)
+ * @author Hyun Joon Jeong
+ */
+
+package comp3111.popnames;
+
+import comp3111.export.ReportHistory;
+
+import java.util.*;
+import java.time.LocalDateTime;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.ByteArrayOutputStream;
+import org.apache.commons.text.similarity.LevenshteinDistance;
+import java.text.DecimalFormat;
+import com.kennycason.kumo.CollisionMode;
+import com.kennycason.kumo.WordCloud;
+import com.kennycason.kumo.WordFrequency;
+import com.kennycason.kumo.palette.ColorPalette;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.csv.*;
+
+
+public class RecommendBabyName extends ReportLog {
+	/**
+	 * RecommendBabyName
+	 * 
+	 * For task 4. Outputs a list of recommended baby names, given a pair of parents' names, their YOBs, the baby's gender, and an optional vintageYear (the year the baby should be born in, default 2019)
+	 * @author Hyun Joon Jeong
+	 */
+	private LocalDateTime time;
+	private String fatherName;
+	private String motherName;
+	private String babyGender;
+	private int fatherYOB;
+	private int motherYOB;
+	private int vintageYear;
+	private byte[] wordCloudImageBytes;
+	
+	//babyNamesList: A list of 3-tuples, each tuple contains a suggested baby name, its LD-distance from the father/mother's name, and the difference in LD-distance between the father and mother's name
+	private List&lt;Triple&lt;String,Integer,Integer&gt;&gt; babyNamesList;
+	
+	/**
+	 * Constructor for RecommendBabyName
+	 * Computes a list of suggested baby names (up to 100) given the following parameters.
+	 * The algorithm primarily makes use of the Levenshtein distance - an algorithm that measures the edit distance between two strings (how many edits e.g. replacements, letter shifts, are needed to transform string 1 to string 2)
+	 * Created for Task 4's wow factor. Should I call it the NK-T7?
+	 * It creates two sets of lists - baby names created from the father's name, and baby names created from the mother's name.
+	 * They are sorted according to whether the differences between the mother and father LD-distances are the same.
+	 * After creating two lists, they are combined to create one master list of baby names.
+	 * How many names are taken from the mother's list and how many from the father's list depends on the gender of the baby whose name is being generated, as well as whether the parent is closer to vintageYear or not. (A parent with a name closer to the baby's YOB should give a more 'appropriate' name for the baby, right?? Maybe...)
+	 * If one list fails to meet the quota, names from the other parent's list are drawn until the master list reaches 100 names, or the other parent's list becomes empty too.
+	 * @param fatherName father's name
+	 * @param motherName mother's name
+	 * @param fatherYOB father's YOB
+	 * @param motherYOB mother's YOB
+	 * @param vintageYear This is supposed to be the baby's YOB. Usually it is set to 2019, but the user can specify it freely to generate a name for a baby being born at any past year.
+	 * @param babyGender The gender of the name the user wants to generate.
+	 * @param country Data set's country.
+	 * @param type Data set's type/species.
+	 */
+<span class="fc" id="L68">	public RecommendBabyName(String fatherName, String motherName, int fatherYOB, int motherYOB, int vintageYear, String babyGender, String country, String type) {</span>
+<span class="fc" id="L69">		this.fatherName = fatherName;</span>
+<span class="fc" id="L70">		this.motherName = motherName;</span>
+<span class="fc" id="L71">		this.fatherYOB = fatherYOB;</span>
+<span class="fc" id="L72">		this.motherYOB = motherYOB;</span>
+<span class="fc" id="L73">		this.vintageYear = vintageYear;</span>
+<span class="fc" id="L74">		this.babyGender = babyGender;</span>
+		//We need to set the time now, the moment the results start generating.
+<span class="fc" id="L76">		this.time = LocalDateTime.now();</span>
+		
+<span class="fc" id="L78">		LevenshteinDistance ld = new LevenshteinDistance();</span>
+		//From here on, LD-distance refers to the Levenshtein distance between the baby name and the father/mother's name.
+		//LD-diff refers to the DIFFERENCE between the LD-distances between the baby name and the father's name, and the baby name and the mother's name.
+		//Comparator used to sort the baby names list. Ranking by LD-distance first gives us names that are too similar to the father or mother's name (e.g. father's name = Michael -&gt; baby name = Michaela, Michel, Micheal. etc)
+		//Instead we sort by the LD-diff. An LD-diff of 0 means both the father and mother's name have equal LD-distances. Sort of means that half of the baby name is taken from the father, and half of the baby name taken from the mother.
+		//After that we sort by the LD-dist, then the name's rank in the vintageYear.
+<span class="fc" id="L84">		Comparator&lt;Triple&lt;String,Integer,Integer&gt;&gt; candidateNameComparator = new Comparator&lt;Triple&lt;String,Integer,Integer&gt;&gt;() {</span>
+			public int compare(Triple&lt;String,Integer,Integer&gt; firstTriple, Triple&lt;String,Integer,Integer&gt; secondTriple) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">				if (firstTriple.getRight()*5 + firstTriple.getMiddle() &gt; secondTriple.getRight()*5 + secondTriple.getMiddle()) {</span>
+<span class="fc" id="L87">					return 1;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">				} else if (firstTriple.getRight()*5 + firstTriple.getMiddle() &lt; secondTriple.getRight()*5 + secondTriple.getMiddle()) {</span>
+<span class="fc" id="L89">					return -1;</span>
+				} else
+<span class="fc" id="L91">					return 0;</span>
+			}
+		};
+		
+<span class="fc" id="L95">		List&lt;Triple&lt;String,Integer,Integer&gt;&gt; fatherCandidateNames = new ArrayList&lt;Triple&lt;String,Integer,Integer&gt;&gt;();</span>
+<span class="fc" id="L96">		List&lt;Triple&lt;String,Integer,Integer&gt;&gt; motherCandidateNames = new ArrayList&lt;Triple&lt;String,Integer,Integer&gt;&gt;();</span>
+<span class="fc" id="L97">		int minimumNameFrequency = 0;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (CSVRecord rec : AnalyzeNames.getFileParser(vintageYear, type, country)) {</span>
+<span class="fc" id="L99">			String thisName = rec.get(0);</span>
+			//LD-dists for father &amp; mother
+<span class="fc" id="L101">			int scoreWithFather = ld.apply(fatherName, thisName);</span>
+<span class="fc" id="L102">			int scoreWithMother = ld.apply(motherName, thisName);</span>
+			//LD-diff
+<span class="fc" id="L104">			int scoreDifference = Math.abs(scoreWithFather-scoreWithMother);</span>
+			//Optional: Set the minimum frequency for a name to be considered. This avoids very rare and unusual names that occur only because the LD-dist algorithm favors it.
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">			if (rec.get(1).equals(babyGender) &amp;&amp; Integer.parseInt(rec.get(2)) &gt; minimumNameFrequency) {</span>
+				//Get LD-dists which are equal to approx. half the parent's name's length. (To encourage the 'baby name comes from both halves of the parent' phenomenon)
+<span class="fc bfc" id="L108" title="All 4 branches covered.">				if (scoreWithFather == (fatherName.length()/2) || scoreWithFather == (fatherName.length()/2)+1) {</span>
+<span class="fc" id="L109">					fatherCandidateNames.add(Triple.of(thisName, scoreWithFather, scoreDifference));</span>
+				}
+<span class="fc bfc" id="L111" title="All 4 branches covered.">				if (scoreWithMother == (motherName.length()/2) || scoreWithMother == (motherName.length()/2)+1) {</span>
+<span class="fc" id="L112">					motherCandidateNames.add(Triple.of(thisName, scoreWithMother, scoreDifference));</span>
+				}
+			}
+<span class="fc" id="L115">		}</span>
+<span class="fc" id="L116">		fatherCandidateNames.sort(candidateNameComparator);</span>
+<span class="fc" id="L117">		motherCandidateNames.sort(candidateNameComparator);</span>
+		
+		//Calculate the weighting of which parent's name similarities should take priority (in total, there will be 100 names (or otherwise depending on the amount variable)
+<span class="fc" id="L120">		double fatherWeight = 1.0;</span>
+<span class="fc" id="L121">		double motherWeight = 1.0;</span>
+		//Find the parent with the closer YOB to vintageYear.
+<span class="fc" id="L123">		int fatherDistance = Math.abs(fatherYOB-vintageYear);</span>
+<span class="fc" id="L124">		int motherDistance = Math.abs(motherYOB-vintageYear);</span>
+		//reduce the weighting of the parent with the larger difference between their YOB and vintageYear, based on how much larger their YOB is.
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (fatherDistance &gt; motherDistance) {</span>
+<span class="fc" id="L127">			fatherWeight *= ((double)motherDistance) / ((double)fatherDistance);</span>
+		} else {
+<span class="fc" id="L129">			motherWeight *= ((double)fatherDistance) / ((double)motherDistance);</span>
+		}
+<span class="fc" id="L131">		final int amount = 100;</span>
+<span class="fc" id="L132">		babyNamesList = new ArrayList&lt;Triple&lt;String,Integer,Integer&gt;&gt;();</span>
+		//Using these weights, calculate what portion of the total # of names should come from which parent.
+<span class="fc" id="L134">		int fatherNamesAmount = 0;</span>
+<span class="fc" id="L135">		int motherNamesAmount = 0;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		if (babyGender.equals(&quot;M&quot;)) {</span>
+			//male name being generated
+			//decrease mother's weighting
+<span class="fc" id="L139">			fatherNamesAmount = (int) Math.round(amount * (fatherWeight/(motherWeight*0.7 + fatherWeight)));</span>
+<span class="fc" id="L140">			motherNamesAmount = amount - fatherNamesAmount;</span>
+		} else {
+			//female name being generated
+			//do the opposite.
+<span class="fc" id="L144">			motherNamesAmount = (int) Math.round(amount * (motherWeight/(motherWeight + fatherWeight*0.7)));</span>
+<span class="fc" id="L145">			fatherNamesAmount = amount - motherNamesAmount;</span>
+		}
+		//we need all these for the case where either parent's list doesn't have enough names, so that we can take from the other parent's list instead to fill the 100 names quota.
+<span class="fc" id="L148">		int fatherListIndex = 0;</span>
+<span class="fc" id="L149">		int fatherInsertedAmount = 0;</span>
+<span class="fc" id="L150">		int motherListIndex = 0;</span>
+<span class="fc" id="L151">		int motherInsertedAmount = 0;</span>
+		//try and insert the right proportion of names from the father
+<span class="fc bfc" id="L153" title="All 4 branches covered.">		while (fatherListIndex &lt; fatherCandidateNames.size() &amp;&amp; fatherInsertedAmount &lt; fatherNamesAmount) {</span>
+<span class="fc" id="L154">			Boolean nameExists = false;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			for (int i = 0; i &lt; babyNamesList.size(); ++i) {</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">				if (babyNamesList.get(i).getLeft().equals(fatherCandidateNames.get(fatherListIndex).getLeft())) {</span>
+<span class="nc" id="L157">					nameExists = true; break;</span>
+				}
+			}
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			if (!nameExists) {</span>
+<span class="fc" id="L161">				babyNamesList.add(fatherCandidateNames.get(fatherListIndex));</span>
+<span class="fc" id="L162">				++fatherInsertedAmount;</span>
+			}
+<span class="fc" id="L164">			++fatherListIndex;</span>
+<span class="fc" id="L165">		}</span>
+		//try and insert the right proportion of names from the mother
+<span class="fc bfc" id="L167" title="All 4 branches covered.">		while (motherListIndex &lt; motherCandidateNames.size() &amp;&amp; motherInsertedAmount &lt; motherNamesAmount) {</span>
+<span class="fc" id="L168">			Boolean nameExists = false;</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">			for (int i = 0; i &lt; babyNamesList.size(); ++i) {</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">				if (babyNamesList.get(i).getLeft().equals(motherCandidateNames.get(motherListIndex).getLeft())) {</span>
+<span class="fc" id="L171">					nameExists = true; break;</span>
+				}
+			}
+<span class="fc bfc" id="L174" title="All 2 branches covered.">			if (!nameExists) {</span>
+<span class="fc" id="L175">				babyNamesList.add(motherCandidateNames.get(motherListIndex));</span>
+<span class="fc" id="L176">				++motherInsertedAmount;</span>
+			}
+<span class="fc" id="L178">			++motherListIndex;</span>
+<span class="fc" id="L179">		}</span>
+		//if there are &lt;amount names in the master list, we either exhaust the father names list first or the mother names list first depending on the gender of the baby
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		if (babyGender.equals(&quot;M&quot;)) {</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">			while (babyNamesList.size() &lt; amount &amp;&amp; fatherListIndex &lt; fatherCandidateNames.size()) </span>
+<span class="nc" id="L183">				babyNamesList.add(fatherCandidateNames.get(fatherListIndex++));</span>
+<span class="fc bfc" id="L184" title="All 4 branches covered.">			while (babyNamesList.size() &lt; amount &amp;&amp; motherListIndex &lt; motherCandidateNames.size()) </span>
+<span class="fc" id="L185">				babyNamesList.add(motherCandidateNames.get(motherListIndex++));</span>
+		} else {
+<span class="pc bpc" id="L187" title="1 of 4 branches missed.">			while (babyNamesList.size() &lt; amount &amp;&amp; motherListIndex &lt; motherCandidateNames.size()) </span>
+<span class="nc" id="L188">				babyNamesList.add(motherCandidateNames.get(motherListIndex++));</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">			while (babyNamesList.size() &lt; amount &amp;&amp; fatherListIndex &lt; fatherCandidateNames.size()) </span>
+<span class="nc" id="L190">				babyNamesList.add(fatherCandidateNames.get(fatherListIndex++));</span>
+		}
+<span class="fc" id="L192">		babyNamesList.sort(candidateNameComparator);</span>
+<span class="fc" id="L193">		int i = 0;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (babyNamesList.size() &gt; 20)</span>
+<span class="fc" id="L195">			generateWordCloudImageBytes();</span>
+		else
+<span class="fc" id="L197">			wordCloudImageBytes = null;</span>
+<span class="fc" id="L198">		ReportHistory.addReportLog(this);</span>
+<span class="fc" id="L199">	}</span>
+	/**
+	 * Returns the master baby names list generated by the algorithm.
+	 * @return the list of 3-tuples that stores the baby names, their LD-dists from the father/mother, and their LD-diff
+	 */
+	public List&lt;Triple&lt;String,Integer,Integer&gt;&gt; getBabyNamesList() {
+<span class="fc" id="L205">		return babyNamesList;</span>
+	}
+	/**
+	 * Helper function for calculating how similar two colors are.
+	 * @param c1 first color
+	 * @param c2 second color
+	 * @return verdict on their similarity
+	 */
+	private boolean similarColor(Color c1, Color c2){
+<span class="fc" id="L214">	    int distance = (c1.getRed() - c2.getRed())*(c1.getRed() - c2.getRed()) + (c1.getGreen() - c2.getGreen())*(c1.getGreen() - c2.getGreen()) + (c1.getBlue() - c2.getBlue())*(c1.getBlue() - c2.getBlue());</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">	    if(distance &gt; 20){</span>
+<span class="fc" id="L216">	        return true;</span>
+	    }else{
+<span class="nc" id="L218">	        return false;</span>
+	    }
+	}
+	/**
+	 * Returns the PNG byte array of a word cloud image generated by the algorithm.
+	 * @return the byte array of a PNG image containing the word cloud.
+	 */
+	private void generateWordCloudImageBytes() {
+<span class="fc" id="L226">		WordCloud wc = new WordCloud(new Dimension(500,220), CollisionMode.PIXEL_PERFECT);</span>
+		//background of the word cloud will be white
+<span class="fc" id="L228">		wc.setBackgroundColor(Color.WHITE);</span>
+		//color palette for the word cloud
+<span class="fc" id="L230">		Color[] thisPalette = new Color[30];</span>
+		//generate a base color
+<span class="fc" id="L232">		Random rand = new Random();</span>
+<span class="fc" id="L233">		float r = 0.0f;</span>
+<span class="fc" id="L234">		float g = 0.0f;</span>
+<span class="fc" id="L235">		float b = 0.0f;</span>
+<span class="pc bpc" id="L236" title="1 of 4 branches missed.">		while (!(r+g+b&gt;1.5f &amp;&amp; r+g+b &lt; 2.9f)) {</span>
+<span class="fc" id="L237">			r = rand.nextFloat();</span>
+<span class="fc" id="L238">			g = rand.nextFloat();</span>
+<span class="fc" id="L239">		    b = rand.nextFloat();</span>
+<span class="fc" id="L240">		    Color color = new Color(r,g,b,1);</span>
+		    //ensure its not too similar to the background color
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">		    if (!similarColor(color,Color.WHITE))</span>
+<span class="nc" id="L243">		    	continue;</span>
+<span class="fc" id="L244">		}</span>
+		//generate a color swatch based off the base color we generated above
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		for (int i = 0; i &lt; 30; ++i) {</span>
+			//generate a range of colors from dark to bright
+<span class="fc" id="L248">			float newR = r/2+(r/2/(i+1));</span>
+<span class="fc" id="L249">			float newG = g/2+(g/2/(i+1));</span>
+<span class="fc" id="L250">			float newB = b/2+(b/2/(i+1));</span>
+			//how much the RGB can deviate from the base color
+<span class="fc" id="L252">			float offsetRange = 0.2f;</span>
+			//check that the new RGB is still in range
+<span class="pc bpc" id="L254" title="1 of 4 branches missed.">			float rOffset; do {rOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(rOffset + newR &gt; 0.0f &amp;&amp; rOffset+newR &lt; 1.0f));</span>
+<span class="pc bpc" id="L255" title="1 of 4 branches missed.">			float gOffset; do {gOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(gOffset + newG &gt; 0.0f &amp;&amp; gOffset+newG &lt; 1.0f));</span>
+<span class="pc bpc" id="L256" title="1 of 4 branches missed.">			float bOffset; do {bOffset = -(offsetRange/2)+rand.nextFloat()*offsetRange;} while (!(bOffset + newB &gt; 0.0f &amp;&amp; bOffset+newB &lt; 1.0f));</span>
+<span class="fc" id="L257">			Color c = new Color(newR+rOffset, newG+gOffset, newB+bOffset, 1);</span>
+<span class="fc" id="L258">		    thisPalette[i] = c;</span>
+		}
+		//set the color palette
+<span class="fc" id="L261">		wc.setColorPalette(new ColorPalette(thisPalette));</span>
+		//empty array of word frequencies that will be passed to wc
+<span class="fc" id="L263">        List&lt;WordFrequency&gt; wf = new ArrayList&lt;WordFrequency&gt;();</span>
+        //combine the name's LD-dist and LD-diff to create an arbitrary 'score' which will determine what the size of a name will be
+<span class="fc" id="L265">        List&lt;Pair&lt;String,Integer&gt;&gt; scores = new ArrayList&lt;Pair&lt;String,Integer&gt;&gt;();</span>
+        //our scoring system is smaller = better. we find the maximum score out of our baby names array and invert all the scores, since the word cloud is generated based on bigger frequency = bigger word size.
+<span class="fc" id="L267">        int maxScore = 0;</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        for (int i = 0; i &lt; babyNamesList.size(); ++i) {</span>
+<span class="fc" id="L269">        	int score = babyNamesList.get(i).getMiddle() + (babyNamesList.get(i).getRight()*5);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        	if (maxScore &lt; score) {</span>
+<span class="fc" id="L271">        		maxScore = score;</span>
+        	}
+<span class="fc" id="L273">        	scores.add(Pair.of(babyNamesList.get(i).getLeft(), score));</span>
+        }
+        //invert the scores and add a scaling factor so that the word sizes are more exponential
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        for (int i = 0; i &lt; babyNamesList.size(); ++i) {</span>
+<span class="fc" id="L277">        	WordFrequency thisWf = new WordFrequency(scores.get(i).getLeft(), (int)(Math.pow((double)(maxScore-scores.get(i).getRight()),2.0)));</span>
+<span class="fc" id="L278">        	wf.add(thisWf);</span>
+        }
+<span class="fc" id="L280">        wc.build(wf);</span>
+<span class="fc" id="L281">        ByteArrayOutputStream output = new ByteArrayOutputStream();</span>
+<span class="fc" id="L282">        wc.writeToStreamAsPNG(output);</span>
+<span class="fc" id="L283">        wordCloudImageBytes =  output.toByteArray();</span>
+        
+<span class="fc" id="L285">	}</span>
+	/**
+	 * Fulfills getTime() in ReportLog superclass.
+	 * @return the time the task started.
+	 */
+	public LocalDateTime getTime() {
+<span class="fc" id="L291">		return this.time;</span>
+	}
+	/**
+	 * Fulfills getoReport() in ReportLog superclass.
+	 * @return a summary of the task.
+	 */
+	public String getoReport() {
+<span class="fc bfc" id="L298" title="All 2 branches covered.">		return &quot;Baby &quot; +  (babyGender.equals(&quot;M&quot;)? &quot;boy&quot;:&quot;girl&quot;)+ &quot; for &quot; + fatherName+&quot; (&quot; + fatherYOB + &quot;), &quot; + motherName + &quot; (&quot;+motherYOB+&quot;), Vintage year: &quot;+vintageYear;</span>
+	}
+	/**
+	 * Fulfills getTask() in ReportLog superclass.
+	 * @return the name of the task.
+	 */
+	public String getTask() {
+<span class="fc" id="L305">		return &quot;Recommended Baby Name&quot;;</span>
+	}
+	/**
+	 * Fulfills getHTML() in ReportLog superclass.
+	 * @return a HTML document with the babyNamesList in tabular form, complete with a header briefly describing the table.
+	 */
+	public byte[] getWordCloudImageBytes() {
+<span class="fc" id="L312">		return wordCloudImageBytes;</span>
+	}
+	public String getHTML() {
+<span class="fc" id="L315">		String html = &quot;&lt;head&gt; &lt;style&gt; table, th, td { border: 1px solid black; } table.center { margin-left: auto; margin-right: auto; } &lt;/style&gt; &lt;/head&gt;&quot;;</span>
+<span class="fc" id="L316">		html +=  String.format(&quot;&lt;h3&gt;Recommended Baby Names for %s and %s&lt;/h3&gt;&quot;, motherName,fatherName);</span>
+<span class="fc" id="L317">		html += &quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&quot;;</span>
+<span class="fc" id="L318">		String tableRow = &quot;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&quot;;</span>
+<span class="fc" id="L319">		String[][] rows = new String[4][25];</span>
+		//System.out.println(babyNamesList.size());
+		
+<span class="fc" id="L322">		int maxScore = 0;</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 0; i &lt; babyNamesList.size(); i++) {</span>
+<span class="fc" id="L324">			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">			if (maxScore &lt; score) {</span>
+<span class="fc" id="L326">				maxScore = score;</span>
+			}
+		}
+<span class="fc" id="L329">		DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (int i = 0; i &lt; babyNamesList.size(); i++) {</span>
+<span class="fc" id="L331">			int score = (i)+babyNamesList.get(i).getMiddle()+(5*babyNamesList.get(i).getRight());</span>
+<span class="fc" id="L332">			rows[i/25][i%25] = String.format(tableRow, babyNamesList.get(i).getLeft(), df.format(100.0*(1.0-((double)score/(double)maxScore)))+&quot;%&quot;);</span>
+		}
+<span class="fc bfc" id="L334" title="All 2 branches covered.">		for (int i = 0; i &lt; 25; ++i) {</span>
+<span class="fc" id="L335">			html += &quot;&lt;tr&gt;&quot;;</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">			for (int j = 0; j &lt; 4; ++j) {</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">				if (i+j*25 &gt;= babyNamesList.size()) {</span>
+<span class="fc" id="L338">					html += &quot;&lt;td&gt;_&lt;/td&gt;&lt;td&gt;_&lt;/td&gt;&quot;;</span>
+				} else
+<span class="fc" id="L340">					html += rows[j][i];</span>
+			}
+<span class="fc" id="L342">			html += &quot;&lt;/tr&gt;&quot;;</span>
+				
+		}
+		//30 rows
+<span class="fc" id="L346">		html += &quot;&lt;/table&gt;&quot;;</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">		if (wordCloudImageBytes != null) {</span>
+<span class="fc" id="L348">			String base64image = &quot;data:image/png;base64,&quot;+Base64.encodeBase64String(wordCloudImageBytes);</span>
+<span class="fc" id="L349">			html += &quot;&lt;img width='500' height='220' src='&quot; + base64image + &quot;'&gt;&quot;;</span>
+		}
+<span class="fc" id="L351">		html = &quot;&lt;div&gt;&quot; + html + &quot;&lt;/div&gt;&quot;;</span>
+<span class="fc" id="L352">		return html;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

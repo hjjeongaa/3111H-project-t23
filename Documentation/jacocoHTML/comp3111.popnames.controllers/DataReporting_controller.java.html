@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataReporting_controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">DataReporting_controller.java</span></div><h1>DataReporting_controller.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers;
+
+import comp3111.popnames.GlobalSettings;
+import java.time.format.DateTimeFormatter;
+
+import comp3111.popnames.ReportLog;
+
+import comp3111.popnames.AnalyzeNames;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+<span class="fc" id="L17">public class DataReporting_controller {</span>
+
+	private ObservableList&lt;TaskZeroDataModel&gt; tableViewList;
+	
+	//Data model for each row of the TableView; each row has two columns, rank and name.
+	public class TaskZeroDataModel {
+		private final SimpleStringProperty rank;
+		private final SimpleStringProperty name;
+		
+<span class="fc" id="L26">		public TaskZeroDataModel(String Rank, String Name) {</span>
+<span class="fc" id="L27">			this.rank = new SimpleStringProperty(Rank);</span>
+<span class="fc" id="L28">			this.name = new SimpleStringProperty(Name);</span>
+<span class="fc" id="L29">		}</span>
+		//Each table column will use these methods to retrieve the values of each cell.
+<span class="fc" id="L31">		public String getRank() {return this.rank.get();}</span>
+<span class="fc" id="L32">		public String getName() {return this.name.get();}</span>
+	}
+	
+	@FXML
+    private TextField DataReporting_nameField_TextField;
+
+    @FXML
+    private RadioButton DataReporting_isFemale_RadioButton;
+
+    @FXML
+    private RadioButton DataReporting_isMale_RadioButton;
+
+    @FXML
+    private ToggleGroup DataReport_genderSelect_ToggleGroup;
+
+    @FXML
+    private TextField DataReporting_yearField_TextField;
+
+    @FXML
+    private Label DataReporting_errorName_Label;
+
+    @FXML
+    private Label DataReporting_errorYear_Label;
+
+    @FXML
+    private Button DataReporting_getRank_Button;
+
+    @FXML
+    private Button DataReporting_getTopFive_Button;
+
+    @FXML
+    private Button DataReporting_getSummary_Button;
+
+    @FXML
+    private Label DataReporting_rankAndSummaryOutput_Label;
+
+    @FXML
+    private TableView&lt;TaskZeroDataModel&gt; DataReporting_top5Table_TableView;
+
+    @FXML
+    private TableColumn&lt;TaskZeroDataModel, String&gt; DataReporting_rankColumn_TableColumn;
+
+    @FXML
+
+    private TableColumn&lt;TaskZeroDataModel, String&gt; DataReporting_nameColumn_TableColumn;
+    
+    /* Methods */
+    
+    private void clearScreen() {
+    	// anything like outputs and errors are cleared.
+<span class="fc" id="L82">    	DataReporting_rankAndSummaryOutput_Label.setVisible(false);</span>
+<span class="fc" id="L83">    	DataReporting_top5Table_TableView.setVisible(false);</span>
+    	
+<span class="fc" id="L85">    	DataReporting_errorYear_Label.setVisible(false);</span>
+<span class="fc" id="L86">    	DataReporting_errorName_Label.setVisible(false);</span>
+<span class="fc" id="L87">    }</span>
+    
+    private String getCleanedName() {
+<span class="fc" id="L90">    	String o = DataReporting_nameField_TextField.getText();</span>
+<span class="fc" id="L91">    	o = ReportLog.validateName(o);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">    	if(o.isEmpty()) {</span>
+<span class="fc" id="L93">    		DataReporting_errorName_Label.setVisible(true);</span>
+    	}
+<span class="fc" id="L95">    	return o;</span>
+    }
+    
+    private int getCleanedYear() {
+<span class="fc" id="L99">    	int y = -1;</span>
+    	try {
+<span class="fc" id="L101">    		y = Integer.parseInt(DataReporting_yearField_TextField.getText());</span>
+<span class="fc bfc" id="L102" title="All 4 branches covered.">    		if (!(y &gt;= GlobalSettings.getLowerBound() &amp;&amp; y &lt;= GlobalSettings.getUpperBound())) {y=-1; DataReporting_errorYear_Label.setVisible(true);}</span>
+<span class="fc" id="L103">    	} catch(NumberFormatException e) {</span>
+    		// the year is not a valid integer.
+<span class="fc" id="L105">    		DataReporting_errorYear_Label.setVisible(true);</span>
+<span class="fc" id="L106">    	}</span>
+<span class="fc" id="L107">    	return y;</span>
+    }
+    
+    @FXML
+    void initialize() {
+    	//Link each table column with the correct variable inside the data model for the tableview.
+<span class="fc" id="L113">    	DataReporting_rankColumn_TableColumn.setCellValueFactory(new PropertyValueFactory&lt;TaskZeroDataModel,String&gt;(&quot;rank&quot;));</span>
+<span class="fc" id="L114">    	DataReporting_nameColumn_TableColumn.setCellValueFactory(new PropertyValueFactory&lt;TaskZeroDataModel,String&gt;(&quot;name&quot;));</span>
+
+    	//Create an array of data models and link this array with the tableview.
+<span class="fc" id="L117">    	this.tableViewList = FXCollections.&lt;TaskZeroDataModel&gt;observableArrayList();</span>
+<span class="fc" id="L118">    	DataReporting_top5Table_TableView.setItems(this.tableViewList);</span>
+<span class="fc" id="L119">    }</span>
+    
+    
+    @FXML
+    void getRank() {
+<span class="fc" id="L124">    	clearScreen();</span>
+    	
+<span class="fc" id="L126">    	String name = getCleanedName();</span>
+<span class="fc" id="L127">    	int year = getCleanedYear();</span>
+    	String gender;
+<span class="fc" id="L129">    	boolean anyErrors = false;</span>
+    	
+    	
+<span class="fc bfc" id="L132" title="All 4 branches covered.">    	if( name.length() == 0 || year == -1) anyErrors = true;</span>
+    	
+<span class="fc bfc" id="L134" title="All 2 branches covered.">    	if(!anyErrors) {</span>
+    		// All inputs are valid, now to display the desired output.
+<span class="fc bfc" id="L136" title="All 2 branches covered.">    		gender = (DataReporting_isFemale_RadioButton.isSelected())?&quot;F&quot;:&quot;M&quot;;</span>
+<span class="fc" id="L137">    		int rank = AnalyzeNames.getRank(year, name, gender);</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">    		if(rank == -1) {</span>
+<span class="fc" id="L139">    			DataReporting_rankAndSummaryOutput_Label.setText(String.format(&quot;Sorry %s could not be found in %d&quot;, name, year));</span>
+<span class="fc" id="L140">    			DataReporting_rankAndSummaryOutput_Label.setVisible(true);</span>
+    		} else {
+<span class="fc" id="L142">    			DataReporting_rankAndSummaryOutput_Label.setText(String.format(&quot;The Rank of %s in %d is %d.&quot;, name, year, rank));</span>
+<span class="fc" id="L143">    			DataReporting_rankAndSummaryOutput_Label.setVisible(true);</span>
+    		}
+    	}
+<span class="fc" id="L146">		return;</span>
+    }
+    
+    @FXML
+    void getSummary() {
+<span class="fc" id="L151">    	clearScreen();</span>
+<span class="fc" id="L152">    	 int year = getCleanedYear();</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">    	 if(year != -1) {</span>
+<span class="fc" id="L154">    		 DataReporting_rankAndSummaryOutput_Label.setText(AnalyzeNames.getSummary(year));</span>
+<span class="fc" id="L155">    		 DataReporting_rankAndSummaryOutput_Label.setVisible(true);</span>
+    	 }
+<span class="fc" id="L157">    	 return;</span>
+    }
+
+    @FXML
+    void getTopFiveNames() {
+<span class="fc" id="L162">    	clearScreen();</span>
+<span class="fc" id="L163">    	int year = getCleanedYear();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">    	String gender = (DataReporting_isFemale_RadioButton.isSelected())?&quot;F&quot;:&quot;M&quot;;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">    	if(year != -1) {</span>
+    		
+    		//Get rid of any previous rows that might be sitting in the table.
+<span class="fc" id="L168">    		tableViewList.clear();</span>
+    		//Create data models and add it to the table's array.
+<span class="fc" id="L170">    		TaskZeroDataModel Entry1 = new TaskZeroDataModel(&quot;1&quot;, AnalyzeNames.getName(year, 1, gender));</span>
+<span class="fc" id="L171">    		TaskZeroDataModel Entry2 = new TaskZeroDataModel(&quot;2&quot;, AnalyzeNames.getName(year, 2, gender));</span>
+<span class="fc" id="L172">    		TaskZeroDataModel Entry3 = new TaskZeroDataModel(&quot;3&quot;, AnalyzeNames.getName(year, 3, gender));</span>
+<span class="fc" id="L173">    		TaskZeroDataModel Entry4 = new TaskZeroDataModel(&quot;4&quot;, AnalyzeNames.getName(year, 4, gender));</span>
+<span class="fc" id="L174">    		TaskZeroDataModel Entry5 = new TaskZeroDataModel(&quot;5&quot;, AnalyzeNames.getName(year, 5, gender));</span>
+    		
+<span class="fc" id="L176">    		tableViewList.add(Entry1);</span>
+<span class="fc" id="L177">    		tableViewList.add(Entry2);</span>
+<span class="fc" id="L178">    		tableViewList.add(Entry3);</span>
+<span class="fc" id="L179">    		tableViewList.add(Entry4);</span>
+<span class="fc" id="L180">    		tableViewList.add(Entry5);</span>
+    		
+<span class="fc" id="L182">    		DataReporting_top5Table_TableView.setVisible(true);</span>
+   	 	}
+<span class="fc" id="L184">   	 	return;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
