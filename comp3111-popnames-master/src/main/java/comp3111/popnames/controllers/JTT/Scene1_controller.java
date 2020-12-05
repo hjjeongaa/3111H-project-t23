@@ -79,6 +79,11 @@ public class Scene1_controller {
 
     /* Methods */
     @FXML
+    /**
+     * Initialize all the elements on the interface like Images.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() throws FileNotFoundException{
     	String userName = JourneyThroughTime.getUserName();
     	String soulmateName = JourneyThroughTime.getSoulmateName();
@@ -121,6 +126,11 @@ public class Scene1_controller {
     }
     
     @FXML
+    /**
+     * Used to start an animation to see information about your partner.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void seePartner() {
     	// Assumed state: 	JTT_soulmateImage_ImageView -> invisible
     	//					JTT_userImage_ImageView		-> visible
@@ -141,6 +151,11 @@ public class Scene1_controller {
     }
 
     @FXML
+    /**
+     * Used to go back to the original view of seeing the users data.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void seeUser() {
     	// Assumed state: 	JTT_soulmateImage_ImageView -> visible
     	//					JTT_userImage_ImageView		-> invisible
@@ -160,6 +175,11 @@ public class Scene1_controller {
     }
     
     @FXML
+    /**
+     * Used to jump to the next scene in the journey through time.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void nextScene() {
     	Parent root = null;
 		try {

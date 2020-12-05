@@ -65,12 +65,22 @@ public class Scene2_controller {
     
 	
 	@FXML
+	/**
+     * Initialize the graph.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() {
 		JTT2_titleLabel_Label.setText(String.format("Population of %s and %s", JourneyThroughTime.getUserName(), JourneyThroughTime.getSoulmateName()));
     	renderGraph(70);
     }
 	
 	@SuppressWarnings("unchecked")
+	/**
+     * Used to draw to the graph with a given life expectancy.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
 	void renderGraph(int le) {
 		// Creation and initialization of the series.
     	XYChart.Series<Integer,Integer> seriesUser = new Series<>();
@@ -98,6 +108,11 @@ public class Scene2_controller {
     	JTT2_chart_AreaChart.getData().addAll(seriesUser, seriesSoulmate);
 	}
     
+	/**
+     * Used to sanitize the input of the life expectancy.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
 	private int getCleanedLifeExpectancy() {
 		int res = -1;
 		try {
@@ -115,6 +130,11 @@ public class Scene2_controller {
 	}
 	
     @FXML
+    /**
+     * Called when the user has enetered a life expectancy and want to see the graph drawn.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void calculateGraph() {
     	JTT2_lifeExpectancy_Label.setText("Life Expectancy");
     	int lifeExpectancy = getCleanedLifeExpectancy();
@@ -124,6 +144,11 @@ public class Scene2_controller {
     }
 
     @FXML
+    /**
+     * Used to jump to the next scene.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void nextScene() {
     	Parent root = null;
 		try {

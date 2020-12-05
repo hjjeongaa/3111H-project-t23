@@ -1,3 +1,10 @@
+/**
+* TopNNames_controller.java
+* This is the controller for the interface for the TopNNames task.
+* @author Ryder Khoi Daniel
+* @version 1.0
+*/
+
 package comp3111.popnames.controllers;
 
 import java.util.ArrayList;
@@ -22,6 +29,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TopNNames_controller {
+	/**
+	* TopNNames_controller.java
+	* This is the controller for the interface for the TopNNames task.
+	* @author Ryder Khoi Daniel
+	* @version 1.0
+	*/
 	/* Shared Stuff */
 	
 	/* Stuff for Table */
@@ -108,6 +121,11 @@ public class TopNNames_controller {
 
     /* Table Initialization */
     @FXML
+    /**
+     * Initialize the table.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void initialize() {
     	// Link each table column with the correct variable inside the data model for the tableview.
     	TopNNames_rank_TableColumn.setCellValueFactory(new PropertyValueFactory<TopNNamesDataModel,String>("rank"));
@@ -120,7 +138,11 @@ public class TopNNames_controller {
     }
     
     /* Methods */
-    
+    /**
+     * Used to clear the screen of errors and disable the slider.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private void clearScreen() {
     	TopNNames_invalidStart_Label.setVisible(false);
     	TopNNames_invalidEnd_Label.setVisible(false);
@@ -136,6 +158,11 @@ public class TopNNames_controller {
     	TopNNames_yearselector_Slider.setDisable(true);
     }
     
+    /**
+     * returns the start year if its valid, shows error messages if not and returns -1.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private int getCleanedStartYear( int lowerBound, int upperBound) {
     	int res = -1;
     	try {
@@ -153,6 +180,11 @@ public class TopNNames_controller {
     	return res;
     }
     
+    /**
+     * Returns the end year if its valid or shows error messages if the year is not valid and returns -1.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private int getCleanedEndYear( int lowerBound, int upperBound) {
     	int res = -1;
     	try {
@@ -170,6 +202,11 @@ public class TopNNames_controller {
     	return res;
     }
     
+    /**
+     * returns the number of names specified, or -1 if the number is invalid. If it is invalid error messages will also be shown.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private int getCleanedNumberOfNames() {
     	int res = -1;
     	try {
@@ -186,6 +223,11 @@ public class TopNNames_controller {
     	return res;
     }
     
+    /**
+     * Used to calculate the names that appear most often in the top two position.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private List<String> modeName(TopNNames source) {
     	List<String> output = new ArrayList<String>();
     	List<String> topNames1 = new ArrayList<String>();
@@ -224,6 +266,11 @@ public class TopNNames_controller {
     	return output;
     }
     
+    /**
+     * Used to find the frequencies of those names appearing in top positions.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     private List<Integer> modeFreq(TopNNames source) {
     	List<Integer> output = new ArrayList<Integer>();
     	List<String> topNames1 = new ArrayList<String>();
@@ -266,6 +313,11 @@ public class TopNNames_controller {
     private int nums;
     
     @FXML
+    /**
+     * This is run when the button is pressed. Based on the user inputs, the data structure is set up, and all other elements may now access it rapidly. If any of the inputs are bad, then an error message will show up and nothing will happen.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void generateTopNNames() {
     	clearScreen();
     	// Input sanitation.
@@ -299,6 +351,12 @@ public class TopNNames_controller {
     }
     
     @FXML
+    /**
+     * Called whenever there is a drag or mouse event detected. Allows for a dynamic view of the names.
+     * This function gets information from the slider and draws the desired output to the table.
+     * @author Ryder Khoi Daniel
+     * v1.0
+     */
     void updateTable() {
     	int yearOfInterest = (int) TopNNames_yearselector_Slider.getValue();
     	TopNNames_yearlabel_Label.setText(String.format("Year: %d", yearOfInterest));
